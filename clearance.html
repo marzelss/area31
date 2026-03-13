@@ -39,9 +39,24 @@ function startTyping() {
             nameNextBtn.style.display = "inline-block";
             nameNextBtn.textContent = buttonText;
 
+            // Disable button initially
+            nameNextBtn.disabled = true;
+            nameNextBtn.style.opacity = 0.5;
+            
+            // Enable button only if password >= 8 chars
+            nameField.addEventListener("input", () => {
+                if (nameField.value.length >= 8) {
+                    nameNextBtn.disabled = false;
+                    nameNextBtn.style.opacity = 1;
+                } else {
+                    nameNextBtn.disabled = true;
+                    nameNextBtn.style.opacity = 0.5;
+                }
+            });
+            
             nameNextBtn.onclick = () => {
                 const password = nameField.value.trim();
-                if(password) {
+                if(password.length >= 8) {
                     // Save password in sessionStorage for cross-checking
                     sessionStorage.setItem("userPassword", password);
                     window.location.href = "nextPage.html"; // replace with your next page
