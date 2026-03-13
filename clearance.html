@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Area31 - Clearance</title>
+<title>Area31 - Enter Name</title>
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
 <div id="terminal"></div>
-<input type="text" id="nameField" style="display:none;" />
-<button id="nameNext" style="display:none;"></button>
+<input type="password" id="nameField" placeholder="Password..." />
+<button id="nameNext"></button>
 
 <script>
 const terminal = document.getElementById("terminal");
@@ -23,7 +23,6 @@ const linePause = 800;
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
 let lines = [];
-let promptText = "";
 let buttonText = "";
 
 // Typewriter effect
@@ -41,11 +40,11 @@ function startTyping() {
             nameNextBtn.textContent = buttonText;
 
             nameNextBtn.onclick = () => {
-                const userName = nameField.value.trim();
-                if(userName) {
-                    // Save name in sessionStorage for future pages
-                    sessionStorage.setItem("userName", userName);
-                    window.location.href = "nextPage.html"; // replace with next page
+                const password = nameField.value.trim();
+                if(password) {
+                    // Save password in sessionStorage for cross-checking
+                    sessionStorage.setItem("userPassword", password);
+                    window.location.href = "nextPage.html"; // replace with your next page
                 }
             }
             return;
@@ -75,7 +74,6 @@ async function init() {
     const data = await response.json();
 
     lines = [data.nameInput.prompt];
-    promptText = data.nameInput.prompt;
     buttonText = data.nameInput.button;
 
     startTyping();
