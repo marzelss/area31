@@ -20,27 +20,52 @@
         const terminal = document.getElementById("terminal");
         const typingSpeed = 30; // ms per character
         const linePause = 800;  // pause after each line
+        
+        // Detect language (default to English)
+        const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
+        // Typewriter counters
         let currentLine = 0;
         let currentChar = 0;
 
-        function typeLine() {
-            if (currentLine >= lines.length) return;
-
-            const line = lines[currentLine];
-            terminal.innerHTML = lines.slice(0, currentLine).join("\n") + "\n" + line.substring(0, currentChar) + '<span class="cursor">|</span>';
-
-            if (currentChar < line.length) {
-                currentChar++;
-                setTimeout(typeLine, typingSpeed);
-            } else {
-                currentLine++;
-                currentChar = 0;
-                setTimeout(typeLine, linePause);
-            }
+        async function loadStrings(lang) {
+            const response = await fetch(`locales/${lang}.json`);
+            const data = await response.json();
+            return [
+                data.terminal.warning,
+                data.terminal.errorMessage,
+                data.terminal.foreignSignal,
+                data.terminal.clearance
+            ];
         }
 
-        typeLine();
+        async function startTyping() {
+            const lines = await loadStrings(userLang);
+    
+            let currentLine = 0;
+            let currentChar = 0;
+    
+            function typeLine() {
+                if (currentLine >= lines.length) return;
+    
+                const line = lines[currentLine];
+                terminal.innerHTML = lines.slice(0, currentLine).join("\n") + "\n" + line.substring(0, currentChar) + '<span class="cursor">|</span>';
+    
+                if (currentChar < line.length) {
+                    currentChar++;
+                    setTimeout(typeLine, typingSpeed);
+                } else {
+                    currentLine++;
+                    currentChar = 0;
+                    setTimeout(typeLine, linePause);
+                }
+            }
+    
+            typeLine();
+        }
+    
+        startTyping();
+        
     </script>
 </body>
 </html>
