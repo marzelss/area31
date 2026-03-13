@@ -15,5 +15,9 @@
     "passcode1": "DECIFRAZIONE PASSCODE",
     "passcode2": "ACCESSO AL DATABASE",
     "passcode3": "VERIFICA IDENTITÀ"
+  },
+  "intruder": {
+    "warning": "ERRORE! INTRUSO!",
+    "reload": "Ricarica la pagina per riprovare."
   }
 }
