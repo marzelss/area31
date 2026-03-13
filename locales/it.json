@@ -1,0 +1,10 @@
+{
+  "terminal": {
+    "warning": "Attenzione: timeline corrotta",
+    "errorMessage": "Il sistema ha rilevato un errore con messaggio:",
+    "foreignSignal": "‘segnale straniero rilevato, utente non autorizzato sta intercettando’.",
+    "clearance": "Autorizzazione richiesta",
+    "start": "Inizia",
+    "loading": "Caricamento..."
+  }
+}

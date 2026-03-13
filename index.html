@@ -1,1 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Area31</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="terminal"></div>
 
+<script>
+const terminal = document.getElementById("terminal");
+const typingSpeed = 30;
+const linePause = 800;
+
+// Detect language
+const userLang = navigator.language.startsWith("it") ? "it" : "en";
+
+let lines = []; // terminal lines
+
+// Typewriter effect
+function startTyping() {
+    let currentLine = 0;
+    let currentChar = 0;
+
+    function typeLine() {
+        if (currentLine >= lines.length) return;
+
+        const line = lines[currentLine];
+        terminal.innerHTML = lines.slice(0, currentLine).join("\n") + "\n" +
+            line.substring(0, currentChar) +
+            '<span class="cursor">|</span>';
+
+        if (currentChar < line.length) {
+            currentChar++;
+            setTimeout(typeLine, typingSpeed);
+        } else {
+            currentLine++;
+            currentChar = 0;
+            setTimeout(typeLine, linePause);
+        }
+    }
+
+    typeLine();
+}
+
+// Initialize
+async function init() {
+    const response = await fetch(`locales/${userLang}.json`);
+    const data = await response.json();
+    lines = [
+        data.terminal.warning,
+        data.terminal.errorMessage,
+        data.terminal.foreignSignal,
+        data.terminal.clearance
+    ];
+
+    startTyping();
+}
+
+init();
+</script>
+</body>
+</html>
