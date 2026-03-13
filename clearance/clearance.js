@@ -13,6 +13,7 @@ const userLang = navigator.language.startsWith("it") ? "it" : "en";
 let lines = [];
 let buttonText = "";
 let loadingStrings;
+let intruderStrings;
 
 async function showLoadingSequence(loadingStrings) {
 
@@ -76,7 +77,7 @@ async function checkPasscode(passcode) {
 
 function showIntruderScreen() {
 
-    const intruderStrings = loadingStrings ? loadingStrings.intruder : {
+    const strings = intruderStrings || {
         warning: "ERROR! INTRUDER!",
         reload: "Reload the page to try again."
     };
@@ -95,10 +96,10 @@ function showIntruderScreen() {
         ">
             <div style="font-size:60px; animation: blink 0.8s infinite;">⚠️</div>
             <div style="font-size:28px; margin-top:15px; animation: blink 0.8s infinite;">
-                ${intruderStrings.warning}
+                ${strings.warning}
             </div>
             <div style="font-size:16px; margin-top:20px; color:#fff;">
-                ${intruderStrings.reload}
+                ${strings.reload}
             </div>
         </div>
     `;
@@ -193,7 +194,8 @@ async function init() {
 
     const response = await fetch(`../locales/${userLang}.json`);
     const data = await response.json();
-
+    
+    intruderStrings = data.intruder;
     lines = [data.nameInput.prompt];
     buttonText = data.nameInput.button;
     loadingStrings = data.loading;
