@@ -10,5 +10,10 @@
   "nameInput": {
     "prompt": "Enter your secret passcode to proceed:",
     "button": "Continue"
+  },
+  "loading": {
+    "passcode1": "DECRIPTING PASSCODE...",
+    "passcode2": "ACCESSING DATABASE...",
+    "passcode3": "VERIFYING IDENTITY...",
   }
 }
