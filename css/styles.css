@@ -90,3 +90,40 @@ body {
 #nameNext:disabled {
     cursor: not-allowed;
 }
+
+/* Intruder overlay */
+.intruder-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* vertical center */
+    align-items: center; /* horizontal center */
+    min-height: 100vh;
+    padding: 20px; /* side + vertical padding */
+    box-sizing: border-box;
+    font-family: monospace;
+    text-align: center;
+    background-color: rgba(186, 186, 186, 0.9); /* semi-transparent gray */
+    color: #ff4444;
+    position: fixed; /* cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999; /* on top of everything */
+}
+
+.intruder-screen .icon {
+    font-size: 60px;
+    animation: blink 0.8s infinite;
+}
+
+.intruder-screen .warning {
+    font-size: 28px;
+    margin-top: 15px;
+    animation: blink 0.8s infinite;
+}
+
+.intruder-screen .reload {
+    font-size: 16px;
+    margin-top: 20px;
+    color: #000;
+}
