@@ -3,8 +3,12 @@
     "warning": "Attenzione: file temporali corrotti",
     "errorMessage": "È stato rilevato un errore con messaggio:",
     "foreignSignal": "‘segnale n0n riconosc1uto, ut3nte non autorizzato sta !ntercettando’.",
-    "clearance": "Autorizzazione necessaria"
+    "clearance": "Autorizzazione necessaria",
     "start": "Inizia",
     "loading": "Caricamento..."
+  },
+  "nameInput": {
+    "prompt": "Inserisci il tuo codice segreto per procedere:",
+    "button": "Avanti"
   }
 }
