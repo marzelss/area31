@@ -1,1 +1,32 @@
 
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #444; /* gray background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: monospace;
+    color: #000; /* black text */
+}
+
+#terminal {
+    white-space: pre-wrap; /* wrap text like a real terminal */
+    word-break: break-word;
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
+
+.cursor {
+    display: inline-block;
+    width: 10px;
+    background-color: black;
+    margin-left: 2px;
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+}
