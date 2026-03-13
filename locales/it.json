@@ -12,8 +12,8 @@
     "button": "Avanti"
   },
   "loading": {
-    "passcode1": "DECIFRAZIONE PASSCODE...",
-    "passcode2": "ACCESSO AL DATABASE...",
-    "passcode3": "VERIFICA IDENTITÀ..."
+    "passcode1": "DECIFRAZIONE PASSCODE",
+    "passcode2": "ACCESSO AL DATABASE",
+    "passcode3": "VERIFICA IDENTITÀ"
   }
 }
