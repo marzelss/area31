@@ -102,7 +102,7 @@ body {
     box-sizing: border-box;
     font-family: monospace;
     text-align: center;
-    background-color: rgba(186, 186, 186, 0.9); /* semi-transparent gray */
+    background-color: #bababa; /* gray background */
     color: #ff4444;
     position: fixed; /* cover the entire viewport */
     top: 0;
