@@ -7,17 +7,21 @@
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+
 <div id="terminal"></div>
+<button id="startNext"></button>
 
 <script>
 const terminal = document.getElementById("terminal");
+const startNextBtn = document.getElementById("startNext");
 const typingSpeed = 30;
 const linePause = 800;
 
 // Detect language
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
-let lines = []; // terminal lines
+let lines = [];
+let startText = "";
 
 // Typewriter effect
 function startTyping() {
@@ -25,7 +29,13 @@ function startTyping() {
     let currentChar = 0;
 
     function typeLine() {
-        if (currentLine >= lines.length) return;
+        if (currentLine >= lines.length) {
+            // Show localized button when finished
+            startNextBtn.style.display = "inline-block";
+            startNextBtn.textContent = startText;
+            startNextBtn.onclick = () => { window.location.href = "clearance/clearance.html"; };
+            return;
+        }
 
         const line = lines[currentLine];
         terminal.innerHTML = lines.slice(0, currentLine).join("\n") + "\n" +
@@ -49,12 +59,15 @@ function startTyping() {
 async function init() {
     const response = await fetch(`locales/${userLang}.json`);
     const data = await response.json();
+
     lines = [
         data.terminal.warning,
         data.terminal.errorMessage,
         data.terminal.foreignSignal,
         data.terminal.clearance
     ];
+
+    startText = data.terminal.start; // localized button text
 
     startTyping();
 }

@@ -6,5 +6,9 @@
     "clearance": "Clearance required",
     "start": "Start",
     "loading": "Loading..."
+  },
+  "nameInput": {
+    "prompt": "Enter your secret passcode to proceed:",
+    "button": "Continue"
   }
 }
