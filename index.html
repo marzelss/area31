@@ -7,17 +7,22 @@
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+
 <div id="terminal"></div>
+
+<!-- Button that will appear after typing -->
+<button id="startNext"></button>
 
 <script>
 const terminal = document.getElementById("terminal");
+const startNextBtn = document.getElementById("startNext");
 const typingSpeed = 30;
 const linePause = 800;
 
 // Detect language
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
-let lines = []; // terminal lines
+let lines = [];
 
 // Typewriter effect
 function startTyping() {
@@ -25,7 +30,13 @@ function startTyping() {
     let currentChar = 0;
 
     function typeLine() {
-        if (currentLine >= lines.length) return;
+        if (currentLine >= lines.length) {
+            // Show the "Start/Inizia" button when finished
+            startNextBtn.style.display = "inline-block";
+            startNextBtn.textContent = userLang === "it" ? "Inizia" : "Start";
+            startNextBtn.onclick = () => { window.location.href = "clearance.html"; };
+            return;
+        }
 
         const line = lines[currentLine];
         terminal.innerHTML = lines.slice(0, currentLine).join("\n") + "\n" +
