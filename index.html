@@ -1,103 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area31</title>
-    <link rel="stylesheet" href="css/styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Area31</title>
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- Start Button -->
-    <button id="start-btn"></button>
+<div id="terminal"></div>
 
-    <!-- Terminal -->
-    <div id="terminal"></div>
+<script>
+const terminal = document.getElementById("terminal");
+const typingSpeed = 30;
+const linePause = 800;
 
-    <script>
-        const terminal = document.getElementById("terminal");
-        const startBtn = document.getElementById("start-btn");
-        const typingSpeed = 30; 
-        const linePause = 800;  
+// Detect language
+const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
-        // Detect language
-        const userLang = navigator.language.startsWith("it") ? "it" : "en";
+let lines = []; // terminal lines
 
-        let lines = []; // to store terminal lines
+// Typewriter effect
+function startTyping() {
+    let currentLine = 0;
+    let currentChar = 0;
 
-        // Preload typing sound
-        const typeSound = new Audio('sounds/type.mp3');
-        typeSound.volume = 0.3;
+    function typeLine() {
+        if (currentLine >= lines.length) return;
 
-        // Load localized strings
-        async function loadStrings(lang) {
-            const response = await fetch(`locales/${lang}.json`);
-            const data = await response.json();
-            return {
-                terminalLines: [
-                    data.terminal.warning,
-                    data.terminal.errorMessage,
-                    data.terminal.foreignSignal,
-                    data.terminal.clearance
-                ],
-                startText: data.terminal.start,
-                loadingText: data.terminal.loading
-            };
+        const line = lines[currentLine];
+        terminal.innerHTML = lines.slice(0, currentLine).join("\n") + "\n" +
+            line.substring(0, currentChar) +
+            '<span class="cursor">|</span>';
+
+        if (currentChar < line.length) {
+            currentChar++;
+            setTimeout(typeLine, typingSpeed);
+        } else {
+            currentLine++;
+            currentChar = 0;
+            setTimeout(typeLine, linePause);
         }
+    }
 
-        // Typewriter effect
-        function startTyping() {
-            // Load typewriter sound
-            const typeSound = new Audio('sounds/type.mp3');
-            typeSound.volume = 0.3;
-            typeSound.loop = true; // loop during typing
-            typeSound.play().catch(e => console.log("Audio blocked:", e));
-            
-            let currentLine = 0;
-            let currentChar = 0;
+    typeLine();
+}
 
-            function typeLine() {
-                if (currentLine >= lines.length) {
-                    typeSound.pause(); // stop sound at end
-                    return;
-                }
+// Initialize
+async function init() {
+    const response = await fetch(`locales/${userLang}.json`);
+    const data = await response.json();
+    lines = [
+        data.terminal.warning,
+        data.terminal.errorMessage,
+        data.terminal.foreignSignal,
+        data.terminal.clearance
+    ];
 
-                const line = lines[currentLine];
-                terminal.innerHTML = lines.slice(0, currentLine).join("\n") + "\n" + line.substring(0, currentChar) + '<span class="cursor">|</span>';
+    startTyping();
+}
 
-                if (currentChar < line.length) {
-                    typeSound.currentTime = 0;
-                    typeSound.play();
-                    currentChar++;
-                    setTimeout(typeLine, typingSpeed);
-                } else {
-                    currentLine++;
-                    currentChar = 0;
-                    setTimeout(typeLine, linePause);
-                }
-            }
-
-            typeLine();
-        }
-
-        // Initialize
-        async function init() {
-            const data = await loadStrings(userLang);
-            startBtn.textContent = data.startText;
-
-            startBtn.addEventListener('click', async () => {
-                startBtn.style.display = 'none';
-                terminal.textContent = data.loadingText;
-
-                // Wait 1.5 seconds for "Loading..." effect
-                setTimeout(() => {
-                    terminal.textContent = '';
-                    lines = data.terminalLines;
-                    startTyping();
-                }, 1500);
-            });
-        }
-
-        init();
-    </script>
+init();
+</script>
 </body>
 </html>
