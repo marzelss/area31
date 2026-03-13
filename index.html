@@ -9,8 +9,6 @@
 <body>
 
 <div id="terminal"></div>
-
-<!-- Button that will appear after typing -->
 <button id="startNext"></button>
 
 <script>
@@ -23,6 +21,7 @@ const linePause = 800;
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
 let lines = [];
+let startText = "";
 
 // Typewriter effect
 function startTyping() {
@@ -31,9 +30,9 @@ function startTyping() {
 
     function typeLine() {
         if (currentLine >= lines.length) {
-            // Show the "Start/Inizia" button when finished
+            // Show localized button when finished
             startNextBtn.style.display = "inline-block";
-            startNextBtn.textContent = userLang === "it" ? "Inizia" : "Start";
+            startNextBtn.textContent = startText;
             startNextBtn.onclick = () => { window.location.href = "clearance.html"; };
             return;
         }
@@ -60,12 +59,15 @@ function startTyping() {
 async function init() {
     const response = await fetch(`locales/${userLang}.json`);
     const data = await response.json();
+
     lines = [
         data.terminal.warning,
         data.terminal.errorMessage,
         data.terminal.foreignSignal,
         data.terminal.clearance
     ];
+
+    startText = data.terminal.start; // localized button text
 
     startTyping();
 }
