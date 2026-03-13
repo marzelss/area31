@@ -1,8 +1,10 @@
 {
   "terminal": {
     "warning": "Warning: timeline corrupted",
-    "errorMessage": "The server has found a system error with message:",
+    "errorMessage": "The system has detected an error with message:",
     "foreignSignal": "‘for3ign s1gnal detected, unauthorised user is int3rcepting’.",
-    "clearance": "Clearance required"
+    "clearance": "Clearance required",
+    "start": "Start",
+    "loading": "Loading..."
   }
 }
