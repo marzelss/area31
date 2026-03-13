@@ -12,6 +12,54 @@ const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
 let lines = [];
 let buttonText = "";
+let loadingStrings;
+
+async function showLoadingSequence(loadingStrings) {
+
+    const steps = [
+        loadingStrings.passcode1,
+        loadingStrings.passcode2,
+        loadingStrings.passcode3
+    ];
+
+    for (const step of steps) {
+
+        await animateDots(step);
+
+    }
+
+}
+
+function animateDots(text) {
+
+    return new Promise(resolve => {
+
+        let dots = 1;
+        let cycles = 0;
+
+        const interval = setInterval(() => {
+
+            const dotString = ".".repeat(dots);
+
+            terminal.innerHTML += `\n${text.replace("...", dotString)}`;
+
+            dots++;
+
+            if (dots > 3) {
+                dots = 1;
+                cycles++;
+            }
+
+            if (cycles >= 2) {
+                clearInterval(interval);
+                resolve();
+            }
+
+        }, 350);
+
+    });
+
+}
 
 async function checkPasscode(passcode) {
 
@@ -78,7 +126,12 @@ function startTyping() {
             nameNextBtn.onclick = async () => {
 
                 const passcode = nameField.value.trim();
-
+            
+                nameField.style.display = "none";
+                nameNextBtn.style.display = "none";
+            
+                await showLoadingSequence(loadingStrings);
+            
                 const result = await checkPasscode(passcode);
 
                 if (result) {
@@ -131,6 +184,7 @@ async function init() {
 
     lines = [data.nameInput.prompt];
     buttonText = data.nameInput.button;
+    loadingStrings = data.loading;
 
     startTyping();
 }
