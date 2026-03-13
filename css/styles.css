@@ -1,13 +1,13 @@
-
 body {
     margin: 0;
-    padding: 0;
+    padding: 2rem; /* vertical + horizontal padding */
     background-color: #bababa; /* gray background */
-    display: flex;
-    padding-top: 50px;
-    height: 100vh;
     font-family: monospace;
-    color: #000; /* black text */
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* align terminal + button left */
+    box-sizing: border-box;
 }
 
 #terminal {
@@ -15,15 +15,7 @@ body {
     word-break: break-word;
     font-size: 1.2rem;
     line-height: 1.5;
-    padding: 0 2rem; /* 2rem padding left and right */
-}
-
-.cursor {
-    display: inline-block;
-    width: 10px;
-    background-color: black;
-    margin-left: 2px;
-    animation: blink 0.7s infinite;
+    width: 100%;
 }
 
 @keyframes blink {
@@ -60,7 +52,7 @@ body {
     border-radius: 4px;
     cursor: pointer;
     margin-top: 2rem; /* space between terminal and button */
-    align-self: flex-start; /* keep button aligned left with terminal text */
+    align-self: flex-start; /* keep button aligned with terminal */
     transition: background-color 0.2s;
 }
 
