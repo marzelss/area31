@@ -76,6 +76,11 @@ async function checkPasscode(passcode) {
 
 function showIntruderScreen() {
 
+    const intruderStrings = loadingStrings ? loadingStrings.intruder : {
+        warning: "ERROR! INTRUDER!",
+        reload: "Reload the page to try again."
+    };
+
     document.body.innerHTML = `
         <div style="
             display:flex;
@@ -85,10 +90,15 @@ function showIntruderScreen() {
             height:100vh;
             font-family:monospace;
             text-align:center;
+            background-color:#222;
+            color:#ff4444;
         ">
-            <div style="font-size:80px;">⚠️</div>
-            <div style="font-size:24px; margin-top:20px;">
-                Error! Error! Intruder!
+            <div style="font-size:60px; animation: blink 0.8s infinite;">⚠️</div>
+            <div style="font-size:28px; margin-top:15px; animation: blink 0.8s infinite;">
+                ${intruderStrings.warning}
+            </div>
+            <div style="font-size:16px; margin-top:20px; color:#fff;">
+                ${intruderStrings.reload}
             </div>
         </div>
     `;
