@@ -12,8 +12,12 @@
     "button": "Continue"
   },
   "loading": {
-    "passcode1": "DECRIPTING PASSCODE",
+    "passcode1": "DECRYPTING PASSCODE",
     "passcode2": "ACCESSING DATABASE",
     "passcode3": "VERIFYING IDENTITY"
+  },
+  "intruder": {
+    "warning": "ERROR! INTRUDER!",
+    "reload": "Reload the page to try again."
   }
 }
