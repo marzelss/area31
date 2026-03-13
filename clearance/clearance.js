@@ -65,7 +65,7 @@ function startTyping() {
 
             nameField.addEventListener("input", () => {
 
-                if (nameField.value.length >= 8) {
+                if (nameField.value.length >= 10) {
                     nameNextBtn.disabled = false;
                     nameNextBtn.style.opacity = 1;
                 } else {
