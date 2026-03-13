@@ -135,32 +135,34 @@ function startTyping() {
             });
 
             nameNextBtn.onclick = async () => {
-            
+
                 const passcode = nameField.value.trim();
-            
-                // Immediately hide input/button to clean the screen
+
+                // Hide input/button immediately
                 nameField.style.display = "none";
                 nameNextBtn.style.display = "none";
-            
-                // First, check passcode
+
+                // Check passcode
                 const result = await checkPasscode(passcode);
-            
+
                 if (result) {
                     // Only show loading if passcode is valid
                     await showLoadingSequence(loadingStrings);
-            
+
                     sessionStorage.setItem("agentName", result["real-name"]);
                     sessionStorage.setItem("passcode", passcode);
-            
+
                     window.location.href = "../protocol/protocol.html";
-            
+
                 } else {
-                    // Wrong passcode → show intruder immediately
                     showIntruderScreen();
                 }
-            
             };
 
+            return; // Important: stop typing further
+        }
+
+        // --- continue typing current line ---
         const line = lines[currentLine];
 
         terminal.innerHTML =
@@ -181,9 +183,10 @@ function startTyping() {
             setTimeout(typeLine, linePause);
 
         }
+
     }
 
-    typeLine();
+    typeLine(); // start the typewriter
 }
 
 async function init() {
