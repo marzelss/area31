@@ -14,6 +14,6 @@
   "loading": {
     "passcode1": "DECRIPTING PASSCODE...",
     "passcode2": "ACCESSING DATABASE...",
-    "passcode3": "VERIFYING IDENTITY...",
+    "passcode3": "VERIFYING IDENTITY..."
   }
 }
