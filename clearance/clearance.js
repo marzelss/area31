@@ -83,24 +83,10 @@ function showIntruderScreen() {
     };
 
     document.body.innerHTML = `
-        <div style="
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            font-family:monospace;
-            text-align:center;
-            background-color:#222;
-            color:#ff4444;
-        ">
-            <div style="font-size:60px; animation: blink 0.8s infinite;">⚠️</div>
-            <div style="font-size:28px; margin-top:15px; animation: blink 0.8s infinite;">
-                ${strings.warning}
-            </div>
-            <div style="font-size:16px; margin-top:20px; color:#fff;">
-                ${strings.reload}
-            </div>
+        <div class="intruder-screen">
+            <div class="icon">⚠️</div>
+            <div class="warning">${strings.warning}</div>
+            <div class="reload">${strings.reload}</div>
         </div>
     `;
 }
