@@ -20,7 +20,7 @@ body {
 
 .cursor {
     display: inline-block;
-    width: 5px;
+    width: 10px;
     background-color: black;
     margin-left: 2px;
     animation: blink 0.7s infinite;
@@ -29,20 +29,4 @@ body {
 @keyframes blink {
     0%, 50%, 100% { opacity: 1; }
     25%, 75% { opacity: 0; }
-}
-
-#start-btn {
-    background-color: #000;
-    color: #fff;
-    font-family: monospace;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 4px;
-    padding: 0.8rem 1.5rem;
-    cursor: pointer;
-    margin-bottom: 20px;
-}
-
-#start-btn:hover {
-    opacity: 0.8;
 }
