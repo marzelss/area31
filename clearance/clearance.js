@@ -1,4 +1,4 @@
-import { db } from '../sources/firebase.js';
+import { db } from "../sources/firebase.js";
 import { ref, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
 const terminal = document.getElementById("terminal");
@@ -23,6 +23,26 @@ async function checkPasscode(passcode) {
     }
 
     return null;
+}
+
+function showIntruderScreen() {
+
+    document.body.innerHTML = `
+        <div style="
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            font-family:monospace;
+            text-align:center;
+        ">
+            <div style="font-size:80px;">⚠️</div>
+            <div style="font-size:24px; margin-top:20px;">
+                Error! Error! Intruder!
+            </div>
+        </div>
+    `;
 }
 
 function startTyping() {
@@ -63,14 +83,14 @@ function startTyping() {
 
                 if (result) {
 
-                    sessionStorage.setItem("userPasscode", passcode);
-                    sessionStorage.setItem("realName", result["real-name"]);
+                    sessionStorage.setItem("agentName", result["real-name"]);
+                    sessionStorage.setItem("passcode", passcode);
 
-                    window.location.href = "../nextPage.html";
+                    window.location.href = "../protocol/protocol.html";
 
                 } else {
 
-                    terminal.innerHTML += "\nACCESS DENIED\n";
+                    showIntruderScreen();
 
                 }
 
