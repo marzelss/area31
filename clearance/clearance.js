@@ -31,34 +31,35 @@ async function showLoadingSequence(loadingStrings) {
 }
 
 function animateDots(text) {
-
     return new Promise(resolve => {
-
         let dots = 1;
         let cycles = 0;
 
+        // Create a new line first
+        terminal.innerHTML += `\n${text}`;
+
         const interval = setInterval(() => {
-
-            const dotString = ".".repeat(dots);
-
-            terminal.innerHTML += `\n${text.replace("...", dotString)}`;
+            // Replace the last line with the text + dots
+            const lines = terminal.innerHTML.split("\n");
+            lines[lines.length - 1] = `${text}${".".repeat(dots)}`;
+            terminal.innerHTML = lines.join("\n") + '<span class="cursor">|</span>';
 
             dots++;
-
             if (dots > 3) {
                 dots = 1;
                 cycles++;
             }
 
-            if (cycles >= 2) {
+            if (cycles >= 2) { // repeat twice
                 clearInterval(interval);
+                // Remove cursor after finishing
+                lines[lines.length - 1] = `${text}...`;
+                terminal.innerHTML = lines.join("\n");
                 resolve();
             }
 
         }, 350);
-
     });
-
 }
 
 async function checkPasscode(passcode) {
