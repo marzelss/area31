@@ -1,1 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocollo31</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #444; /* gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: monospace;
+            color: #000; /* black text */
+        }
 
+        #terminal {
+            white-space: pre; /* preserve spaces & line breaks */
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            background-color: black;
+            margin-left: 2px;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="terminal"></div>
+
+    <script>
+        const lines = [
+            "Warning: timeline corrupted",
+            "The system has detected an error with message:",
+            "‘for3ign s1gnal detected, unauthorised user is int3rcepting’.",
+            "Clearance required"
+        ];
+
+        const terminal = document.getElementById("terminal");
+        const typingSpeed = 50; // ms per character
+        const linePause = 800; // pause after each line
+
+        let currentLine = 0;
+        let currentChar = 0;
+
+        function typeLine() {
+            if (currentLine >= lines.length) return;
+
+            let line = lines[currentLine];
+            terminal.innerHTML = terminal.innerHTML.replace(/\|$/, ''); // remove old cursor
+            terminal.innerHTML += line[currentChar];
+
+            if (currentChar < line.length - 1) {
+                currentChar++;
+                terminal.innerHTML += '<span class="cursor">|</span>';
+                setTimeout(typeLine, typingSpeed);
+            } else {
+                // last character typed
+                terminal.innerHTML += '<span class="cursor">|</span>\n';
+                currentLine++;
+                currentChar = 0;
+                setTimeout(typeLine, linePause);
+            }
+        }
+
+        typeLine();
+    </script>
+</body>
+</html>
