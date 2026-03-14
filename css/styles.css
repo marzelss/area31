@@ -129,5 +129,20 @@ body {
 }
 
 #reportBtn {
-  display: none;
+    display: none; /* hidden until terminal finishes */
+    padding: 0.7rem 1.5rem;
+    font-family: monospace;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.9);
+    background-color: rgba(0,0,0,0.9);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 2rem; /* space from terminal */
+    align-self: flex-start; /* left align with terminal */
+    transition: background-color 0.2s;
+}
+
+#reportBtn:hover {
+    background-color: rgba(50,50,50,0.9);
 }
