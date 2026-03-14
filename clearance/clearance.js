@@ -123,7 +123,7 @@ function startTyping() {
 
             nameNextBtn.onclick = async () => {
 
-                const passcode = nameField.value.trim();
+                const passcode = nameField.value.trim().toUpperCase();
 
                 // Hide input/button immediately
                 nameField.style.display = "none";
@@ -136,7 +136,7 @@ function startTyping() {
                     // Only show loading if passcode is valid
                     await showLoadingSequence(loadingStrings);
 
-                    sessionStorage.setItem("agentName", result["real-name"]);
+                    sessionStorage.setItem("realName", result["real-name"]);
                     sessionStorage.setItem("passcode", passcode);
 
                     window.location.href = "../protocol/protocol.html";
