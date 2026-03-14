@@ -12,10 +12,11 @@
 <button id="startNext"></button>
 
 <script>
-const terminal = document.getElementById("terminal");
-const startNextBtn = document.getElementById("startNext");
-const typingSpeed = 30;
-const linePause = 800;
+    const terminal = document.getElementById("terminal");
+    const startNextBtn = document.getElementById("startNext");
+    const typingSpeed = 30;
+    const linePause = 800;
+    const userName = sessionStorage.getItem("realName");
 
 // Detect language
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
@@ -72,7 +73,11 @@ async function init() {
     startTyping();
 }
 
-init();
+if (userName) {
+    window.location.href = "protocol/protocol.html";
+} else {
+    init(); // start your typewriter sequence
+}
 </script>
 </body>
 </html>
