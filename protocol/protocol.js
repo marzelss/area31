@@ -104,6 +104,15 @@ function typeLines(lines) {
     type();
 }
 
+function formatColonLine(text) {
+
+    if (!text.includes(":")) return text;
+
+    const [prefix, rest] = text.split(":");
+
+    return `<strong>${prefix}:</strong>${rest}`;
+}
+
 async function init() {
 
     strings = await loadLocale("protocol");
@@ -143,17 +152,17 @@ async function init() {
         { text: strings.meeting },
         { text: "" },
 
-        { text: `>> ${strings.date}` },
-        { text: `>> ${strings.time}` },
-        { text: `>> ${strings.location}` },
+        { text: formatColonLine(strings.date) },
+        { text: formatColonLine(strings.time) },
+        { text: formatColonLine(strings.location) },
         { text: "" },
 
         { text: strings.taskIntro1 },
         { text: strings.taskIntro2 },
         { text: "" },
 
-        { text: `- ${strings.task}: ${roleTask}` },
-        { text: `- ${strings.bonus}` },
+        { text: formatColonLine(`${strings.task}: ${roleTask}`) },
+        { text: formatColonLine(strings.bonus) },
         { text: "" },
 
         { text: strings.alert },
