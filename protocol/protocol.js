@@ -135,7 +135,10 @@ async function init() {
 
         { text: strings.intro1 },
         { text: strings.intro2 },
+        { text: "" },
+        
         { text: strings.intro3 },
+        { text: "" },
 
         { text: strings.meeting },
         { text: "" },
@@ -155,11 +158,13 @@ async function init() {
 
         { text: strings.alert },
         { text: strings.report },
+        { text: "" },
 
-        { text: strings.locationReveal },
-        { text: strings.reload },
+        { text: `${strings.locationReveal}: ${strings.reload}` },
+        { text: "" },
 
         { text: strings.absence },
+        { text: "" },
         
         { text: strings.goodLuck }
 
