@@ -10,6 +10,7 @@ const linePause = 800;
 
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
+let strings;
 let lines = [];
 let buttonText = "";
 let loadingStrings;
