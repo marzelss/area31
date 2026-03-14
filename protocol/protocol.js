@@ -92,14 +92,22 @@ async function init() {
     reportBtn.onclick = () => window.location.href = "../report/report.html";
     promotionBtn.onclick = () => window.location.href = "../promotion/promotion.html";
     
-    // Presentation upload
     presentationBtn.onclick = () => {
         const email = strings.presentation.address;
         const subject = encodeURIComponent(strings.presentation.subject);
         const body = encodeURIComponent(strings.presentation.body);
-        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        // create a temporary <a> element
+        const a = document.createElement("a");
+        a.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        a.style.display = "none";
+        // append to body
+        document.body.appendChild(a);
+        // trigger click
+        a.click();
+        // remove it
+        document.body.removeChild(a);
     };
-
+    
     const user = await getUser();
     const roleName = user.role?.[userLang]?.name ?? "UNKNOWN ROLE";
     const roleTask = user.role?.[userLang]?.task ?? "NO TASK ASSIGNED";
