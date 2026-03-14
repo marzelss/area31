@@ -48,6 +48,8 @@ function renderInstant(lines) {
 
     terminal.innerHTML = formatted;
     reportBtn.style.display = "inline-block";
+    promotionBtn.style.display = "inline-block";
+    presentationBtn.style.display = "inline-block";
 
 }
 
