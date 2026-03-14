@@ -19,5 +19,31 @@
   "intruder": {
     "warning": "ERRORE! INTRUSO!",
     "reload": "Ricarica la pagina per riprovare."
-  }
+  },
+  "protocol": {
+  "confidential": "ATTENZIONE: QUESTO ARTICOLO È CONFIDENZIALE, NON CONDIVIDERE QUESTE INFORMAZIONI CON NESSUNO",
+  "protocol": "PROTOCOLLO 1995",
+  "archive": "ARCHIVIO 263",
+  "dossier": "DOSSIER",
+  "assigned": "INCARICATO",
+  "missionSubject": "OGGETTO: AFFIDAMENTO NUOVA MISSIONE",
+  "intro1": "Questo non è un test.",
+  "intro2": "Sta succedendo qualcosa di strano in una città di nome Gallarate.",
+  "intro3": "Ci sono stati avvistamenti di oggetti non identificati e intercettazioni radio anomale.",
+  "meeting": "Il livello di allerta è altissimo ed è stata convocata una riunione.",
+  "date": "GIORNO: 26 Marzo",
+  "time": "ORARIO: 18:30 - 21:30",
+  "location": "LOCATION: CLASSIFICATO",
+  "taskIntro1": "Dovrai portare a termine un task senza dirlo né farti vedere da nessuno.",
+  "taskIntro2": "Potrebbero scoprire la tua identità e farti perdere un punto.",
+  "task": "DESCRIZIONE DEL TASK",
+  "bonus": "BONUS TASK: presenta una teoria complottista per guadagnare 5 punti.",
+  "alert": "Tieni gli occhi aperti: succederanno molte cose strane.",
+  "report": "Scopri la vera identità dei tuoi compagni e denunciali usando il pulsante qui sotto.",
+  "locationReveal": "La location finale sarà rivelata il giorno stesso dell'evento.",
+  "reload": "Ricarica questa pagina per scoprirla e presentati in orario.",
+  "absence": "La tua assenza sarà considerata molto sospetta.",
+  "goodLuck": "Buon lavoro.",
+  "reportButton": "DENUNCIA AGENTE"
+}
 }
