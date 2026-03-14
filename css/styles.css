@@ -127,3 +127,7 @@ body {
     margin-top: 20px;
     color: #000;
 }
+
+#reportBtn {
+  display: none;
+}
