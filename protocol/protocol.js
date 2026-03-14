@@ -137,7 +137,7 @@ async function init() {
         { text: strings.intro2 },
         { text: "" },
         
-        { text: `‼️ ${strings.intro3}` },
+        { text: strings.intro3 },
         { text: "" },
 
         { text: strings.meeting },
@@ -152,8 +152,8 @@ async function init() {
         { text: strings.taskIntro2 },
         { text: "" },
 
-        { text: `➡️ ${strings.task}: ${roleTask}` },
-        { text: `❇️ ${strings.bonus}` },
+        { text: `- ${strings.task}: ${roleTask}` },
+        { text: `- ${strings.bonus}` },
         { text: "" },
 
         { text: strings.alert },
