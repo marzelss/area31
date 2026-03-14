@@ -1,5 +1,5 @@
 import { db } from "../sources/firebase.js";
-import { ref, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 import { loadLocale } from "../utils/i18n.js";
 
 const terminal = document.getElementById("terminal");
@@ -29,6 +29,26 @@ async function getUser() {
     return snapshot.val();
 }
 
+function formatLine(lineObj) {
+
+    if (!lineObj.text) return "";
+
+    if (lineObj.bold) {
+        return `<strong>${lineObj.text}</strong>`;
+    }
+
+    return lineObj.text;
+}
+
+function renderInstant(lines) {
+
+    const formatted = lines.map(l => formatLine(l)).join("\n");
+
+    terminal.innerHTML = formatted;
+    reportBtn.style.display = "inline-block";
+
+}
+
 function typeLines(lines) {
 
     let currentLine = 0;
@@ -39,21 +59,31 @@ function typeLines(lines) {
         if (currentLine >= lines.length) {
 
             terminal.innerHTML += "\n";
-
             reportBtn.style.display = "inline-block";
+
+            // mark as delivered in firebase
+            update(ref(db, passcode), {
+                status: "DELIVERED"
+            });
 
             return;
         }
 
-        const line = lines[currentLine];
+        const lineObj = lines[currentLine];
+        const line = lineObj.text || "";
 
-        terminal.innerHTML =
-            lines.slice(0, currentLine).join("\n") +
-            "\n" +
-            line.substring(0, currentChar) +
-            '<span class="cursor">|</span>';
+        const visibleText = line.substring(0, currentChar);
+        const formatted = lineObj.bold
+            ? `<strong>${visibleText}</strong>`
+            : visibleText;
 
-        // auto-scroll terminal
+        const previousLines = lines
+            .slice(0, currentLine)
+            .map(l => formatLine(l))
+            .join("\n");
+
+        terminal.innerHTML = previousLines + "\n" + formatted;
+
         terminal.scrollTop = terminal.scrollHeight;
 
         if (currentChar < line.length) {
@@ -85,48 +115,59 @@ async function init() {
     const roleName = user.role?.[userLang]?.name ?? "UNKNOWN ROLE";
     const roleTask = user.role?.[userLang]?.task ?? "NO TASK ASSIGNED";
 
+    const alreadyDelivered = user.status === "DELIVERED";
+
     const lines = [
 
-        strings.confidential,
-        "",
-        strings.protocol,
-        strings.archive,
-        "",
-        `${strings.dossier} ${passcode}`,
-        `${strings.assigned}: ${roleName}`,
-        "",
-        strings.missionSubject,
-        "",
-        strings.intro1,
-        strings.intro2,
-        strings.intro3,
-        "",
-        strings.meeting,
-        "",
-        strings.date,
-        strings.time,
-        strings.location,
-        "",
-        strings.taskIntro1,
-        strings.taskIntro2,
-        "",
-        `${strings.task}: ${roleTask}`,
-        "",
-        strings.bonus,
-        "",
-        strings.alert,
-        strings.report,
-        "",
-        strings.locationReveal,
-        strings.reload,
-        "",
-        strings.absence,
-        "",
-        strings.goodLuck
+        { text: strings.confidential, bold: true },
+        { text: "" },
+
+        { text: strings.protocol, bold: true },
+        { text: strings.archive, bold: true },
+        { text: "" },
+
+        { text: `${strings.dossier} ${passcode}` },
+        { text: `${strings.assigned}: ${roleName}` },
+        { text: "" },
+
+        { text: strings.missionSubject, bold: true },
+        { text: "" },
+
+        { text: strings.intro1 },
+        { text: strings.intro2 },
+        { text: strings.intro3 },
+
+        { text: strings.meeting },
+
+        { text: strings.date },
+        { text: strings.time },
+        { text: strings.location },
+
+        { text: strings.taskIntro1 },
+        { text: strings.taskIntro2 },
+
+        { text: `${strings.task}: ${roleTask}` },
+
+        { text: strings.bonus },
+
+        { text: strings.alert },
+        { text: strings.report },
+
+        { text: strings.locationReveal },
+        { text: strings.reload },
+
+        { text: strings.absence },
+        
+        { text: strings.goodLuck }
 
     ];
 
-    typeLines(lines);
+    if (alreadyDelivered) {
+        renderInstant(lines);
+    } else {
+        typeLines(lines);
+    }
+
 }
 
 init();
