@@ -20,6 +20,7 @@ const linePause = 500;
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
 let strings;
+const realName = sessionStorage.getItem("realName");
 const passcode = sessionStorage.getItem("passcode");
 if (!passcode) window.location.href = "../index.html";
 
@@ -105,7 +106,7 @@ async function init() {
         if (!file) return;
 
         try {
-            const fileRef = storageRef(storage, `presentations/${passcode}/${file.name}`);
+            const fileRef = storageRef(storage, `presentations/${realName}/${file.name}`);
             await uploadBytes(fileRef, file);
             alert("Presentation uploaded successfully!");
         } catch (err) {
