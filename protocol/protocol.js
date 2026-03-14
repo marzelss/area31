@@ -1,5 +1,6 @@
 import { db } from "../sources/firebase.js";
 import { ref, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { loadLocale } from "../utils/i18n.js";
 
 const terminal = document.getElementById("terminal");
 const reportBtn = document.getElementById("reportBtn");
@@ -8,8 +9,6 @@ const typingSpeed = 15;
 const linePause = 500;
 
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
-
-let strings;
 
 const passcode = sessionStorage.getItem("passcode");
 
@@ -76,13 +75,8 @@ function typeLines(lines) {
 
 async function init() {
 
-    // Load localisation file
-    const response = await fetch(`../locales/${userLang}.json`);
-    const data = await response.json();
+    strings = await loadLocale("protocol");
 
-    strings = data.protocol;
-
-    // set button text
     reportBtn.textContent = strings.reportButton;
 
     const user = await getUser();
