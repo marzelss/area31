@@ -143,16 +143,16 @@ async function init() {
         { text: strings.meeting },
         { text: "" },
 
-        { text: `🗓️ ${strings.date}` },
-        { text: `🕤 ${strings.time}` },
-        { text: `📍 ${strings.location}` },
+        { text: `>> ${strings.date}` },
+        { text: `>> ${strings.time}` },
+        { text: `>> ${strings.location}` },
         { text: "" },
 
         { text: strings.taskIntro1 },
         { text: strings.taskIntro2 },
         { text: "" },
 
-        { text: `📎 ${strings.task}: ${roleTask}` },
+        { text: `➡️ ${strings.task}: ${roleTask}` },
         { text: `❇️ ${strings.bonus}` },
         { text: "" },
 
