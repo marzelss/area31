@@ -44,6 +44,8 @@
     "reload": "Reload this page to discover it and arrive on time.",
     "absence": "Your absence will be considered highly suspicious.",
     "goodLuck": "Good luck.",
-    "reportButton": "REPORT AGENT"
+    "reportButton": "FILE REPORT",
+    "promotionButton": "REQUEST PROMOTION",
+    "presentationButton": "SUBMIT PRESENTATION"
   }
 }
