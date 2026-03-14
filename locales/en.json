@@ -19,5 +19,31 @@
   "intruder": {
     "warning": "ERROR! INTRUDER!",
     "reload": "Reload the page to try again."
+  },
+  "protocol": {
+    "confidential": "WARNING: THIS DOCUMENT IS CONFIDENTIAL. DO NOT SHARE THIS INFORMATION.",
+    "protocol": "PROTOCOL 1995",
+    "archive": "ARCHIVE 263",
+    "dossier": "DOSSIER",
+    "assigned": "ASSIGNED AGENT",
+    "missionSubject": "SUBJECT: NEW MISSION ASSIGNMENT",
+    "intro1": "This is not a test.",
+    "intro2": "Something strange is happening in a city called Gallarate.",
+    "intro3": "There have been sightings of unidentified objects and anomalous radio interceptions.",
+    "meeting": "Alert level is extremely high and a meeting has been called.",
+    "date": "DATE: March 26",
+    "time": "TIME: 18:30 - 21:30",
+    "location": "LOCATION: CLASSIFIED",
+    "taskIntro1": "You must complete a secret task without anyone noticing.",
+    "taskIntro2": "They might discover your identity and cost you points.",
+    "task": "TASK DESCRIPTION",
+    "bonus": "BONUS TASK: Present any conspiracy theory to earn 5 points.",
+    "alert": "Stay alert: many strange things will happen.",
+    "report": "Discover the real identities of your companions and report them using the button below.",
+    "locationReveal": "The final location will be revealed on the day of the event.",
+    "reload": "Reload this page to discover it and arrive on time.",
+    "absence": "Your absence will be considered highly suspicious.",
+    "goodLuck": "Good luck.",
+    "reportButton": "REPORT AGENT"
   }
 }
