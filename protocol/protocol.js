@@ -9,6 +9,8 @@ const linePause = 800;
 
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
+let strings;
+
 const passcode = sessionStorage.getItem("passcode");
 
 if (!passcode) {
@@ -51,6 +53,9 @@ function typeLines(lines) {
             line.substring(0, currentChar) +
             '<span class="cursor">|</span>';
 
+        // auto-scroll terminal
+        terminal.scrollTop = terminal.scrollHeight;
+
         if (currentChar < line.length) {
 
             currentChar++;
@@ -71,90 +76,58 @@ function typeLines(lines) {
 
 async function init() {
 
+    // Load localisation file
+    const response = await fetch(`../locales/${userLang}.json`);
+    const data = await response.json();
+
+    strings = data.protocol;
+
+    // set button text
+    reportBtn.textContent = strings.reportButton;
+
     const user = await getUser();
 
     const roleName = user.role?.[userLang]?.name ?? "UNKNOWN ROLE";
     const roleTask = user.role?.[userLang]?.task ?? "NO TASK ASSIGNED";
 
-    const lines = userLang === "it" ? [
+    const lines = [
 
-        "ATTENZIONE: QUESTO ARTICOLO È CONFIDENZIALE, NON CONDIVIDERE QUESTE INFORMAZIONI CON NESSUNO",
+        strings.confidential,
         "",
-        "PROTOCOLLO 1995",
-        "ARCHIVIO 263",
+        strings.protocol,
+        strings.archive,
         "",
-        `DOSSIER ${passcode}`,
-        `INCARICATO: ${roleName}`,
+        `${strings.dossier} ${passcode}`,
+        `${strings.assigned}: ${roleName}`,
         "",
-        "OGGETTO: AFFIDAMENTO NUOVA MISSIONE",
+        strings.missionSubject,
         "",
-        "Questo non è un test.",
-        "Sta succedendo qualcosa di strano in una città di nome Gallarate.",
-        "Ci sono stati avvistamenti di oggetti non identificati e intercettazioni radio anomale.",
+        strings.intro1,
+        strings.intro2,
+        strings.intro3,
         "",
-        "Il livello di allerta è altissimo ed è stata convocata una riunione.",
+        strings.meeting,
         "",
-        "GIORNO: 26 Marzo",
-        "ORARIO: 18:30 - 21:30",
-        "LOCATION: CLASSIFICATO",
+        strings.date,
+        strings.time,
+        strings.location,
         "",
-        "Dovrai portare a termine un task senza dirlo né farti vedere da nessuno.",
-        "Potrebbero scoprire la tua identità e farti perdere un punto.",
+        strings.taskIntro1,
+        strings.taskIntro2,
         "",
-        `DESCRIZIONE DEL TASK: ${roleTask}`,
+        `${strings.task}: ${roleTask}`,
         "",
-        "BONUS TASK:",
-        "Presenta una teoria complottista a tuo piacimento per guadagnare 5 punti.",
+        strings.bonus,
         "",
-        "Dovrai tenere gli occhi aperti: succederanno molte cose strane.",
-        "Scopri la vera identità dei tuoi compagni e denunciali utilizzando il pulsante qui sotto.",
+        strings.alert,
+        strings.report,
         "",
-        "La location finale sarà rivelata il giorno stesso dell'evento.",
-        "Ricarica questa pagina per scoprirla e presentati in orario.",
+        strings.locationReveal,
+        strings.reload,
         "",
-        "La tua assenza sarà considerata molto sospetta.",
+        strings.absence,
         "",
-        "Buon lavoro."
-
-    ] : [
-
-        "WARNING: THIS DOCUMENT IS CONFIDENTIAL. DO NOT SHARE THIS INFORMATION.",
-        "",
-        "PROTOCOL 1995",
-        "ARCHIVE 263",
-        "",
-        `DOSSIER ${passcode}`,
-        `ASSIGNED AGENT: ${roleName}`,
-        "",
-        "SUBJECT: NEW MISSION ASSIGNMENT",
-        "",
-        "This is not a test.",
-        "Something strange is happening in a city called Gallarate.",
-        "There have been sightings of unidentified objects and anomalous radio interceptions.",
-        "",
-        "Alert level is extremely high and a meeting has been called.",
-        "",
-        "DATE: March 26",
-        "TIME: 18:30 - 21:30",
-        "LOCATION: CLASSIFIED",
-        "",
-        "You must complete a secret task without anyone noticing.",
-        "They might discover your identity and cost you points.",
-        "",
-        `TASK DESCRIPTION: ${roleTask}`,
-        "",
-        "BONUS TASK:",
-        "Present any conspiracy theory to earn 5 points.",
-        "",
-        "Stay alert: many strange things will happen.",
-        "Discover the real identities of your companions and report them using the button below.",
-        "",
-        "The final location will be revealed on the day of the event.",
-        "Reload this page to discover it and arrive on time.",
-        "",
-        "Your absence will be considered highly suspicious.",
-        "",
-        "Good luck."
+        strings.goodLuck
 
     ];
 
