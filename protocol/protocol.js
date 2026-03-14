@@ -4,6 +4,8 @@ import { loadLocale } from "../utils/i18n.js";
 
 const terminal = document.getElementById("terminal");
 const reportBtn = document.getElementById("reportBtn");
+const promotionBtn = document.getElementById("promotionBtn");
+const presentationBtn = document.getElementById("presentationBtn");
 
 const typingSpeed = 15;
 const linePause = 500;
@@ -60,7 +62,8 @@ function typeLines(lines) {
 
             terminal.innerHTML += "\n";
             reportBtn.style.display = "inline-block";
-
+            promotionBtn.style.display = "inline-block";
+            presentationBtn.style.display = "inline-block";
             // mark as delivered in firebase
             update(ref(db, passcode), {
                 status: "DELIVERED"
@@ -118,6 +121,8 @@ async function init() {
     strings = await loadLocale("protocol");
 
     reportBtn.textContent = strings.reportButton;
+    promotionBtn.textContent = strings.promotionButton;
+    presentationBtn.textContent = strings.presentationButton;
 
     const user = await getUser();
 
