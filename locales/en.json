@@ -47,5 +47,10 @@
     "reportButton": "FILE REPORT",
     "promotionButton": "REQUEST PROMOTION",
     "presentationButton": "SUBMIT PRESENTATION"
+  },
+  "presentation": {
+    "address": "area31@yopmail.com",
+    "subject": "Presentation"
+    "body": "Presentation completed. Over.\nPlease find it attached. Over."
   }
 }
