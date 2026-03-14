@@ -8,13 +8,6 @@ const reportBtn = document.getElementById("reportBtn");
 const promotionBtn = document.getElementById("promotionBtn");
 const presentationBtn = document.getElementById("presentationBtn");
 
-// create hidden file input for presentation
-const presentationInput = document.createElement("input");
-presentationInput.type = "file";
-presentationInput.accept = ".pdf,.ppt,.pptx,.doc,.docx,.jpg,.jpeg,.png";
-presentationInput.style.display = "none";
-document.body.appendChild(presentationInput);
-
 const typingSpeed = 15;
 const linePause = 500;
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
@@ -94,25 +87,17 @@ async function init() {
     reportBtn.textContent = strings.reportButton;
     promotionBtn.textContent = strings.promotionButton;
     presentationBtn.textContent = strings.presentationButton;
-
+    
     // Redirect buttons
     reportBtn.onclick = () => window.location.href = "../report/report.html";
     promotionBtn.onclick = () => window.location.href = "../promotion/promotion.html";
-
+    
     // Presentation upload
-    presentationBtn.onclick = () => presentationInput.click();
-    presentationInput.onchange = async (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        try {
-            const fileRef = storageRef(storage, `presentations/${realName}/${file.name}`);
-            await uploadBytes(fileRef, file);
-            alert("Presentation uploaded successfully!");
-        } catch (err) {
-            console.error(err);
-            alert("Error uploading file. Try again.");
-        }
+    presentationBtn.onclick = () => {
+        const email = strings.presentation.address;
+        const subject = encodeURIComponent(strings.presentation.subject);
+        const body = encodeURIComponent(strings.presentation.body);
+        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
     };
 
     const user = await getUser();
