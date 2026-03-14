@@ -10,6 +10,7 @@ const linePause = 500;
 
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
+let strings;
 const passcode = sessionStorage.getItem("passcode");
 
 if (!passcode) {
