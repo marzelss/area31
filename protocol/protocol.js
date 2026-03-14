@@ -166,7 +166,8 @@ async function init() {
         { text: strings.absence },
         { text: "" },
         
-        { text: strings.goodLuck }
+        { text: strings.goodLuck },
+        { text: "" },
 
     ];
 
