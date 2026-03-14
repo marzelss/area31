@@ -4,8 +4,8 @@ import { ref, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-da
 const terminal = document.getElementById("terminal");
 const reportBtn = document.getElementById("reportBtn");
 
-const typingSpeed = 30;
-const linePause = 800;
+const typingSpeed = 15;
+const linePause = 500;
 
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
