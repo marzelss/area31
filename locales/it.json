@@ -44,6 +44,8 @@
   "reload": "Ricarica questa pagina per scoprirla e presentati puntuale.",
   "absence": "La tua assenza sarà considerata molto sospetta.",
   "goodLuck": "Buon lavoro.",
-  "reportButton": "COMPILA UN REPORT"
+  "reportButton": "COMPILA UN REPORT",
+  "promotionButton": "RICHIEDI PROMOZIONE",
+  "presentationButton": "INVIA PRESENTAZIONE"
 }
 }
