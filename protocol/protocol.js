@@ -160,7 +160,7 @@ async function init() {
         { text: strings.report },
         { text: "" },
 
-        { text: `${strings.locationReveal}: ${strings.reload}` },
+        { text: `${strings.locationReveal} ${strings.reload}` },
         { text: "" },
 
         { text: strings.absence },
