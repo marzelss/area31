@@ -69,5 +69,53 @@
     "pay": "Remuneration: 2 points + performance bonus. High client satisfaction earns 5 extra points.",
     "applyButton": "APPLY",
     "backButton": "< BACK"
+  },
+  "interview": {
+    "interviewResult": "Thanks for your application. Your application is under consideration. You will ",
+    "negativeResult": "Sorry! Your application has been found highly suspicious and you have not been selected to be an interpreter at this time.",
+    "positiveResult1": "Congratulations! You have been selected to be an interpreter by the following client:",
+    "positiveResult2": "We value discreetness and secrecy as well as high quality services. The customer will give you a rating at the end of this meeting which will can earn you up to 3 extra points.".
+    "questions": [
+      {
+        "question": "Do you speak fluent Italian?",
+        "answers": [
+          "Yes",
+          "No"
+        ],
+        "rightAnswer": "Yes"
+      },
+      {
+        "question": "Do you speak fluent English?",
+        "answers": [
+          "Yes",
+          "No"
+        ],
+        "rightAnswer": "Yes"
+      },
+      {
+        "question": "How did you learn English?",
+        "answers": [
+          "I had English classes when I was in school",
+          "I lived overseas so I had to master English to survive",
+          "I had close encounters of the third kind and requested some artificial intelligence to be installed as a microchip in my brain to instantly learn 308 languages including dialects and acquire interstellar knowledge that will allow me to conquer the world and destroy the planet"
+        ]
+      },
+      {
+        "question": "Mmh... interesting... and when did that happen?",
+        "answers": [
+          "Before 2015",
+          "After 2015",
+          "That moment cannot be represented on a human calendar as it occurred during a temporary collapse of the temporal grid monitored by the Intergalactic Linguistic Council"
+        ]
+      },
+      {
+        "question": "Curious... nice... and how confident are you in covering this position?",
+        "answers": [
+          "Quite confident",
+          "I will try my best",
+          "Confidence is a a biological coping mechanism and human emotional construct designed to compensate for uncertainty, which is a feeling I do not experience as I function best on statistical inevitability"
+        ]
+      }
+    ]
   }
 }
