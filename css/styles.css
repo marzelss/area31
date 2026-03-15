@@ -171,3 +171,27 @@ button:hover {
 #presentationBtn {
     display: none;
 }
+
+.answer {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+}
+
+.checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid black;
+    margin-right: 10px;
+    margin-top: 3px;
+}
+
+.checkbox.checked {
+    background-color: black;
+}
+
+#nextBtn {
+    display: none;
+}
