@@ -167,6 +167,7 @@ button:hover {
 
 #reportBtn,
 #promotionBtn,
+#serviceBtn,
 #presentationBtn {
     display: none;
 }
