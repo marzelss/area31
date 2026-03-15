@@ -65,6 +65,8 @@
     "task1": "- Follow non-English speakers discreetly.",
     "task2": "- Observe any unusual behavior — even small oddities may be important.",
     "task3": "- Translate everything spoken in the room. Do not miss a word; every detail could contain crucial clues.",
-    "pay": "Remuneration: 2 points + performance bonus. High client satisfaction earns 5 extra points."
+    "pay": "Remuneration: 2 points + performance bonus. High client satisfaction earns 5 extra points.",
+    "applyButton": "APPLY",
+    "backButton": "< BACK"
   }
 }
