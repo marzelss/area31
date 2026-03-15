@@ -83,6 +83,7 @@ function formatColonLine(text) {
 
 async function init() {
     strings = await loadLocale("protocol");
+    presentationStrings = await loadLocale("presentation");
 
     reportBtn.textContent = strings.reportButton;
     promotionBtn.textContent = strings.promotionButton;
@@ -93,9 +94,9 @@ async function init() {
     promotionBtn.onclick = () => window.location.href = "../promotion/promotion.html";
     
     presentationBtn.onclick = () => {
-        const email = strings.presentation.address;
-        const subject = encodeURIComponent(strings.presentation.subject);
-        const body = encodeURIComponent(strings.presentation.body);
+        const email = presentationStrings.address;
+        const subject = encodeURIComponent(presentationStrings.subject);
+        const body = encodeURIComponent(presentationStrings.body);
         // create a temporary <a> element
         const a = document.createElement("a");
         a.href = `mailto:${email}?subject=${subject}&body=${body}`;
