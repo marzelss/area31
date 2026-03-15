@@ -164,3 +164,9 @@ button:hover {
 #reportBtn:hover {
     background-color: rgba(50,50,50,0.9);
 }
+
+#reportBtn,
+#promotionBtn,
+#presentationBtn {
+    display: none;
+}
