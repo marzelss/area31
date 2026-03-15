@@ -69,5 +69,48 @@
     "pay": "Retribuzione: 2 punti + bonus in base alla performance. L'elevata soddisfazione del cliente assegna altri 5 punti.",
     "applyButton": "CANDIDATI",
     "backButton": "< INDIETRO"
-  }
+  },
+  "interview": {
+  "ineligibleResult": "Spiacente, non sei idoneo per questa posizione.",
+  "pendingResult": "Grazie per la tua candidatura. La tua richiesta è in fase di valutazione. Torna su questa pagina per controllare lo stato di avanzamento.",
+  "negativeResult": "Spiacente! La tua candidatura è stata ritenuta altamente sospetta e non sei stato selezionato come interprete in questo momento.",
+  "positiveResult1": "Congratulazioni! Sei stato selezionato come interprete dal seguente cliente:",
+  "positiveResult2": "In questa azienda valutiamo discrezione, segretezza ma anche servizi di alta qualità. Il cliente ti assegnerà una valutazione al termine dell'evento e potrà farti guadagnare fino a 3 punti extra.",
+  "questions": [
+    {
+      "question": "Parli fluentemente italiano?",
+      "answers": ["Sì","No"],
+      "rightAnswer": "Sì"
+    },
+    {
+      "question": "Parli fluentemente inglese?",
+      "answers": ["Sì","No"],
+      "rightAnswer": "Sì"
+    },
+    {
+      "question": "Come hai imparato l'inglese?",
+      "answers": [
+        "Avevo lezioni di inglese quando ero a scuola",
+        "Ho vissuto all'estero quindi ho dovuto padroneggiare l'inglese per sopravvivere",
+        "Ho avuto incontri ravvicinati del terzo tipo e ho richiesto l'installazione di un'intelligenza artificiale come microchip all'interno delle mie cervella per imparare istantaneamente 308 lingue, inclusi dialetti, e acquisire conoscenze interstellari per conquistare il mondo e distruggere il pianeta"
+      ]
+    },
+    {
+      "question": "Mmh... interessante... e quando è successo?",
+      "answers": [
+        "Prima del 2015",
+        "Dopo il 2015",
+        "Quel momento non può essere rappresentato su una liena spaziotemporale che sia traducibile in una data del calendario umano poiché è avvenuto durante un collasso della griglia temporale monitorata dal Consiglio Linguistico Intergalattico"
+      ]
+    },
+    {
+      "question": "Curioso... bene... e quanto ti senti sicuro di poter ricoprire questa posizione?",
+      "answers": [
+        "Abbastanza sicuro",
+        "Farò del mio meglio",
+        "La fiducia è un meccanismo biologico di compensazione e un costrutto emotivo umano progettato per gestire l'incertezza, una sensazione che io non provo poiché funziono al meglio sulla base dell'inevitabilità statistica"
+      ]
+    }
+  ]
+}
 }
