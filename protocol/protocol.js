@@ -13,6 +13,7 @@ const linePause = 500;
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
 let strings;
+let presentationStrings;
 const realName = sessionStorage.getItem("realName");
 const passcode = sessionStorage.getItem("passcode");
 if (!passcode) window.location.href = "../index.html";
