@@ -44,8 +44,7 @@ async function init() {
     };
 
     applyBtn.onclick = () => {
-        terminal.innerHTML += "\n\n> APPLICATION RECEIVED.";
-        applyBtn.disabled = true;
+        window.location.href = "../interview/interview.html";
     };
 
     const lines = [
