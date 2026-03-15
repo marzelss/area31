@@ -1,9 +1,8 @@
 import { loadLocale } from "../utils/i18n.js";
 
 const terminal = document.getElementById("terminal");
-
-const typingSpeed = 15;
-const linePause = 500;
+const applyBtn = document.getElementById("applyBtn");
+const backBtn = document.getElementById("backBtn");
 
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
@@ -21,56 +20,33 @@ function formatLine(lineObj) {
 
 }
 
-function typeLines(lines) {
+function renderInstant(lines) {
 
-    let currentLine = 0;
-    let currentChar = 0;
+    const formatted = lines
+        .map(l => formatLine(l))
+        .join("\n");
 
-    function type() {
+    terminal.innerHTML = formatted;
 
-        if (currentLine >= lines.length) {
-            terminal.innerHTML += "\n";
-            return;
-        }
-
-        const lineObj = lines[currentLine];
-        const line = lineObj.text || "";
-
-        const visibleText = line.substring(0, currentChar);
-        const formatted = lineObj.bold
-            ? `<strong>${visibleText}</strong>`
-            : visibleText;
-
-        const previousLines = lines
-            .slice(0, currentLine)
-            .map(l => formatLine(l))
-            .join("\n");
-
-        terminal.innerHTML = previousLines + "\n" + formatted;
-
-        terminal.scrollTop = terminal.scrollHeight;
-
-        if (currentChar < line.length) {
-
-            currentChar++;
-            setTimeout(type, typingSpeed);
-
-        } else {
-
-            currentLine++;
-            currentChar = 0;
-            setTimeout(type, linePause);
-
-        }
-
-    }
-
-    type();
+    applyBtn.style.display = "inline-block";
+    backBtn.style.display = "inline-block";
 }
 
 async function init() {
 
     strings = await loadLocale("promotion");
+
+    applyBtn.textContent = strings.applyButton;
+    backBtn.textContent = strings.backButton;
+
+    backBtn.onclick = () => {
+        window.location.href = "../protocol/protocol.html";
+    };
+
+    applyBtn.onclick = () => {
+        terminal.innerHTML += "\n\n> APPLICATION RECEIVED.";
+        applyBtn.disabled = true;
+    };
 
     const lines = [
 
@@ -97,7 +73,7 @@ async function init() {
 
     ];
 
-    typeLines(lines);
+    renderInstant(lines);
 
 }
 
