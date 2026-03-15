@@ -52,5 +52,22 @@
     "address": "area31@yopmail.com",
     "subject": "Presentation",
     "body": "Presentation completed. Over.\nPlease find it attached. Over."
+  },
+  {
+  "promotion": {
+    "header": "JOB POSTING: AREA31",
+    "posted": "POSTED ON 15-03-2026",
+    "title": "TITLE: INTERPRETER",
+    "expTitle": "Experience required:",
+    "exp1": "- Fluent in Italian.",
+    "exp2": "- Fluent in English.",
+    "exp3": "- Knowledge of conspiracy theories.",
+    "tasksTitle": "Job tasks:",
+    "task1": "- Follow non-English speakers discreetly.",
+    "task2": "- Observe any unusual behavior — even small oddities may be important.",
+    "task3": "- Translate everything spoken in the room. Do not miss a word; every detail could contain crucial clues.",
+    "pay": "Remuneration: 2 points + performance bonus. High client satisfaction earns 5 extra points."
+
   }
+}
 }
