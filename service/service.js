@@ -1,18 +1,18 @@
 import { db } from "../sources/firebase.js";
 import { ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-const usersList = document.getElementById("usersList");
-const infoText = document.getElementById("infoText");
 const terminal = document.getElementById("terminal");
+const infoText = document.getElementById("infoText");
+const usersList = document.getElementById("usersList");
 
 const passcode = sessionStorage.getItem("passcode");
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
-// Show the instructions text
+// Instruction text under heading
 infoText.textContent = 
   "As a guest with linguistic limitations, you can pick up to 3 interpreters who will follow you around for the entire duration of the event. For each interpreter you earn 2 points.\nAfter the event, you can rate the interpreter a good service and let them earn 3 extra points.";
 
-async function loadEligibleUsers() {
+async function loadServicePage() {
     const snapshot = await get(ref(db));
     if (!snapshot.exists()) {
         usersList.innerHTML = "No users found.";
@@ -20,71 +20,149 @@ async function loadEligibleUsers() {
     }
 
     const data = snapshot.val();
+    const guestData = data[passcode] || {};
+    const acceptedList = guestData.service?.interpreter || {};
+    const refusedList = guestData.service?.refused || {};
 
-    // Filter only users who are eligible interpreters
-    const eligibleUsers = Object.entries(data)
-        .filter(([interpreterPasscode, user]) => user.interpreter?.eligible === true);
+    // --- Section 1: Pending applications ---
+    const pendingUsers = Object.entries(data)
+        .filter(([interpreterPasscode, user]) => 
+            user.interpreter?.eligible === true &&
+            !acceptedList[interpreterPasscode] &&
+            !refusedList[interpreterPasscode]
+        );
 
-    if (eligibleUsers.length === 0) {
-        usersList.innerHTML = "No eligible interpreter applications.";
-        return;
+    const pendingSection = document.createElement("div");
+    pendingSection.style.marginBottom = "2rem";
+
+    const pendingTitle = document.createElement("div");
+    pendingTitle.innerHTML = "<strong>Pending Interpreter Applications</strong>";
+    pendingTitle.style.fontSize = "1.3rem";
+    pendingTitle.style.marginBottom = "0.5rem";
+    pendingSection.appendChild(pendingTitle);
+
+    if (pendingUsers.length === 0) {
+        const noPending = document.createElement("div");
+        noPending.textContent = "There are no pending applications at this moment.";
+        pendingSection.appendChild(noPending);
+    } else {
+        pendingUsers.forEach(([interpreterPasscode, user]) => {
+            const container = document.createElement("div");
+            container.className = "userRow";
+            container.style.marginBottom = "1rem";
+
+            const nameDiv = document.createElement("div");
+            nameDiv.textContent = user["real-name"] || "UNKNOWN";
+            nameDiv.style.fontSize = "1.5rem";
+            nameDiv.style.fontWeight = "bold";
+            container.appendChild(nameDiv);
+
+            const buttonsDiv = document.createElement("div");
+            buttonsDiv.style.display = "flex";
+            buttonsDiv.style.gap = "1rem";
+            buttonsDiv.style.marginTop = "0.5rem";
+
+            const acceptBtn = document.createElement("button");
+            acceptBtn.textContent = "ACCEPT";
+            acceptBtn.onclick = async () => {
+                await update(ref(db, `${passcode}/service/interpreter`), {
+                    [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
+                });
+
+                const guestName = guestData["real-name"] || "UNKNOWN";
+                await update(ref(db, `${interpreterPasscode}/interpreter/client`), {
+                    [passcode]: { name: guestName, passcode: passcode }
+                });
+
+                container.remove();
+                renderChosenSection(); // refresh chosen section
+            };
+
+            const refuseBtn = document.createElement("button");
+            refuseBtn.textContent = "REFUSE";
+            refuseBtn.onclick = async () => {
+                await update(ref(db, `${passcode}/service/refused`), {
+                    [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
+                });
+                container.remove();
+                renderRefusedSection(); // refresh refused section
+            };
+
+            buttonsDiv.appendChild(acceptBtn);
+            buttonsDiv.appendChild(refuseBtn);
+            container.appendChild(buttonsDiv);
+            pendingSection.appendChild(container);
+        });
     }
 
-    eligibleUsers.forEach(([interpreterPasscode, user]) => {
-        const container = document.createElement("div");
-        container.className = "userRow";
-        container.style.marginBottom = "2rem";
+    usersList.appendChild(pendingSection);
 
-        // Name displayed prominently
-        const nameDiv = document.createElement("div");
-        nameDiv.textContent = user["real-name"] || "UNKNOWN";
-        nameDiv.style.fontSize = "1.5rem"; // bigger font
-        nameDiv.style.fontWeight = "bold";
-        container.appendChild(nameDiv);
+    // --- Section 2: Chosen interpreters ---
+    function renderChosenSection() {
+        // Remove previous section if exists
+        const prev = document.getElementById("chosenSection");
+        if (prev) prev.remove();
 
-        // Buttons container (under the name)
-        const buttonsDiv = document.createElement("div");
-        buttonsDiv.style.display = "flex";
-        buttonsDiv.style.gap = "1rem";
-        buttonsDiv.style.marginTop = "0.5rem";
+        const chosenList = guestData.service?.interpreter || {};
+        const chosenKeys = Object.keys(chosenList);
+        if (chosenKeys.length === 0) return;
 
-        const acceptBtn = document.createElement("button");
-        acceptBtn.textContent = "ACCEPT";
-        acceptBtn.onclick = async () => {
-            // Save to guest's service
-            await update(ref(db, `${passcode}/service/interpreter`), {
-                [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
-            });
+        const chosenSection = document.createElement("div");
+        chosenSection.id = "chosenSection";
+        chosenSection.style.marginBottom = "2rem";
 
-            // Save to interpreter's client
-            const guestSnapshot = await get(ref(db, passcode));
-            const guestName = guestSnapshot.val()?.["real-name"] || "UNKNOWN";
+        const chosenTitle = document.createElement("div");
+        chosenTitle.innerHTML = "<strong>Interpreters Chosen</strong>";
+        chosenTitle.style.fontSize = "1.3rem";
+        chosenTitle.style.marginBottom = "0.5rem";
+        chosenSection.appendChild(chosenTitle);
 
-            await update(ref(db, `${interpreterPasscode}/interpreter/client`), {
-                [passcode]: { name: guestName, passcode: passcode }
-            });
+        chosenKeys.forEach(key => {
+            const div = document.createElement("div");
+            div.textContent = chosenList[key].name;
+            div.style.fontSize = "1.3rem";
+            div.style.fontWeight = "bold";
+            div.style.marginBottom = "0.3rem";
+            chosenSection.appendChild(div);
+        });
 
-            container.remove();
-        };
+        usersList.appendChild(chosenSection);
+    }
 
-        const refuseBtn = document.createElement("button");
-        refuseBtn.textContent = "REFUSE";
-        refuseBtn.onclick = async () => {
-            // Save to guest's refused list
-            await update(ref(db, `${passcode}/service/refused`), {
-                [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
-            });
+    // --- Section 3: Refused interpreters ---
+    function renderRefusedSection() {
+        const prev = document.getElementById("refusedSection");
+        if (prev) prev.remove();
 
-            container.remove();
-        };
+        const refusedListObj = guestData.service?.refused || {};
+        const refusedKeys = Object.keys(refusedListObj);
+        if (refusedKeys.length === 0) return;
 
-        buttonsDiv.appendChild(acceptBtn);
-        buttonsDiv.appendChild(refuseBtn);
+        const refusedSection = document.createElement("div");
+        refusedSection.id = "refusedSection";
+        refusedSection.style.marginBottom = "2rem";
 
-        container.appendChild(buttonsDiv);
+        const refusedTitle = document.createElement("div");
+        refusedTitle.innerHTML = "<strong>Interpreters Rejected</strong>";
+        refusedTitle.style.fontSize = "1.3rem";
+        refusedTitle.style.marginBottom = "0.5rem";
+        refusedSection.appendChild(refusedTitle);
 
-        usersList.appendChild(container);
-    });
+        refusedKeys.forEach(key => {
+            const div = document.createElement("div");
+            div.textContent = refusedListObj[key].name;
+            div.style.fontSize = "1.3rem";
+            div.style.fontWeight = "bold";
+            div.style.marginBottom = "0.3rem";
+            refusedSection.appendChild(div);
+        });
+
+        usersList.appendChild(refusedSection);
+    }
+
+    // initial render of chosen/refused
+    renderChosenSection();
+    renderRefusedSection();
 }
 
-loadEligibleUsers();
+loadServicePage();
