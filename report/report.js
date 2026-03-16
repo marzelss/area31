@@ -28,7 +28,12 @@ async function init() {
     rulesDiv.style.marginBottom = "1rem";
 
     // --- Load arrived users from userOptions ---
-    const arrivedUsers = await getArrivedUsers();
+    let arrivedUsers = await getArrivedUsers();
+    
+    // If arrivedUsers is an object, convert to array of { passcode, userName }
+    if (arrivedUsers && !Array.isArray(arrivedUsers)) {
+        arrivedUsers = Object.entries(arrivedUsers).map(([passcode, userName]) => ({ passcode, userName }));
+    }
 
     // --- Handle empty states ---
     if (!arrivedUsers || arrivedUsers.length === 0) {
