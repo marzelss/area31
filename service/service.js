@@ -1,5 +1,5 @@
 import { db } from "../sources/firebase.js";
-import { ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { ref, get, update, set } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
 const terminal = document.getElementById("terminal");
 const infoText = document.getElementById("infoText");
@@ -89,8 +89,8 @@ async function loadServicePage() {
                 // 4) add points
                 const interpreterPoints = (data[interpreterPasscode]?.points || 0) + 2;
                 const guestPoints = (guestData.points || 0) + 1;
-                await update(ref(db, `${interpreterPasscode}/points`), interpreterPoints);
-                await update(ref(db, `${passcode}/points`), guestPoints);
+                await set(ref(db, `${interpreterPasscode}/points`), interpreterPoints);
+                await set(ref(db, `${passcode}/points`), guestPoints);
 
                 // Force reload
                 window.location.reload();
