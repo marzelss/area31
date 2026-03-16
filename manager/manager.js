@@ -77,7 +77,7 @@ function showManagerContent() {
     button.textContent = "Guests List";
 
     button.onclick = () => {
-        window.location.href = "../manager/guests/guests.html";
+        window.location.href = "../guests/guests.html";
     };
 
     rulesDiv.appendChild(button);
