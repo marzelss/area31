@@ -1,5 +1,5 @@
 import { db } from "../sources/firebase.js";
-import { ref, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { ref, get, set } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 import { loadLocale } from "../utils/i18n.js";
 
 const terminal = document.getElementById("terminal");
@@ -27,100 +27,82 @@ async function init() {
     rulesDiv.style.color = "#333";
     rulesDiv.style.marginBottom = "1rem";
 
-    // --- Fetch users from Firebase ---
-    const snapshot = await get(ref(db, "/"));
-    const users = snapshot.exists() ? snapshot.val() : {};
-
-    const arrivedUsers = [];
-    const rolesArray = [];
-
-    // Filter users who arrived
-    Object.entries(users).forEach(([userPasscode, userData]) => {
-        if (userData.arrived === true) {
-            const userName = userData["real-name"];
-            arrivedUsers.push({ passcode: userPasscode, userName });
-
-            // save role object
-            if (userData.role) {
-                rolesArray.push({
-                    passcode: userPasscode,
-                    roleIt: userData.role.it.name,
-                    roleEn: userData.role.en.name
-                });
-            }
-        }
-    });
-
     // --- User Dropdown ---
-    const userLabel = document.createElement("div");
-    userLabel.textContent = strings.userField;
-    userLabel.style.fontSize = "1.1rem";
-    userLabel.style.marginTop = "1rem";
-    userLabel.style.marginBottom = "0.3rem";
-    rulesDiv.appendChild(userLabel);
+    const arrivedUsers = await getArrivedUsers();
+    addDropdown(rulesDiv, strings.userField, arrivedUsers.map(u => ({ value: u.passcode, text: u.userName })));
 
-    const userSelect = document.createElement("select");
-    userSelect.id = "userDropdown";
-
-    const placeholderUser = document.createElement("option");
-    placeholderUser.textContent = "Select user";
-    placeholderUser.disabled = true;
-    placeholderUser.selected = true;
-    userSelect.appendChild(placeholderUser);
-
-    if (arrivedUsers.length === 0) {
-        const option = document.createElement("option");
-        option.textContent = "No users arrived";
-        option.disabled = true;
-        userSelect.appendChild(option);
-    } else {
-        arrivedUsers.forEach(u => {
-            const option = document.createElement("option");
-            option.value = u.passcode;
-            option.textContent = u.userName;
-            userSelect.appendChild(option);
-        });
-    }
-
-    styleDropdown(userSelect);
-    rulesDiv.appendChild(userSelect);
-
-    // --- Role Dropdown ---
-    const roleLabel = document.createElement("div");
-    roleLabel.textContent = strings.identityField;
-    roleLabel.style.fontSize = "1.1rem";
-    roleLabel.style.marginTop = "1rem";
-    roleLabel.style.marginBottom = "0.3rem";
-    rulesDiv.appendChild(roleLabel);
-
-    const roleSelect = document.createElement("select");
-    roleSelect.id = "roleDropdown";
-
-    const placeholderRole = document.createElement("option");
-    placeholderRole.textContent = "Select role";
-    placeholderRole.disabled = true;
-    placeholderRole.selected = true;
-    roleSelect.appendChild(placeholderRole);
-
-    if (rolesArray.length === 0) {
-        const option = document.createElement("option");
-        option.textContent = "No roles available";
-        option.disabled = true;
-        roleSelect.appendChild(option);
-    } else {
-        rolesArray.forEach(r => {
-            const option = document.createElement("option");
-            option.value = r.passcode;
-            option.textContent = userLang === "it" ? r.roleIt : r.roleEn;
-            roleSelect.appendChild(option);
-        });
-    }
-
-    styleDropdown(roleSelect);
-    rulesDiv.appendChild(roleSelect);
+    // --- Roles Dropdown ---
+    const rolesOptions = await getRolesOptions();
+    addDropdown(rulesDiv, strings.identityField, rolesOptions.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
 }
 
-// --- Helper function to style dropdowns ---
+// --- Fetch all users that have "arrived" === true ---
+async function getArrivedUsers() {
+    const snapshot = await get(ref(db, "/"));
+    const users = snapshot.exists() ? snapshot.val() : {};
+    const arrivedUsers = [];
+    Object.entries(users).forEach(([userPasscode, userData]) => {
+        if (userData.arrived === true) {
+            arrivedUsers.push({ passcode: userPasscode, userName: userData["real-name"] });
+        }
+    });
+    return arrivedUsers;
+}
+
+// --- Fetch rolesOptions from current user's entries, or create them if they don't exist ---
+async function getRolesOptions() {
+    const rolesRef = ref(db, `${passcode}/entries/rolesOptions`);
+    const snapshot = await get(rolesRef);
+
+    if (snapshot.exists()) {
+        return snapshot.val();
+    } else {
+        // Build array from all users in database
+        const allSnapshot = await get(ref(db, "/"));
+        const allUsers = allSnapshot.exists() ? allSnapshot.val() : {};
+
+        const rolesArray = [];
+        Object.values(allUsers).forEach(userData => {
+            if (userData.role) {
+                rolesArray.push({ it: userData.role.it.name, en: userData.role.en.name });
+            }
+        });
+
+        // Save it to rolesOptions for current user
+        await set(rolesRef, rolesArray);
+
+        return rolesArray;
+    }
+}
+
+// --- Helper to add a dropdown with label ---
+function addDropdown(parentDiv, labelText, optionsArray) {
+    const label = document.createElement("div");
+    label.textContent = labelText;
+    label.style.fontSize = "1.1rem";
+    label.style.marginTop = "1rem";
+    label.style.marginBottom = "0.3rem";
+    parentDiv.appendChild(label);
+
+    const select = document.createElement("select");
+    const placeholder = document.createElement("option");
+    placeholder.textContent = "Select...";
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    select.appendChild(placeholder);
+
+    optionsArray.forEach(o => {
+        const option = document.createElement("option");
+        option.value = o.value;
+        option.textContent = o.text;
+        select.appendChild(option);
+    });
+
+    styleDropdown(select);
+    parentDiv.appendChild(select);
+}
+
+// --- Styling function ---
 function styleDropdown(select) {
     select.style.fontFamily = "monospace";
     select.style.fontSize = "1rem";
@@ -134,7 +116,6 @@ function styleDropdown(select) {
     select.style.minWidth = "250px";
     select.style.transition = "background-color 0.2s";
 
-    // Hover / focus effect
     select.onmouseover = () => select.style.backgroundColor = "rgba(50,50,50,0.9)";
     select.onmouseout = () => select.style.backgroundColor = "rgba(0,0,0,0.9)";
     select.onfocus = () => select.style.outline = "2px solid rgba(255,255,255,0.7)";
