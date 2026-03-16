@@ -74,8 +74,11 @@ function showManagerContent() {
     explanationDiv.textContent = "Welcome Martina. Game control panel unlocked.";
 
     const button = document.createElement("button");
-    button.textContent = "Test Action";
-    button.onclick = () => alert("Manager action executed.");
+    button.textContent = "Guests List";
+
+    button.onclick = () => {
+        window.location.href = "../manager/guests/guests.html";
+    };
 
     rulesDiv.appendChild(button);
 
