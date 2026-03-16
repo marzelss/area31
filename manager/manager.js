@@ -9,20 +9,6 @@ const rulesDiv = document.getElementById("rules");
 const passcode = sessionStorage.getItem("passcode");
 
 async function init() {
-    const strings = await loadLocale("manager"); // create manager.json in locales
-
-    // --- Title ---
-    terminal.innerHTML = `<strong style="font-size: 1.5rem;">${strings.title}</strong>`;
-
-    // --- Explanation / Rules ---
-    explanationDiv.textContent = strings.explanation;
-    explanationDiv.style.fontSize = "1.2rem";
-    explanationDiv.style.marginTop = "1rem";
-    explanationDiv.style.marginBottom = "1rem";
-
-    rulesDiv.style.fontSize = "1rem";
-    rulesDiv.style.color = "#333";
-    rulesDiv.style.marginBottom = "1rem";
 
     // --- Firebase check ---
     if (!passcode) {
@@ -59,6 +45,22 @@ async function init() {
         console.error("Firebase error:", err);
         showUnauthorized(strings);
     }
+
+    
+    const strings = await loadLocale("manager"); // create manager.json in locales
+
+    // --- Title ---
+    terminal.innerHTML = `<strong style="font-size: 1.5rem;">${strings.title}</strong>`;
+
+    // --- Explanation / Rules ---
+    explanationDiv.textContent = strings.explanation;
+    explanationDiv.style.fontSize = "1.2rem";
+    explanationDiv.style.marginTop = "1rem";
+    explanationDiv.style.marginBottom = "1rem";
+
+    rulesDiv.style.fontSize = "1rem";
+    rulesDiv.style.color = "#333";
+    rulesDiv.style.marginBottom = "1rem";
 }
 
 // --- Show manager content ---
