@@ -195,3 +195,19 @@ button:hover {
 #nextBtn {
     display: none;
 }
+
+.userRow button {
+    font-family: monospace;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.9);
+    background-color: rgba(0,0,0,0.9);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s;
+}
+
+.userRow button:hover {
+    background-color: rgba(50,50,50,0.9);
+}
