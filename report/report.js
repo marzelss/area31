@@ -34,13 +34,23 @@ async function init() {
     userLabel.style.marginBottom = "0.3rem";
     document.body.appendChild(userLabel);
 
-    // --- Dropdown Menu ---
-    const select = document.createElement("select");
     select.style.fontFamily = "monospace";
-    select.style.fontSize = "1.1rem";
-    select.style.padding = "0.5rem";
+    select.style.fontSize = "1rem";
+    select.style.padding = "0.5rem 1rem";
     select.style.marginBottom = "1rem";
+    select.style.backgroundColor = "rgba(0,0,0,0.9)";
+    select.style.color = "rgba(255,255,255,0.9)";
+    select.style.border = "none";
+    select.style.borderRadius = "4px";
+    select.style.cursor = "pointer";
     select.style.minWidth = "250px";
+    select.style.transition = "background-color 0.2s";
+    
+    // Hover / focus effect
+    select.onmouseover = () => select.style.backgroundColor = "rgba(50,50,50,0.9)";
+    select.onmouseout = () => select.style.backgroundColor = "rgba(0,0,0,0.9)";
+    select.onfocus = () => select.style.outline = "2px solid rgba(255,255,255,0.7)";
+    select.onblur = () => select.style.outline = "none";
 
     // Fetch available entries from Firebase
     const snapshot = await get(ref(db, `${passcode}/entries/names`));
