@@ -11,19 +11,19 @@ const passcode = sessionStorage.getItem("passcode");
 async function init() {
     const strings = await loadLocale("report");
 
-    // Title
+    // --- Title ---
     terminal.innerHTML = `<strong style="font-size: 1.5rem;">REPORT</strong>`;
 
-    // Explanation
+    // --- Explanation ---
     explanationDiv.textContent = strings.explanation;
     explanationDiv.style.fontSize = "1.2rem";
     explanationDiv.style.marginTop = "1rem";
     explanationDiv.style.marginBottom = "1rem";
 
-    // Rules
+    // --- Rules ---
     rulesDiv.textContent = strings.rules;
     rulesDiv.style.fontSize = "1rem"; // smaller than body
-    rulesDiv.style.color = "#333"; // slightly lighter
+    rulesDiv.style.color = "#333";
     rulesDiv.style.marginBottom = "1rem";
 
     // --- User Field Label ---
@@ -32,25 +32,11 @@ async function init() {
     userLabel.style.fontSize = "1.1rem";
     userLabel.style.marginTop = "1rem";
     userLabel.style.marginBottom = "0.3rem";
-    document.body.appendChild(userLabel);
+    rulesDiv.appendChild(userLabel);
 
-    select.style.fontFamily = "monospace";
-    select.style.fontSize = "1rem";
-    select.style.padding = "0.5rem 1rem";
-    select.style.marginBottom = "1rem";
-    select.style.backgroundColor = "rgba(0,0,0,0.9)";
-    select.style.color = "rgba(255,255,255,0.9)";
-    select.style.border = "none";
-    select.style.borderRadius = "4px";
-    select.style.cursor = "pointer";
-    select.style.minWidth = "250px";
-    select.style.transition = "background-color 0.2s";
-    
-    // Hover / focus effect
-    select.onmouseover = () => select.style.backgroundColor = "rgba(50,50,50,0.9)";
-    select.onmouseout = () => select.style.backgroundColor = "rgba(0,0,0,0.9)";
-    select.onfocus = () => select.style.outline = "2px solid rgba(255,255,255,0.7)";
-    select.onblur = () => select.style.outline = "none";
+    // --- Dropdown ---
+    const select = document.createElement("select");
+    select.id = "reportDropdown"; // optional ID for CSS styling
 
     // Fetch available entries from Firebase
     const snapshot = await get(ref(db, `${passcode}/entries/names`));
@@ -70,7 +56,7 @@ async function init() {
         });
     }
 
-    document.body.appendChild(select);
+    rulesDiv.appendChild(select);
 }
 
 init();
