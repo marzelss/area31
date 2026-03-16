@@ -6,139 +6,91 @@ const terminal = document.getElementById("terminal");
 const explanationDiv = document.getElementById("explanation");
 const rulesDiv = document.getElementById("rules");
 
-const passcode = sessionStorage.getItem("passcode");
+const passcode = sessionStorage.getItem("passcode"); // current user
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
 async function init() {
     const strings = await loadLocale("report");
 
+    // --- Title ---
     terminal.innerHTML = `<strong style="font-size: 1.5rem;">REPORT</strong>`;
 
+    // --- Explanation ---
     explanationDiv.textContent = strings.explanation;
     explanationDiv.style.fontSize = "1.2rem";
     explanationDiv.style.marginTop = "1rem";
     explanationDiv.style.marginBottom = "1rem";
 
+    // --- Rules ---
     rulesDiv.textContent = strings.rules;
     rulesDiv.style.fontSize = "1rem";
     rulesDiv.style.color = "#333";
     rulesDiv.style.marginBottom = "1rem";
 
-    /* -----------------------------
-       NEW: check if anyone arrived
-    ----------------------------- */
-
-    const globalSnapshot = await get(ref(db, "/"));
-    const users = globalSnapshot.exists() ? globalSnapshot.val() : {};
-
-    const someoneArrived = Object.values(users).some(u => u.arrived === true);
-
-    if (!someoneArrived) {
-        addLabel(strings.emptyState);
-        return;
-    }
-
-    /* -----------------------------
-       Load arrivedUsers from entries
-    ----------------------------- */
-
+    // --- Get all users that arrived, excluding current user ---
     const arrivedUsers = await getArrivedUsers();
-
-    /* -----------------------------
-       NEW: time gate
-    ----------------------------- */
-
-    if (arrivedUsers.length === 0) {
-
-        const cutoff = new Date(2026, 2, 26, 21, 30); // 26 March 21:30
-        const now = new Date();
-
-        if (now >= cutoff) {
-            addLabel(strings.noMoreEntries);
-            return;
-        }
-    }
-
     const filteredUsers = arrivedUsers.filter(u => u.passcode !== passcode);
 
-    addDropdown(
-        rulesDiv,
-        strings.userField,
-        filteredUsers.map(u => ({ value: u.passcode, text: u.userName }))
-    );
+    addDropdown(rulesDiv, strings.userField, filteredUsers.map(u => ({ value: u.passcode, text: u.userName })));
 
+    // --- Roles Dropdown ---
     const rolesOptions = await getRolesOptions();
 
+    // Get current user's role name for this locale
     const currentUserRoleSnapshot = await get(ref(db, `${passcode}/role/${userLang}/name`));
-    const currentUserRoleName = currentUserRoleSnapshot.exists()
-        ? currentUserRoleSnapshot.val()
-        : null;
+    const currentUserRoleName = currentUserRoleSnapshot.exists() ? currentUserRoleSnapshot.val() : null;
 
     const filteredRoles = rolesOptions.filter(r => r[userLang] !== currentUserRoleName);
 
-    addDropdown(
-        rulesDiv,
-        strings.identityField,
-        filteredRoles.map(r => ({
-            value: r.it + "|" + r.en,
-            text: userLang === "it" ? r.it : r.en
-        }))
-    );
+    addDropdown(rulesDiv, strings.identityField, filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
 }
 
-/* -----------------------------
-   CHANGED: load from entries
------------------------------ */
-
+// --- Fetch all users that have "arrived" === true ---
 async function getArrivedUsers() {
-
     const snapshot = await get(ref(db, `${passcode}/entries/userOptions`));
 
-    if (!snapshot.exists()) return [];
+    if (!snapshot.exists()) {
+        return [];
+    }
 
-    return snapshot.val();
+    const userOptions = snapshot.val();
+
+    const arrivedUsers = Object.values(userOptions).map(entry => ({
+        passcode: entry.passcode,
+        userName: entry["real-name"]
+    }));
+
+    return arrivedUsers;
 }
 
-/* -----------------------------
-   Roles options logic
------------------------------ */
-
+// --- Fetch rolesOptions from current user's entries, or create them if they don't exist ---
 async function getRolesOptions() {
-
     const rolesRef = ref(db, `${passcode}/entries/rolesOptions`);
     const snapshot = await get(rolesRef);
 
     if (snapshot.exists()) {
         return snapshot.val();
+    } else {
+        // Build array from all users in database
+        const allSnapshot = await get(ref(db, "/"));
+        const allUsers = allSnapshot.exists() ? allSnapshot.val() : {};
+
+        const rolesArray = [];
+        Object.values(allUsers).forEach(userData => {
+            if (userData.role) {
+                rolesArray.push({ it: userData.role.it.name, en: userData.role.en.name });
+            }
+        });
+
+        // Save it to rolesOptions for current user
+        await set(rolesRef, rolesArray);
+
+        return rolesArray;
     }
-
-    const allSnapshot = await get(ref(db, "/"));
-    const allUsers = allSnapshot.exists() ? allSnapshot.val() : {};
-
-    const rolesArray = [];
-
-    Object.values(allUsers).forEach(userData => {
-        if (userData.role) {
-            rolesArray.push({
-                it: userData.role.it.name,
-                en: userData.role.en.name
-            });
-        }
-    });
-
-    /* Save in Firebase-friendly array */
-
-    await set(rolesRef, rolesArray);
-
-    return rolesArray;
 }
 
-/* -----------------------------
-   UI helpers
------------------------------ */
-
+// --- Helper to add a dropdown with label ---
 function addDropdown(parentDiv, labelText, optionsArray) {
-
     const label = document.createElement("div");
     label.textContent = labelText;
     label.style.fontSize = "1.1rem";
@@ -147,47 +99,25 @@ function addDropdown(parentDiv, labelText, optionsArray) {
     parentDiv.appendChild(label);
 
     const select = document.createElement("select");
-
     const placeholder = document.createElement("option");
     placeholder.textContent = "Select...";
     placeholder.disabled = true;
     placeholder.selected = true;
     select.appendChild(placeholder);
 
-    if (optionsArray.length === 0) {
+    optionsArray.forEach(o => {
         const option = document.createElement("option");
-        option.textContent = "No users arrived";
-        option.disabled = true;
+        option.value = o.value;
+        option.textContent = o.text;
         select.appendChild(option);
-    } else {
-        optionsArray.forEach(o => {
-            const option = document.createElement("option");
-            option.value = o.value;
-            option.textContent = o.text;
-            select.appendChild(option);
-        });
-    }
+    });
 
     styleDropdown(select);
     parentDiv.appendChild(select);
 }
 
-function addLabel(text) {
-
-    const label = document.createElement("div");
-    label.textContent = text;
-    label.style.fontSize = "1.1rem";
-    label.style.marginTop = "1rem";
-
-    rulesDiv.appendChild(label);
-}
-
-/* -----------------------------
-   Styling (UNCHANGED)
------------------------------ */
-
+// --- Styling function ---
 function styleDropdown(select) {
-
     select.style.fontFamily = "monospace";
     select.style.fontSize = "1rem";
     select.style.padding = "0.5rem 1rem";
