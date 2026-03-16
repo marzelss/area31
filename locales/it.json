@@ -49,6 +49,19 @@
     "serviceButton": "RICHIEDI UN SERVIZIO",
     "presentationButton": "INVIA PRESENTAZIONE"
   },
+  {
+  "report": {
+    "explanation": "Compila i campi sottostanti per trasmettere un rapporto di intelligence e cerca di scoprire per primo le identità degli altri partecipanti. Le operazioni di sorveglianza inizieranno dall'avvio dell'evento. La presenza sul posto è obbligatoria per poter partecipare.",
+    "rules": "Per ogni identità segreta che riuscirai a smascherare otterrai 3 punti intelligence. Procedi con cautela: se un altro agente scoprirà la tua identità, verrà sottratto 1 punto dal tuo registro.",
+    "userField": "Soggetto osservato (nome del giocatore)",
+    "identityField": "Identità classificata sospetta",
+    "warningMessage": "Questo rapporto verrà registrato permanentemente nell'Archivio Internazionale di Intelligence. Non potrai più modificare o inserire nuovamente le stesse voci. Confermi di voler procedere?",
+    "submitButton": "INVIA",
+    "thankYouMessage": "Rapporto ricevuto. Il tuo contributo alla sicurezza internazionale è stato considerato. Continua a monitorare la situazione e segnala eventuali ulteriori anomalie.",
+    "emptyState": "Le operazioni di sorveglianza non hanno ancora avuto inizio. La compilazione del report sarà autorizzata all'inizio ufficiale dell'evento.",
+    "noMoreEntries": "Limite di invii raggiunto. Il tuo contributo alla sicurezza planetaria è stato ritenuto sufficiente. Non sono richieste ulteriori attività di sorveglianza al momento."
+    }
+  },
   "presentation": {
     "address": "area31@yopmail.com",
     "subject": "Presentazione",
@@ -71,7 +84,7 @@
     "backButton": "< INDIETRO"
   },
   "interview": {
-  "ineligibleResult": "Ti ringraziamo per aver inviato la tua candidatura. Dopo un'attenta esaminazione, il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ha stabilito che il tuo profilo non soddisfa gli standard minimi richiesti per questa missione in quanto soggetto monolingua.",
+  "ineligibleResult": "Ti ringraziamo per aver inviato la tua candidatura. Dopo un'attenta esaminazione, il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ha stabilito che il tuo profilo non soddisfa gli standard minimi richiesti per questa missione in quanto soggetto monolingua. La tua candidatura è stata archiviata e i tuoi servizi potranno essere richiesti in future operazioni.",
   "pendingResult": "Candidatura ricevuta. La tua richiesta è stata inviata nella massima segretezza al Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ed è in fase di valutazione. Torna su questa pagina per controllarne lo stato di avanzamento. Se un ospite affetto da impedimento linguistico richiederà i tuoi servizi, comparirà qui.",
   "negativeResult": "ATTENZIONE: La tua candidatura è stata ritenuta altamente sospetta dal Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute. Per ragioni di sicurezza linguistica, i tuoi servizi interpretatori non sono stati selezionati per questo evento.",
   "positiveResult1": "Candidatura approvata. Sei stato ufficialmente selezionato come interprete dal seguente cliente linguisticamente svantaggiato:",
