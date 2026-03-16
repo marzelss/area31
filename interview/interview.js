@@ -5,6 +5,7 @@ import { loadLocale } from "../utils/i18n.js";
 const terminal = document.getElementById("terminal");
 const answersContainer = document.getElementById("answers");
 const nextBtn = document.getElementById("nextBtn");
+const backBtn = document.getElementById("backBtn");
 
 const passcode = sessionStorage.getItem("passcode");
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
@@ -101,8 +102,13 @@ async function init() {
     strings = await loadLocale("interview");
 
     nextBtn.textContent = "NEXT";
+    backBtn.textContent = strings.backButton;
 
     nextBtn.onclick = nextQuestion;
+
+    backBtn.onclick = () => {
+        window.location.href = "../promotion/promotion.html";
+    };
 
     renderQuestion();
 
