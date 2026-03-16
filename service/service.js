@@ -10,7 +10,7 @@ const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
 // Instruction text under heading
 infoText.textContent = 
-  "As a guest with linguistic limitations, you can pick up to 3 interpreters who will follow you around for the entire duration of the event. For each interpreter you earn 2 points.\nAfter the event, you can rate the interpreter a good service and let them earn 1 extra point.";
+  "As a guest with linguistic limitations, you can pick up to 3 interpreters who will follow you around for the entire duration of the event. For each interpreter you earn 2 points.\nAfter the event, you can rate the interpreter a good service and let them earn an extra point.";
 infoText.style.fontSize = "1.2rem";
 infoText.style.marginBottom = "1.5rem";
 
@@ -72,50 +72,25 @@ async function loadServicePage() {
             const acceptBtn = document.createElement("button");
             acceptBtn.textContent = "ACCEPT";
             acceptBtn.onclick = async () => {
-                try {
-                    // 1. Add interpreter to user's chosen list
-                    await update(ref(db, `${passcode}/service/interpreter`), {
-                        [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
-                    });
-            
-                    const guestName = guestData["real-name"] || "UNKNOWN";
-            
-                    // 2. Add client info in interpreter's node
-                    await update(ref(db, `${interpreterPasscode}/interpreter/client`), {
-                        [passcode]: { name: guestName, passcode: passcode }
-                    });
-            
-                    // 3. Set interpreter eligible = false
-                    await update(ref(db, `${interpreterPasscode}/interpreter`), { eligible: false });
-            
-                    // 4. Add points: interpreter +2, user +1
-                    const interpreterPoints = user.points || 0;
-                    const guestPoints = guestData.points || 0;
-                    await update(ref(db, `${interpreterPasscode}/points`), interpreterPoints + 2);
-                    await update(ref(db, `${passcode}/points`), guestPoints + 1);
-            
-                    // ensure all writes are committed before reload
-                    setTimeout(() => window.location.reload(), 100); // small delay ensures firebase finishes
-                } catch (err) {
-                    console.error("Error accepting interpreter:", err);
-                    alert("Something went wrong. Please try again.");
-                }
+                await update(ref(db, `${passcode}/service/interpreter`), {
+                    [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
+                });
+                const guestName = guestData["real-name"] || "UNKNOWN";
+                await update(ref(db, `${interpreterPasscode}/interpreter/client`), {
+                    [passcode]: { name: guestName, passcode: passcode }
+                });
+                container.remove();
+                renderChosenSection();
             };
 
             const refuseBtn = document.createElement("button");
             refuseBtn.textContent = "REFUSE";
             refuseBtn.onclick = async () => {
-                try {
-                    await update(ref(db, `${passcode}/service/refused`), {
-                        [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
-                    });
-            
-                    // small delay to ensure firebase update is committed
-                    setTimeout(() => window.location.reload(), 100);
-                } catch (err) {
-                    console.error("Error refusing interpreter:", err);
-                    alert("Something went wrong. Please try again.");
-                }
+                await update(ref(db, `${passcode}/service/refused`), {
+                    [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
+                });
+                container.remove();
+                renderRefusedSection();
             };
 
             buttonsDiv.appendChild(acceptBtn);
@@ -157,31 +132,59 @@ async function loadServicePage() {
             nameDiv.style.fontSize = "1.3rem";
             nameDiv.style.fontWeight = "normal";
             nameDiv.style.marginRight = "1rem";
+
+            const rateBtn = document.createElement("button");
+            rateBtn.textContent = "RATE GOOD SERVICE";
+            rateBtn.onclick = () => {
+                // Custom popup
+                const popup = document.createElement("div");
+                popup.style.position = "fixed";
+                popup.style.top = "0";
+                popup.style.left = "0";
+                popup.style.width = "100%";
+                popup.style.height = "100%";
+                popup.style.backgroundColor = "rgba(0,0,0,0.7)";
+                popup.style.display = "flex";
+                popup.style.flexDirection = "column";
+                popup.style.justifyContent = "center";
+                popup.style.alignItems = "center";
+                popup.style.zIndex = "10000";
+                popup.style.color = "#fff";
+                popup.style.fontFamily = "monospace";
+
+                const title = document.createElement("div");
+                title.textContent = `Do you want to rate ${chosenList[key].name} good service?`;
+                title.style.fontSize = "1.3rem";
+                title.style.marginBottom = "1rem";
+
+                const message = document.createElement("div");
+                message.textContent = "The user will earn 1 extra point.";
+                message.style.fontSize = "1.1rem";
+                message.style.marginBottom = "1.5rem";
+
+                const buttons = document.createElement("div");
+                buttons.style.display = "flex";
+                buttons.style.gap = "1rem";
+
+                const confirmBtn = document.createElement("button");
+                confirmBtn.textContent = "CONFIRM";
+                confirmBtn.onclick = () => popup.remove();
+
+                const cancelBtn = document.createElement("button");
+                cancelBtn.textContent = "CANCEL";
+                cancelBtn.onclick = () => popup.remove();
+
+                buttons.appendChild(confirmBtn);
+                buttons.appendChild(cancelBtn);
+                popup.appendChild(title);
+                popup.appendChild(message);
+                popup.appendChild(buttons);
+
+                document.body.appendChild(popup);
+            };
+
             container.appendChild(nameDiv);
-
-            // Only show rate button if not yet rated
-            if (!chosenList[key].rated) {
-                const rateBtn = document.createElement("button");
-                rateBtn.textContent = "RATE GOOD SERVICE";
-                rateBtn.onclick = async () => {
-                    const confirmRating = confirm(
-                        `Do you want to rate ${chosenList[key].name} good service?\nThe user will earn 3 extra points.`
-                    );
-                    if (!confirmRating) return;
-
-                    // Update interpreter's points
-                    const interpreterData = data[key] || {};
-                    const interpreterPoints = interpreterData.points || 0;
-                    await update(ref(db, `${key}/points`), interpreterPoints + 1);
-
-                    // Mark as rated
-                    await update(ref(db, `${passcode}/service/interpreter/${key}`), { rated: true });
-
-                    // reload page
-                    window.location.reload();
-                };
-                container.appendChild(rateBtn);
-            }
+            container.appendChild(rateBtn);
             chosenSection.appendChild(container);
         });
 
