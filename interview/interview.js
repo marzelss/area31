@@ -35,7 +35,7 @@ function showResult(eligible) {
     if (eligible === true) {
         terminal.textContent = strings.pendingResult;
     } else {
-        terminal.textContent = strings.negativeResult;
+        terminal.textContent = strings.ineligibleResult;
     }
 
 }
