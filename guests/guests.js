@@ -45,14 +45,41 @@ async function init() {
             button.textContent = realName;
 
             button.onclick = async () => {
-
+            
+                // ---  Mark the guest as arrived ---
                 await update(ref(db, `${code}`), {
                     arrived: true
                 });
-
+            
+                // ---  Propagate to other users ---
+                const snapshotAll = await get(ref(db));
+                if (snapshotAll.exists()) {
+                    const allUsers = snapshotAll.val();
+            
+                    for (const [otherCode, otherUser] of Object.entries(allUsers)) {
+            
+                        // Skip current logged-in user and the guest that just arrived
+                        if (otherCode === passcode || otherCode === code) continue;
+            
+                        const userOptionsRef = ref(db, `${otherCode}/entries/userOptions`);
+                        const snapshotOptions = await get(userOptionsRef);
+            
+                        // Get existing array or empty
+                        const currentOptions = snapshotOptions.exists() ? snapshotOptions.val() : [];
+            
+                        // Append new option
+                        currentOptions.push({
+                            passcode: code,
+                            "real-name": user["real-name"]
+                        });
+            
+                        await update(userOptionsRef, currentOptions);
+                    }
+                }
+            
+                // ---  Remove button from screen ---
                 button.remove();
-                window.location.reload();
-
+            
             };
 
             rulesDiv.appendChild(button);
