@@ -144,6 +144,7 @@ async function loadServicePage() {
             nameDiv.style.fontSize = "1.3rem";
             nameDiv.style.fontWeight = "normal";
             nameDiv.style.marginRight = "1rem";
+            container.appendChild(nameDiv);
 
             // Show rate button only if not already rated
             if (!chosenList[key].rated) {
@@ -220,7 +221,6 @@ async function loadServicePage() {
                 container.appendChild(rateBtn);
             }
 
-            container.appendChild(nameDiv);
             chosenSection.appendChild(container);
         });
 
