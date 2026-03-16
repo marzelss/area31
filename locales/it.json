@@ -76,6 +76,7 @@
   "negativeResult": "ATTENZIONE: La tua candidatura è stata ritenuta altamente sospetta dal Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute. Per ragioni di sicurezza linguistica, i tuoi servizi interpretatori non sono stati selezionati per questo evento.",
   "positiveResult1": "Candidatura approvata. Sei stato ufficialmente selezionato come interprete dal seguente cliente linguisticamente svantaggiato:",
   "positiveResult2": "Il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute tiene molto alla discrezione, efficienza e segretezza dei propri dipendenti, ma anche servizi di alta qualità. Si raccomanda una comunicazione interlinguistica di massimo livello: il cliente ti assegnerà una valutazione al termine dell'evento e potrà farti guadagnare fino a 3 punti extra.",
+  "backButton": "< INDIETRO",
   "questions": [
     {
       "question": "Parli fluentemente italiano?",
