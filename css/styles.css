@@ -186,6 +186,7 @@ button:hover {
     border: 2px solid black;
     margin-right: 10px;
     margin-top: 3px;
+    flex-shrink: 0;
 }
 
 .checkbox.checked {
@@ -194,4 +195,52 @@ button:hover {
 
 #nextBtn {
     display: none;
+}
+
+.userRow button {
+    font-family: monospace;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.9);
+    background-color: rgba(0,0,0,0.9);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s;
+}
+
+.userRow button:hover {
+    background-color: rgba(50,50,50,0.9);
+}
+
+/* Styled dropdown for report.html */
+select, option {
+    font-family: monospace;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    background-color: rgba(0,0,0,0.9);
+    color: rgba(255,255,255,0.9);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: 250px;
+    box-sizing: border-box;
+    transition: background-color 0.2s;
+    appearance: none; /* removes default arrow style for modern browsers */
+}
+
+/* Hover effect */
+select:hover {
+    background-color: rgba(50,50,50,0.9);
+}
+
+/* Focus effect */
+select:focus {
+    outline: 2px solid rgba(255,255,255,0.7);
+}
+
+/* Optional: style the dropdown arrow */
+select::-ms-expand {
+    display: none; /* hide arrow in IE */
 }

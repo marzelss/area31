@@ -49,6 +49,17 @@
     "serviceButton": "REQUEST SERVICE",
     "presentationButton": "SUBMIT PRESENTATION"
   },
+  "report": {
+    "explanation": "File an intelligence report by filling the fields below and be the first to discover the other agents' identities. Surveillance operations begin at the start of the event. Physical presence on site is required to participate.",
+    "rules": "For every secret identity you correctly expose, you will earn 3 intelligence points. Exercise caution: if another agent uncovers your identity first, 1 point will be deducted from your record.",
+    "userField": "Observed subject (player name)",
+    "identityField": "Suspected classified identity",
+    "warningMessage": "This report will be permanently logged in the international intelligence archive. These entries cannot be modified or submitted again. Confirm transmission?",
+    "submitButton": "SUBMIT",
+    "thankYouMessage": "Report received. Your contribution to international security has been recorded. Continue monitoring the situation and report further anomalies.",
+    "emptyState": "Surveillance operations have not yet begun. Report filing will be authorized once the event officially starts.",
+    "noMoreEntries": "Report limit reached. Your contributions to planetary security have been deemed sufficient. Further surveillance is not required at this time."
+  },
   "presentation": {
     "address": "area31@yopmail.com",
     "subject": "Presentation",
@@ -66,17 +77,18 @@
     "task1": "- Follow non-English speakers discreetly.",
     "task2": "- Observe any unusual behavior — even small oddities may be important.",
     "task3": "- Translate everything spoken in the room. Do not miss a word; every detail could contain crucial clues.",
-    "pay": "Remuneration: 2 points + performance bonus. High client satisfaction earns 5 extra points.",
+    "pay": "Remuneration: 2 points + performance bonus. High client satisfaction earns 1 extra point.",
     "applyButton": "APPLY",
     "backButton": "< BACK"
   },
   "interview": {
-  "ineligibleResult": "Thank you for submitting your application. After careful examination, the Official Department of Interrecognized Galactic Languages has determined that your profile does not meet the minimum standards required for this mission.",
+  "ineligibleResult": "Thank you for submitting your application. After careful examination, the Official Department of Interrecognized Galactic Languages has determined that your profile does not meet the minimum standards required for this mission as you are a monolingual subject. Your application has been archived: your services may be requested in future operations.",
   "pendingResult": "Application received. Your request has been transmitted under the highest level of secrecy to the Official Department of Interrecognized Galactic Languages and is currently under evaluation. Return to this page to check its progress. If a guest with linguistic impedements requires your services, the assignment will appear here.",
   "negativeResult": "WARNING: Your application has been deemed highly suspicious by the Official Department of Interrecognized Galactic Languages. For linguistic security reasons, your interpretation services have not been authorized for this event.",
   "positiveResult1": "Application approved. You have been officially selected as interpreter by the following linguistically limited client:",
-  "positiveResult2": "The Official Department of Interrecognized Galactic Languages places great importance on discretion, efficiency, and secrecy among its personnel, as well as the delivery of high-quality services. Maximum interlinguistic communication standards are expected: the client will assign you a rating at the end of the event and you may earn up to 3 extra points.",
-  "backButton": "< BACK",
+  "positiveResult2": "The Official Department of Interrecognized Galactic Languages places great importance on discretion, efficiency, and secrecy among its personnel, as well as the delivery of high-quality services. Maximum interlinguistic communication standards are expected: the client will assign you a rating at the end of the event and you may earn 1 extra point.",
+  "nextButton": "NEXT >",
+    "backButton": "< BACK",
     "questions": [
       {
         "question": "Do you speak fluent Italian?",
