@@ -82,7 +82,7 @@
     "backButton": "< BACK"
   },
   "interview": {
-  "ineligibleResult": "Thank you for submitting your application. After careful examination, the Official Department of Interrecognized Galactic Languages has determined that your profile does not meet the minimum standards required for this mission.",
+  "ineligibleResult": "Thank you for submitting your application. After careful examination, the Official Department of Interrecognized Galactic Languages has determined that your profile does not meet the minimum standards required for this mission as you are a monolingual subject. Your application has been archived: your services may be requested in future operations.",
   "pendingResult": "Application received. Your request has been transmitted under the highest level of secrecy to the Official Department of Interrecognized Galactic Languages and is currently under evaluation. Return to this page to check its progress. If a guest with linguistic impedements requires your services, the assignment will appear here.",
   "negativeResult": "WARNING: Your application has been deemed highly suspicious by the Official Department of Interrecognized Galactic Languages. For linguistic security reasons, your interpretation services have not been authorized for this event.",
   "positiveResult1": "Application approved. You have been officially selected as interpreter by the following linguistically limited client:",
