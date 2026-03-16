@@ -25,138 +25,113 @@ async function loadServicePage() {
     const refusedList = guestData.service?.refused || {};
 
     // --- Section 1: Pending applications ---
-    const pendingUsers = Object.entries(data)
-        .filter(([interpreterPasscode, user]) => 
-            user.interpreter?.eligible === true &&
-            !acceptedList[interpreterPasscode] &&
-            !refusedList[interpreterPasscode]
-        );
-
     const pendingSection = document.createElement("div");
     pendingSection.style.marginBottom = "2rem";
-
+    
+    // TITLE + INFO TEXT
     const pendingTitle = document.createElement("div");
     pendingTitle.innerHTML = "<strong>Pending Interpreter Applications</strong>";
     pendingTitle.style.fontSize = "1.3rem";
     pendingTitle.style.marginBottom = "0.5rem";
     pendingSection.appendChild(pendingTitle);
-
+    
+    // info text under the title
+    infoText.style.fontSize = "1.2rem";      // same size as other pages
+    infoText.style.lineHeight = "1.5";
+    infoText.style.marginBottom = "1rem";    // spacing
+    pendingSection.appendChild(infoText);
+    
+    // --- populate pending users ---
     if (pendingUsers.length === 0) {
         const noPending = document.createElement("div");
         noPending.textContent = "There are no pending applications at this moment.";
+        noPending.style.fontSize = "1.2rem";
         pendingSection.appendChild(noPending);
     } else {
         pendingUsers.forEach(([interpreterPasscode, user]) => {
             const container = document.createElement("div");
             container.className = "userRow";
             container.style.marginBottom = "1rem";
-
+    
             const nameDiv = document.createElement("div");
             nameDiv.textContent = user["real-name"] || "UNKNOWN";
             nameDiv.style.fontSize = "1.5rem";
-            nameDiv.style.fontWeight = "bold";
+            nameDiv.style.fontWeight = "bold"; // pending users stay bold
             container.appendChild(nameDiv);
-
+    
             const buttonsDiv = document.createElement("div");
             buttonsDiv.style.display = "flex";
             buttonsDiv.style.gap = "1rem";
             buttonsDiv.style.marginTop = "0.5rem";
-
-            const acceptBtn = document.createElement("button");
-            acceptBtn.textContent = "ACCEPT";
-            acceptBtn.onclick = async () => {
-                await update(ref(db, `${passcode}/service/interpreter`), {
-                    [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
-                });
-
-                const guestName = guestData["real-name"] || "UNKNOWN";
-                await update(ref(db, `${interpreterPasscode}/interpreter/client`), {
-                    [passcode]: { name: guestName, passcode: passcode }
-                });
-
-                container.remove();
-                renderChosenSection(); // refresh chosen section
-            };
-
-            const refuseBtn = document.createElement("button");
-            refuseBtn.textContent = "REFUSE";
-            refuseBtn.onclick = async () => {
-                await update(ref(db, `${passcode}/service/refused`), {
-                    [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
-                });
-                container.remove();
-                renderRefusedSection(); // refresh refused section
-            };
-
+    
+            // ACCEPT/REFUSE buttons...
             buttonsDiv.appendChild(acceptBtn);
             buttonsDiv.appendChild(refuseBtn);
             container.appendChild(buttonsDiv);
+    
             pendingSection.appendChild(container);
         });
     }
-
-    usersList.appendChild(pendingSection);
-
+    
     // --- Section 2: Chosen interpreters ---
     function renderChosenSection() {
-        // Remove previous section if exists
         const prev = document.getElementById("chosenSection");
         if (prev) prev.remove();
-
+    
         const chosenList = guestData.service?.interpreter || {};
         const chosenKeys = Object.keys(chosenList);
         if (chosenKeys.length === 0) return;
-
+    
         const chosenSection = document.createElement("div");
         chosenSection.id = "chosenSection";
         chosenSection.style.marginBottom = "2rem";
-
+    
         const chosenTitle = document.createElement("div");
         chosenTitle.innerHTML = "<strong>Interpreters Chosen</strong>";
         chosenTitle.style.fontSize = "1.3rem";
         chosenTitle.style.marginBottom = "0.5rem";
         chosenSection.appendChild(chosenTitle);
-
+    
         chosenKeys.forEach(key => {
             const div = document.createElement("div");
             div.textContent = chosenList[key].name;
             div.style.fontSize = "1.3rem";
-            div.style.fontWeight = "bold";
+            div.style.fontWeight = "normal"; // ❌ removed bold
             div.style.marginBottom = "0.3rem";
             chosenSection.appendChild(div);
         });
-
+    
         usersList.appendChild(chosenSection);
     }
-
+    
     // --- Section 3: Refused interpreters ---
     function renderRefusedSection() {
         const prev = document.getElementById("refusedSection");
         if (prev) prev.remove();
-
+    
         const refusedListObj = guestData.service?.refused || {};
         const refusedKeys = Object.keys(refusedListObj);
         if (refusedKeys.length === 0) return;
-
+    
         const refusedSection = document.createElement("div");
         refusedSection.id = "refusedSection";
         refusedSection.style.marginBottom = "2rem";
-
+    
         const refusedTitle = document.createElement("div");
         refusedTitle.innerHTML = "<strong>Interpreters Rejected</strong>";
         refusedTitle.style.fontSize = "1.3rem";
         refusedTitle.style.marginBottom = "0.5rem";
         refusedSection.appendChild(refusedTitle);
-
+    
         refusedKeys.forEach(key => {
             const div = document.createElement("div");
             div.textContent = refusedListObj[key].name;
             div.style.fontSize = "1.3rem";
-            div.style.fontWeight = "bold";
+            div.style.fontWeight = "normal"; // ❌ removed bold
             div.style.marginBottom = "0.3rem";
             refusedSection.appendChild(div);
         });
-
+    
         usersList.appendChild(refusedSection);
     }
 
