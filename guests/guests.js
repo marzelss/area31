@@ -47,40 +47,33 @@ async function init() {
 
             button.onclick = async () => {
             
-                // ---  Mark the guest as arrived ---
-                await update(ref(db, `${code}`), {
-                    arrived: true
-                });
+                // 1️⃣ Mark the guest as arrived
+                await update(ref(db, `${code}`), { arrived: true });
             
-                // ---  Propagate to other users ---
+                // 2️⃣ Propagate to other users
                 const snapshotAll = await get(ref(db));
                 if (snapshotAll.exists()) {
                     const allUsers = snapshotAll.val();
             
                     for (const [otherCode, otherUser] of Object.entries(allUsers)) {
             
-                        // Skip current logged-in user and the guest that just arrived
+                        // Skip current user and the guest that just arrived
                         if (otherCode === passcode || otherCode === code) continue;
             
                         const userOptionsRef = ref(db, `${otherCode}/entries/userOptions`);
-                        const snapshotOptions = await get(userOptionsRef);
-            
-                        // Get existing array or empty
-                        const currentOptions = snapshotOptions.exists() ? snapshotOptions.val() : [];
-            
-                        // Append new option
-                        currentOptions.push({
-                            passcode: code,
-                            "real-name": user["real-name"]
+                        
+                        // Push a new object as a child
+                        await update(userOptionsRef, {
+                            [Date.now()]: {
+                                passcode: code,
+                                "real-name": user["real-name"]
+                            }
                         });
-            
-                        await update(userOptionsRef, currentOptions);
                     }
                 }
             
-                // ---  Remove button from screen ---
+                // 3️⃣ Remove button
                 button.remove();
-            
             };
 
             rulesDiv.appendChild(button);
