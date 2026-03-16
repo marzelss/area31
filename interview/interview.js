@@ -1,5 +1,5 @@
 import { db } from "../sources/firebase.js";
-import { ref, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 import { loadLocale } from "../utils/i18n.js";
 
 const terminal = document.getElementById("terminal");
@@ -14,6 +14,32 @@ let strings;
 let questionIndex = 0;
 let selectedAnswer = null;
 
+async function checkEligibility() {
+
+    const snapshot = await get(ref(db, `${passcode}/interpreter/eligible`));
+
+    if (!snapshot.exists()) {
+        return null;
+    }
+
+    return snapshot.val();
+
+}
+
+function showResult(eligible) {
+
+    answersContainer.innerHTML = "";
+
+    nextBtn.style.display = "none";
+
+    if (eligible === true) {
+        terminal.textContent = strings.pendingResult;
+    } else {
+        terminal.textContent = strings.negativeResult;
+    }
+
+}
+
 function renderQuestion() {
 
     const q = strings.questions[questionIndex];
@@ -21,6 +47,8 @@ function renderQuestion() {
     terminal.innerHTML = `<strong>${q.question}</strong>`;
     answersContainer.innerHTML = "";
     selectedAnswer = null;
+
+    nextBtn.style.display = "none";
 
     q.answers.forEach(answer => {
 
@@ -101,14 +129,21 @@ async function init() {
 
     strings = await loadLocale("interview");
 
-    nextBtn.textContent = "NEXT";
+    nextBtn.textContent = strings.nextButton;
     backBtn.textContent = strings.backButton;
-
-    nextBtn.onclick = nextQuestion;
 
     backBtn.onclick = () => {
         window.location.href = "../promotion/promotion.html";
     };
+
+    const eligible = await checkEligibility();
+
+    if (eligible !== null) {
+        showResult(eligible);
+        return;
+    }
+
+    nextBtn.onclick = nextQuestion;
 
     renderQuestion();
 
