@@ -72,37 +72,50 @@ async function loadServicePage() {
             const acceptBtn = document.createElement("button");
             acceptBtn.textContent = "ACCEPT";
             acceptBtn.onclick = async () => {
-                // 1. Add interpreter to user's chosen list
-                await update(ref(db, `${passcode}/service/interpreter`), {
-                    [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
-                });
-
-                const guestName = guestData["real-name"] || "UNKNOWN";
-                // 2. Add client info in interpreter's node
-                await update(ref(db, `${interpreterPasscode}/interpreter/client`), {
-                    [passcode]: { name: guestName, passcode: passcode }
-                });
-
-                // 3. Set interpreter eligible = false
-                await update(ref(db, `${interpreterPasscode}/interpreter`), { eligible: false });
-
-                // 4. Add points: interpreter +2, user +1
-                const interpreterPoints = user.points || 0;
-                const guestPoints = guestData.points || 0;
-                await update(ref(db, `${interpreterPasscode}/points`), interpreterPoints + 2);
-                await update(ref(db, `${passcode}/points`), guestPoints + 1);
-
-                // reload page
-                window.location.reload();
+                try {
+                    // 1. Add interpreter to user's chosen list
+                    await update(ref(db, `${passcode}/service/interpreter`), {
+                        [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
+                    });
+            
+                    const guestName = guestData["real-name"] || "UNKNOWN";
+            
+                    // 2. Add client info in interpreter's node
+                    await update(ref(db, `${interpreterPasscode}/interpreter/client`), {
+                        [passcode]: { name: guestName, passcode: passcode }
+                    });
+            
+                    // 3. Set interpreter eligible = false
+                    await update(ref(db, `${interpreterPasscode}/interpreter`), { eligible: false });
+            
+                    // 4. Add points: interpreter +2, user +1
+                    const interpreterPoints = user.points || 0;
+                    const guestPoints = guestData.points || 0;
+                    await update(ref(db, `${interpreterPasscode}/points`), interpreterPoints + 2);
+                    await update(ref(db, `${passcode}/points`), guestPoints + 1);
+            
+                    // ensure all writes are committed before reload
+                    setTimeout(() => window.location.reload(), 100); // small delay ensures firebase finishes
+                } catch (err) {
+                    console.error("Error accepting interpreter:", err);
+                    alert("Something went wrong. Please try again.");
+                }
             };
 
             const refuseBtn = document.createElement("button");
             refuseBtn.textContent = "REFUSE";
             refuseBtn.onclick = async () => {
-                await update(ref(db, `${passcode}/service/refused`), {
-                    [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
-                });
-                window.location.reload();
+                try {
+                    await update(ref(db, `${passcode}/service/refused`), {
+                        [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
+                    });
+            
+                    // small delay to ensure firebase update is committed
+                    setTimeout(() => window.location.reload(), 100);
+                } catch (err) {
+                    console.error("Error refusing interpreter:", err);
+                    alert("Something went wrong. Please try again.");
+                }
             };
 
             buttonsDiv.appendChild(acceptBtn);
