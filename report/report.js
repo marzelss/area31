@@ -36,7 +36,10 @@ async function init() {
         if (Array.isArray(arrivedUsersRaw)) {
             arrivedUsers = arrivedUsersRaw;
         } else {
-            arrivedUsers = Object.entries(arrivedUsersRaw).map(([p, name]) => ({ passcode: p, userName: name }));
+            arrivedUsers = Object.values(arrivedUsersRaw).map(entry => ({
+                passcode: entry.passcode,
+                userName: entry["real-name"]
+            }));
         }
     }
 
