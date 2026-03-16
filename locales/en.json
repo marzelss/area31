@@ -49,6 +49,17 @@
     "serviceButton": "REQUEST SERVICE",
     "presentationButton": "SUBMIT PRESENTATION"
   },
+  "report": {
+    "explanation": "File an intelligence report by filling the fields below and be the first to discover the other agents' identities. Surveillance operations begin at the start of the event. Physical presence on site is required to participate.",
+    "rules": "For every secret identity you correctly expose, you will earn 3 intelligence points. Exercise caution: if another agent uncovers your identity first, 1 point will be deducted from your record.",
+    "userField": "Observed subject (player name)",
+    "identityField": "Suspected classified identity",
+    "warningMessage": "This report will be permanently logged in the international intelligence archive. These entries cannot be modified or submitted again. Confirm transmission?",
+    "submitButton": "SUBMIT",
+    "thankYouMessage": "Report received. Your contribution to international security has been recorded. Continue monitoring the situation and report further anomalies.",
+    "emptyState": "Surveillance operations have not yet begun. Report filing will be authorized once the event officially starts.",
+    "noMoreEntries": "Report limit reached. Your contributions to planetary security have been deemed sufficient. Further surveillance is not required at this time."
+  },
   "presentation": {
     "address": "area31@yopmail.com",
     "subject": "Presentation",
