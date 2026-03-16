@@ -59,7 +59,7 @@ async function loadServicePage() {
             container.style.marginBottom = "1rem";
 
             const nameDiv = document.createElement("div");
-            nameDiv.textContent = user["real-name"] || "UNKNOWN";
+            nameDiv.textContent = user["name"] || "UNKNOWN";
             nameDiv.style.fontSize = "1.5rem";
             nameDiv.style.fontWeight = "normal";
             container.appendChild(nameDiv);
