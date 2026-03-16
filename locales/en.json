@@ -66,7 +66,7 @@
     "task1": "- Follow non-English speakers discreetly.",
     "task2": "- Observe any unusual behavior — even small oddities may be important.",
     "task3": "- Translate everything spoken in the room. Do not miss a word; every detail could contain crucial clues.",
-    "pay": "Remuneration: 2 points + performance bonus. High client satisfaction earns 5 extra points.",
+    "pay": "Remuneration: 2 points + performance bonus. High client satisfaction earns 1 extra point.",
     "applyButton": "APPLY",
     "backButton": "< BACK"
   },
@@ -75,7 +75,7 @@
   "pendingResult": "Application received. Your request has been transmitted under the highest level of secrecy to the Official Department of Interrecognized Galactic Languages and is currently under evaluation. Return to this page to check its progress. If a guest with linguistic impedements requires your services, the assignment will appear here.",
   "negativeResult": "WARNING: Your application has been deemed highly suspicious by the Official Department of Interrecognized Galactic Languages. For linguistic security reasons, your interpretation services have not been authorized for this event.",
   "positiveResult1": "Application approved. You have been officially selected as interpreter by the following linguistically limited client:",
-  "positiveResult2": "The Official Department of Interrecognized Galactic Languages places great importance on discretion, efficiency, and secrecy among its personnel, as well as the delivery of high-quality services. Maximum interlinguistic communication standards are expected: the client will assign you a rating at the end of the event and you may earn up to 3 extra points.",
+  "positiveResult2": "The Official Department of Interrecognized Galactic Languages places great importance on discretion, efficiency, and secrecy among its personnel, as well as the delivery of high-quality services. Maximum interlinguistic communication standards are expected: the client will assign you a rating at the end of the event and you may earn 1 extra point.",
   "nextButton": "NEXT >",
     "backButton": "< BACK",
     "questions": [
