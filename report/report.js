@@ -28,27 +28,32 @@ async function init() {
     rulesDiv.style.marginBottom = "1rem";
 
     // --- Load arrived users from userOptions ---
-    let arrivedUsers = await getArrivedUsers();
-    
-    // If arrivedUsers is an object, convert to array of { passcode, userName }
-    if (arrivedUsers && !Array.isArray(arrivedUsers)) {
-        arrivedUsers = Object.entries(arrivedUsers).map(([passcode, userName]) => ({ passcode, userName }));
+    let arrivedUsersRaw = await getArrivedUsers();
+    let arrivedUsers = [];
+
+    // Convert object to array of { passcode, userName } if necessary
+    if (arrivedUsersRaw) {
+        if (Array.isArray(arrivedUsersRaw)) {
+            arrivedUsers = arrivedUsersRaw;
+        } else {
+            arrivedUsers = Object.entries(arrivedUsersRaw).map(([p, name]) => ({ passcode: p, userName: name }));
+        }
     }
 
+    // Filter out current user
+    const filteredUsers = arrivedUsers.filter(u => u.passcode !== passcode);
+
     // --- Handle empty states ---
-    if (!arrivedUsers || arrivedUsers.length === 0) {
+    const now = new Date();
+    const cutoff = new Date("2026-03-26T21:30:00");
+
+    if (!arrivedUsers || arrivedUsers.length === 0 || filteredUsers.length === 0) {
         const label = document.createElement("div");
-
-        // check if date/time is 26 March 21:30 or past
-        const cutoff = new Date("2026-03-26T21:30:00");
-        const now = new Date();
-
         if (now >= cutoff) {
             label.textContent = strings.noMoreEntries;
         } else {
             label.textContent = strings.emptyState;
         }
-
         label.style.fontSize = "1.1rem";
         label.style.marginTop = "1rem";
         rulesDiv.appendChild(label);
@@ -56,40 +61,34 @@ async function init() {
     }
 
     // --- Top dropdown: users ---
-    const filteredUsers = arrivedUsers.filter(u => u.passcode !== passcode);
-    const topDropdown = addDropdown(rulesDiv, strings.userField, filteredUsers.map(u => ({ value: u.passcode, text: u.userName })));
+    const topDropdown = addDropdown(
+        rulesDiv,
+        strings.userField,
+        filteredUsers.map(u => ({ value: u.passcode, text: u.userName })),
+        "Select a user..." // placeholder
+    );
 
     // --- Bottom dropdown: rolesOptions ---
     const rolesOptions = await getRolesOptions();
 
-    // Get current user's role name for this locale
     const currentUserRoleSnapshot = await get(ref(db, `${passcode}/role/${userLang}/name`));
     const currentUserRoleName = currentUserRoleSnapshot.exists() ? currentUserRoleSnapshot.val() : null;
 
     const filteredRoles = rolesOptions.filter(r => r[userLang] !== currentUserRoleName);
-    const bottomDropdown = addDropdown(rulesDiv, strings.identityField, filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
 
-    // --- Show submit button if both dropdowns have a value ---
-    if (topDropdown.value && bottomDropdown.value) {
-        const submitBtn = document.createElement("button");
-        submitBtn.textContent = strings.submitButton;
-        submitBtn.style.marginTop = "1rem";
-        submitBtn.style.alignSelf = "flex-start";
-        submitBtn.style.fontFamily = "monospace";
-        submitBtn.style.fontSize = "1rem";
-        submitBtn.style.padding = "0.7rem 1.5rem";
-        submitBtn.style.backgroundColor = "rgba(0,0,0,0.9)";
-        submitBtn.style.color = "rgba(255,255,255,0.9)";
-        submitBtn.style.border = "none";
-        submitBtn.style.borderRadius = "4px";
-        submitBtn.style.cursor = "pointer";
-        submitBtn.style.transition = "background-color 0.2s";
+    const bottomDropdown = addDropdown(
+        rulesDiv,
+        strings.identityField,
+        filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })),
+        "Select a role..." // placeholder
+    );
 
-        submitBtn.onmouseover = () => submitBtn.style.backgroundColor = "rgba(50,50,50,0.9)";
-        submitBtn.onmouseout = () => submitBtn.style.backgroundColor = "rgba(0,0,0,0.9)";
-
-        rulesDiv.appendChild(submitBtn);
-    }
+    // --- Submit button under the dropdowns ---
+    const submitBtn = document.createElement("button");
+    submitBtn.textContent = strings.submitButton;
+    submitBtn.style.marginTop = "1rem";
+    styleButton(submitBtn);
+    rulesDiv.appendChild(submitBtn);
 }
 
 // --- Fetch arrived users from current user's entries ---
@@ -121,8 +120,8 @@ async function getRolesOptions() {
     }
 }
 
-// --- Helper to add a dropdown with label ---
-function addDropdown(parentDiv, labelText, optionsArray) {
+// --- Helper to add a dropdown with label and optional placeholder ---
+function addDropdown(parentDiv, labelText, optionsArray, placeholderText = null) {
     const label = document.createElement("div");
     label.textContent = labelText;
     label.style.fontSize = "1.1rem";
@@ -131,11 +130,21 @@ function addDropdown(parentDiv, labelText, optionsArray) {
     parentDiv.appendChild(label);
 
     const select = document.createElement("select");
-    optionsArray.forEach((o, index) => {
+
+    // Placeholder option
+    if (placeholderText) {
+        const placeholder = document.createElement("option");
+        placeholder.textContent = placeholderText;
+        placeholder.value = "";
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        select.appendChild(placeholder);
+    }
+
+    optionsArray.forEach(o => {
         const option = document.createElement("option");
         option.value = o.value;
         option.textContent = o.text;
-        if (index === 0) option.selected = true; // preselect first option
         select.appendChild(option);
     });
 
@@ -144,7 +153,7 @@ function addDropdown(parentDiv, labelText, optionsArray) {
     return select;
 }
 
-// --- Styling ---
+// --- Dropdown styling ---
 function styleDropdown(select) {
     select.style.fontFamily = "monospace";
     select.style.fontSize = "1rem";
@@ -162,6 +171,23 @@ function styleDropdown(select) {
     select.onmouseout = () => select.style.backgroundColor = "rgba(0,0,0,0.9)";
     select.onfocus = () => select.style.outline = "2px solid rgba(255,255,255,0.7)";
     select.onblur = () => select.style.outline = "none";
+}
+
+// --- Button styling ---
+function styleButton(button) {
+    button.style.alignSelf = "flex-start";
+    button.style.fontFamily = "monospace";
+    button.style.fontSize = "1rem";
+    button.style.padding = "0.7rem 1.5rem";
+    button.style.backgroundColor = "rgba(0,0,0,0.9)";
+    button.style.color = "rgba(255,255,255,0.9)";
+    button.style.border = "none";
+    button.style.borderRadius = "4px";
+    button.style.cursor = "pointer";
+    button.style.transition = "background-color 0.2s";
+
+    button.onmouseover = () => button.style.backgroundColor = "rgba(50,50,50,0.9)";
+    button.onmouseout = () => button.style.backgroundColor = "rgba(0,0,0,0.9)";
 }
 
 init();
