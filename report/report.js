@@ -22,7 +22,7 @@ async function init() {
 
     // --- Rules ---
     rulesDiv.textContent = strings.rules;
-    rulesDiv.style.fontSize = "1rem"; // smaller than body
+    rulesDiv.style.fontSize = "1rem";
     rulesDiv.style.color = "#333";
     rulesDiv.style.marginBottom = "1rem";
 
@@ -36,22 +36,49 @@ async function init() {
 
     // --- Dropdown ---
     const select = document.createElement("select");
-    select.id = "reportDropdown"; // optional ID for CSS styling
+    select.id = "reportDropdown";
+    
+    // Placeholder
+    const placeholder = document.createElement("option");
+    placeholder.textContent = "Select a user";
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    select.appendChild(placeholder);
 
-    // Fetch available entries from Firebase
-    const snapshot = await get(ref(db, `${passcode}/entries/names`));
-    const names = snapshot.exists() ? snapshot.val() : [];
+    // --- Fetch all users under this passcode ---
+    const snapshot = await get(ref(db, passcode));
 
-    if (names.length === 0) {
+    let usersArray = [];
+
+    if (snapshot.exists()) {
+        const data = snapshot.val();
+
+        Object.entries(data).forEach(([userPasscode, userData]) => {
+
+            // Only include users who have NOT arrived
+            if (userData.arrived !== true) {
+                usersArray.push({
+                    passcode: userPasscode,
+                    name: userData["real-name"]
+                });
+            }
+
+        });
+    }
+
+    console.log("Filtered users:", usersArray);
+
+    // --- Populate dropdown ---
+    if (usersArray.length === 0) {
         const option = document.createElement("option");
-        option.textContent = "No entries available";
+        option.textContent = "No users available";
         option.disabled = true;
         select.appendChild(option);
     } else {
-        names.forEach(name => {
+        usersArray.forEach(user => {
             const option = document.createElement("option");
-            option.value = name;
-            option.textContent = name;
+            option.value = user.passcode; // store passcode internally
+            option.textContent = user.name; // show real name
             select.appendChild(option);
         });
     }
