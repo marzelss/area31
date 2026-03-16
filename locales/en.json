@@ -76,6 +76,7 @@
   "negativeResult": "WARNING: Your application has been deemed highly suspicious by the Official Department of Interrecognized Galactic Languages. For linguistic security reasons, your interpretation services have not been authorized for this event.",
   "positiveResult1": "Application approved. You have been officially selected as interpreter by the following linguistically limited client:",
   "positiveResult2": "The Official Department of Interrecognized Galactic Languages places great importance on discretion, efficiency, and secrecy among its personnel, as well as the delivery of high-quality services. Maximum interlinguistic communication standards are expected: the client will assign you a rating at the end of the event and you may earn up to 3 extra points.",
+  "backButton": "< BACK",
     "questions": [
       {
         "question": "Do you speak fluent Italian?",
