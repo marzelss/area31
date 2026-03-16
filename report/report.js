@@ -37,48 +37,41 @@ async function init() {
     // --- Dropdown ---
     const select = document.createElement("select");
     select.id = "reportDropdown";
-    
-    // Placeholder
+
+    // Placeholder option
     const placeholder = document.createElement("option");
-    placeholder.textContent = "Select a user";
+    placeholder.textContent = "Select user";
     placeholder.disabled = true;
     placeholder.selected = true;
     select.appendChild(placeholder);
 
-    // --- Fetch all users under this passcode ---
-    const snapshot = await get(ref(db, passcode));
+    // --- Fetch users from Firebase ---
+    const snapshot = await get(ref(db, "/"));
+    const users = snapshot.exists() ? snapshot.val() : {};
 
-    let usersArray = [];
+    const arrivedUsers = [];
 
-    if (snapshot.exists()) {
-        const data = snapshot.val();
+    // Filter users who arrived
+    Object.entries(users).forEach(([userPasscode, userData]) => {
+        if (userData.arrived === true) {
+            arrivedUsers.push({
+                passcode: userPasscode,
+                userName: userData["real-name"]
+            });
+        }
+    });
 
-        Object.entries(data).forEach(([userPasscode, userData]) => {
-
-            // Only include users who have NOT arrived
-            if (userData.arrived !== true) {
-                usersArray.push({
-                    passcode: userPasscode,
-                    name: userData["real-name"]
-                });
-            }
-
-        });
-    }
-
-    console.log("Filtered users:", usersArray);
-
-    // --- Populate dropdown ---
-    if (usersArray.length === 0) {
+    // Populate dropdown
+    if (arrivedUsers.length === 0) {
         const option = document.createElement("option");
-        option.textContent = "No users available";
+        option.textContent = "No users arrived";
         option.disabled = true;
         select.appendChild(option);
     } else {
-        usersArray.forEach(user => {
+        arrivedUsers.forEach(user => {
             const option = document.createElement("option");
-            option.value = user.passcode; // store passcode internally
-            option.textContent = user.name; // show real name
+            option.value = user.passcode;
+            option.textContent = user.userName;
             select.appendChild(option);
         });
     }
