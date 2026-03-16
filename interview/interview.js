@@ -29,7 +29,7 @@ async function checkClient() {
         return null;
     }
 
-    return clients[firstKey]["real-name"];
+    return clients[firstKey]["name"];
 
 }
 
