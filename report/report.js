@@ -6,7 +6,7 @@ const terminal = document.getElementById("terminal");
 const explanationDiv = document.getElementById("explanation");
 const rulesDiv = document.getElementById("rules");
 
-const passcode = sessionStorage.getItem("passcode");
+const passcode = sessionStorage.getItem("passcode"); // current user
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
 async function init() {
@@ -27,13 +27,22 @@ async function init() {
     rulesDiv.style.color = "#333";
     rulesDiv.style.marginBottom = "1rem";
 
-    // --- User Dropdown ---
+    // --- Get all users that arrived, excluding current user ---
     const arrivedUsers = await getArrivedUsers();
-    addDropdown(rulesDiv, strings.userField, arrivedUsers.map(u => ({ value: u.passcode, text: u.userName })));
+    const filteredUsers = arrivedUsers.filter(u => u.passcode !== passcode);
+
+    addDropdown(rulesDiv, strings.userField, filteredUsers.map(u => ({ value: u.passcode, text: u.userName })));
 
     // --- Roles Dropdown ---
     const rolesOptions = await getRolesOptions();
-    addDropdown(rulesDiv, strings.identityField, rolesOptions.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
+
+    // Get current user's role name for this locale
+    const currentUserRoleSnapshot = await get(ref(db, `${passcode}/role/${userLang}/name`));
+    const currentUserRoleName = currentUserRoleSnapshot.exists() ? currentUserRoleSnapshot.val() : null;
+
+    const filteredRoles = rolesOptions.filter(r => r[userLang] !== currentUserRoleName);
+
+    addDropdown(rulesDiv, strings.identityField, filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
 }
 
 // --- Fetch all users that have "arrived" === true ---
@@ -42,7 +51,7 @@ async function getArrivedUsers() {
     const users = snapshot.exists() ? snapshot.val() : {};
     const arrivedUsers = [];
     Object.entries(users).forEach(([userPasscode, userData]) => {
-        if (userData.arrived === true) {
+        if (userData.arrived === true && userData["real-name"]) {
             arrivedUsers.push({ passcode: userPasscode, userName: userData["real-name"] });
         }
     });
