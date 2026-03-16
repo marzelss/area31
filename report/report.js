@@ -1,8 +1,12 @@
+import { db } from "../sources/firebase.js";
+import { ref, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 import { loadLocale } from "../utils/i18n.js";
 
 const terminal = document.getElementById("terminal");
 const explanationDiv = document.getElementById("explanation");
 const rulesDiv = document.getElementById("rules");
+
+const passcode = sessionStorage.getItem("passcode");
 
 async function init() {
     const strings = await loadLocale("report");
@@ -20,6 +24,43 @@ async function init() {
     rulesDiv.textContent = strings.rules;
     rulesDiv.style.fontSize = "1rem"; // smaller than body
     rulesDiv.style.color = "#333"; // slightly lighter
+    rulesDiv.style.marginBottom = "1rem";
+
+    // --- User Field Label ---
+    const userLabel = document.createElement("div");
+    userLabel.textContent = strings.userField;
+    userLabel.style.fontSize = "1.1rem";
+    userLabel.style.marginTop = "1rem";
+    userLabel.style.marginBottom = "0.3rem";
+    document.body.appendChild(userLabel);
+
+    // --- Dropdown Menu ---
+    const select = document.createElement("select");
+    select.style.fontFamily = "monospace";
+    select.style.fontSize = "1.1rem";
+    select.style.padding = "0.5rem";
+    select.style.marginBottom = "1rem";
+    select.style.minWidth = "250px";
+
+    // Fetch available entries from Firebase
+    const snapshot = await get(ref(db, `${passcode}/entries/names`));
+    const names = snapshot.exists() ? snapshot.val() : [];
+
+    if (names.length === 0) {
+        const option = document.createElement("option");
+        option.textContent = "No entries available";
+        option.disabled = true;
+        select.appendChild(option);
+    } else {
+        names.forEach(name => {
+            const option = document.createElement("option");
+            option.value = name;
+            option.textContent = name;
+            select.appendChild(option);
+        });
+    }
+
+    document.body.appendChild(select);
 }
 
 init();
