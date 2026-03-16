@@ -39,18 +39,85 @@
     "task": "TASK DESCRIPTION",
     "bonus": "BONUS TASK: Present any conspiracy theory to earn 5 points.",
     "alert": "Keep your eyes open: many strange things will happen.",
-    "report": "Discover the real identity of your companions and file a report using the button below to earn points.",
+    "report": "Discover the real identity of your companions and file a report using the button below to earn 3 points.",
     "locationReveal": "The final location will be revealed on the day of the event.",
     "reload": "Reload this page to discover it and arrive on time.",
     "absence": "Your absence will be considered highly suspicious.",
     "goodLuck": "Good luck.",
     "reportButton": "FILE REPORT",
     "promotionButton": "REQUEST PROMOTION",
+    "serviceButton": "REQUEST SERVICE",
     "presentationButton": "SUBMIT PRESENTATION"
   },
   "presentation": {
     "address": "area31@yopmail.com",
     "subject": "Presentation",
     "body": "Presentation completed. Over.\nPlease find it attached. Over."
+  },
+  "promotion": {
+    "header": "JOB POSTING: AREA31",
+    "posted": "POSTED ON 15-03-2026",
+    "title": "TITLE: INTERPRETER",
+    "expTitle": "Experience required:",
+    "exp1": "- Fluent in Italian.",
+    "exp2": "- Fluent in English.",
+    "exp3": "- Knowledge of conspiracy theories.",
+    "tasksTitle": "Job tasks:",
+    "task1": "- Follow non-English speakers discreetly.",
+    "task2": "- Observe any unusual behavior — even small oddities may be important.",
+    "task3": "- Translate everything spoken in the room. Do not miss a word; every detail could contain crucial clues.",
+    "pay": "Remuneration: 2 points + performance bonus. High client satisfaction earns 5 extra points.",
+    "applyButton": "APPLY",
+    "backButton": "< BACK"
+  },
+  "interview": {
+  "ineligibleResult": "Thank you for submitting your application. After careful examination, the Official Department of Interrecognized Galactic Languages has determined that your profile does not meet the minimum standards required for this mission.",
+  "pendingResult": "Application received. Your request has been transmitted under the highest level of secrecy to the Official Department of Interrecognized Galactic Languages and is currently under evaluation. Return to this page to check its progress. If a guest with linguistic impedements requires your services, the assignment will appear here.",
+  "negativeResult": "WARNING: Your application has been deemed highly suspicious by the Official Department of Interrecognized Galactic Languages. For linguistic security reasons, your interpretation services have not been authorized for this event.",
+  "positiveResult1": "Application approved. You have been officially selected as interpreter by the following linguistically limited client:",
+  "positiveResult2": "The Official Department of Interrecognized Galactic Languages places great importance on discretion, efficiency, and secrecy among its personnel, as well as the delivery of high-quality services. Maximum interlinguistic communication standards are expected: the client will assign you a rating at the end of the event and you may earn up to 3 extra points.",
+  "backButton": "< BACK",
+    "questions": [
+      {
+        "question": "Do you speak fluent Italian?",
+        "answers": [
+          "Yes",
+          "No"
+        ],
+        "rightAnswer": "Yes"
+      },
+      {
+        "question": "Do you speak fluent English?",
+        "answers": [
+          "Yes",
+          "No"
+        ],
+        "rightAnswer": "Yes"
+      },
+      {
+        "question": "How did you learn English?",
+        "answers": [
+          "I had English classes when I was in school",
+          "I lived overseas so I had to master English to survive",
+          "I had close encounters of the third kind and requested some artificial intelligence to be installed as a microchip in my brain to instantly learn 308 languages including dialects and acquire interstellar knowledge that will allow me to conquer the world and destroy the planet"
+        ]
+      },
+      {
+        "question": "Mmh... interesting... and when did that happen?",
+        "answers": [
+          "Before 2015",
+          "After 2015",
+          "That moment cannot be represented on a human calendar as it occurred during a temporary collapse of the temporal grid monitored by the Intergalactic Linguistic Council"
+        ]
+      },
+      {
+        "question": "Curious... nice... and how confident are you in covering this position?",
+        "answers": [
+          "Quite confident",
+          "I will try my best",
+          "Confidence is a a biological coping mechanism and human emotional construct designed to compensate for uncertainty, which is a feeling I do not experience as I function best on statistical inevitability"
+        ]
+      }
+    ]
   }
 }

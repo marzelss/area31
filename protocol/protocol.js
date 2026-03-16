@@ -6,6 +6,7 @@ import { loadLocale } from "../utils/i18n.js";
 const terminal = document.getElementById("terminal");
 const reportBtn = document.getElementById("reportBtn");
 const promotionBtn = document.getElementById("promotionBtn");
+const serviceBtn = document.getElementById("serviceBtn");
 const presentationBtn = document.getElementById("presentationBtn");
 
 const typingSpeed = 15;
@@ -35,21 +36,32 @@ function formatLine(lineObj) {
     return lineObj.text;
 }
 
-function renderInstant(lines) {
+function renderInstant(lines, isNonItalianSpeaker) {
     terminal.innerHTML = lines.map(l => formatLine(l)).join("\n");
+
     reportBtn.style.display = "inline-block";
-    promotionBtn.style.display = "inline-block";
+
+    if (isNonItalianSpeaker) {
+        serviceBtn.style.display = "inline-block";
+    } else {
+        promotionBtn.style.display = "inline-block";
+    }
+    
     presentationBtn.style.display = "inline-block";
 }
 
-function typeLines(lines) {
+function typeLines(lines, isNonItalianSpeaker) {
     let currentLine = 0, currentChar = 0;
 
     function type() {
         if (currentLine >= lines.length) {
             terminal.innerHTML += "\n";
             reportBtn.style.display = "inline-block";
-            promotionBtn.style.display = "inline-block";
+            if (isNonItalianSpeaker) {
+                serviceBtn.style.display = "inline-block";
+            } else {
+                promotionBtn.style.display = "inline-block";
+            }
             presentationBtn.style.display = "inline-block";
             update(ref(db, passcode), { status: "DELIVERED" });
             return;
@@ -88,11 +100,13 @@ async function init() {
 
     reportBtn.textContent = strings.reportButton;
     promotionBtn.textContent = strings.promotionButton;
+    serviceBtn.textContent = strings.serviceButton;
     presentationBtn.textContent = strings.presentationButton;
     
     // Redirect buttons
     reportBtn.onclick = () => window.location.href = "../report/report.html";
     promotionBtn.onclick = () => window.location.href = "../promotion/promotion.html";
+    serviceBtn.onclick = () => window.location.href = "../service/service.html";
     
     presentationBtn.onclick = () => {
         const email = presentationStrings.address;
@@ -111,6 +125,7 @@ async function init() {
     };
     
     const user = await getUser();
+    const isNonItalianSpeaker = user["non-italian-speaker"] === true;
     const roleName = user.role?.[userLang]?.name ?? "UNKNOWN ROLE";
     const roleTask = user.role?.[userLang]?.task ?? "NO TASK ASSIGNED";
     const alreadyDelivered = user.status === "DELIVERED";
@@ -167,7 +182,9 @@ async function init() {
         { text: "" },
     ];
 
-    alreadyDelivered ? renderInstant(lines) : typeLines(lines);
+    alreadyDelivered
+    ? renderInstant(lines, isNonItalianSpeaker)
+    : typeLines(lines, isNonItalianSpeaker);
 }
 
 init();
