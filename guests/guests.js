@@ -6,6 +6,7 @@ const explanationDiv = document.getElementById("explanation");
 const rulesDiv = document.getElementById("rules");
 
 const myName = sessionStorage.getItem("realName");
+const passcode = sessionStorage.getItem("passcode"); // <--- add this
 
 async function init() {
 
