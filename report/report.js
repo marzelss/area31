@@ -27,13 +27,34 @@ async function init() {
     rulesDiv.style.color = "#333";
     rulesDiv.style.marginBottom = "1rem";
 
-    // --- Get all users that arrived, excluding current user ---
+    // --- Load arrived users from userOptions ---
     const arrivedUsers = await getArrivedUsers();
+
+    // --- Handle empty states ---
+    if (!arrivedUsers || arrivedUsers.length === 0) {
+        const label = document.createElement("div");
+
+        // check if date/time is 26 March 21:30 or past
+        const cutoff = new Date("2026-03-26T21:30:00");
+        const now = new Date();
+
+        if (now >= cutoff) {
+            label.textContent = strings.noMoreEntries;
+        } else {
+            label.textContent = strings.emptyState;
+        }
+
+        label.style.fontSize = "1.1rem";
+        label.style.marginTop = "1rem";
+        rulesDiv.appendChild(label);
+        return; // stop here, don't add dropdowns
+    }
+
+    // --- Top dropdown: users ---
     const filteredUsers = arrivedUsers.filter(u => u.passcode !== passcode);
+    const topDropdown = addDropdown(rulesDiv, strings.userField, filteredUsers.map(u => ({ value: u.passcode, text: u.userName })));
 
-    addDropdown(rulesDiv, strings.userField, filteredUsers.map(u => ({ value: u.passcode, text: u.userName })));
-
-    // --- Roles Dropdown ---
+    // --- Bottom dropdown: rolesOptions ---
     const rolesOptions = await getRolesOptions();
 
     // Get current user's role name for this locale
@@ -41,21 +62,35 @@ async function init() {
     const currentUserRoleName = currentUserRoleSnapshot.exists() ? currentUserRoleSnapshot.val() : null;
 
     const filteredRoles = rolesOptions.filter(r => r[userLang] !== currentUserRoleName);
+    const bottomDropdown = addDropdown(rulesDiv, strings.identityField, filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
 
-    addDropdown(rulesDiv, strings.identityField, filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
+    // --- Show submit button if both dropdowns have a value ---
+    if (topDropdown.value && bottomDropdown.value) {
+        const submitBtn = document.createElement("button");
+        submitBtn.textContent = strings.submitButton;
+        submitBtn.style.marginTop = "1rem";
+        submitBtn.style.alignSelf = "flex-start";
+        submitBtn.style.fontFamily = "monospace";
+        submitBtn.style.fontSize = "1rem";
+        submitBtn.style.padding = "0.7rem 1.5rem";
+        submitBtn.style.backgroundColor = "rgba(0,0,0,0.9)";
+        submitBtn.style.color = "rgba(255,255,255,0.9)";
+        submitBtn.style.border = "none";
+        submitBtn.style.borderRadius = "4px";
+        submitBtn.style.cursor = "pointer";
+        submitBtn.style.transition = "background-color 0.2s";
+
+        submitBtn.onmouseover = () => submitBtn.style.backgroundColor = "rgba(50,50,50,0.9)";
+        submitBtn.onmouseout = () => submitBtn.style.backgroundColor = "rgba(0,0,0,0.9)";
+
+        rulesDiv.appendChild(submitBtn);
+    }
 }
 
-// --- Fetch all users that have "arrived" === true ---
+// --- Fetch arrived users from current user's entries ---
 async function getArrivedUsers() {
-    const snapshot = await get(ref(db, "/"));
-    const users = snapshot.exists() ? snapshot.val() : {};
-    const arrivedUsers = [];
-    Object.entries(users).forEach(([userPasscode, userData]) => {
-        if (userData.arrived === true && userData["real-name"]) {
-            arrivedUsers.push({ passcode: userPasscode, userName: userData["real-name"] });
-        }
-    });
-    return arrivedUsers;
+    const snapshot = await get(ref(db, `${passcode}/entries/userOptions`));
+    return snapshot.exists() ? snapshot.val() : [];
 }
 
 // --- Fetch rolesOptions from current user's entries, or create them if they don't exist ---
@@ -66,7 +101,6 @@ async function getRolesOptions() {
     if (snapshot.exists()) {
         return snapshot.val();
     } else {
-        // Build array from all users in database
         const allSnapshot = await get(ref(db, "/"));
         const allUsers = allSnapshot.exists() ? allSnapshot.val() : {};
 
@@ -77,9 +111,7 @@ async function getRolesOptions() {
             }
         });
 
-        // Save it to rolesOptions for current user
         await set(rolesRef, rolesArray);
-
         return rolesArray;
     }
 }
@@ -94,24 +126,20 @@ function addDropdown(parentDiv, labelText, optionsArray) {
     parentDiv.appendChild(label);
 
     const select = document.createElement("select");
-    const placeholder = document.createElement("option");
-    placeholder.textContent = "Select...";
-    placeholder.disabled = true;
-    placeholder.selected = true;
-    select.appendChild(placeholder);
-
-    optionsArray.forEach(o => {
+    optionsArray.forEach((o, index) => {
         const option = document.createElement("option");
         option.value = o.value;
         option.textContent = o.text;
+        if (index === 0) option.selected = true; // preselect first option
         select.appendChild(option);
     });
 
     styleDropdown(select);
     parentDiv.appendChild(select);
+    return select;
 }
 
-// --- Styling function ---
+// --- Styling ---
 function styleDropdown(select) {
     select.style.fontFamily = "monospace";
     select.style.fontSize = "1rem";
