@@ -66,7 +66,7 @@
     "task1": "- Seguire con discrezione le persone che non parlano italiano.",
     "task2": "- Osservare qualsiasi comportamento insolito: anche piccoli dettagli potrebbero essere importanti.",
     "task3": "- Tradurre tutto ciò che viene detto nella stanza. Non perdere una parola: ogni dettaglio potrebbe contenere indizi cruciali.",
-    "pay": "Retribuzione: 2 punti + bonus in base alla performance. L'elevata soddisfazione del cliente assegna altri 5 punti.",
+    "pay": "Retribuzione: 2 punti + bonus in base alla performance.",
     "applyButton": "CANDIDATI",
     "backButton": "< INDIETRO"
   },
@@ -75,7 +75,7 @@
   "pendingResult": "Candidatura ricevuta. La tua richiesta è stata inviata nella massima segretezza al Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ed è in fase di valutazione. Torna su questa pagina per controllarne lo stato di avanzamento. Se un ospite affetto da impedimento linguistico richiederà i tuoi servizi, comparirà qui.",
   "negativeResult": "ATTENZIONE: La tua candidatura è stata ritenuta altamente sospetta dal Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute. Per ragioni di sicurezza linguistica, i tuoi servizi interpretatori non sono stati selezionati per questo evento.",
   "positiveResult1": "Candidatura approvata. Sei stato ufficialmente selezionato come interprete dal seguente cliente linguisticamente svantaggiato:",
-  "positiveResult2": "Il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute tiene molto alla discrezione, efficienza e segretezza dei propri dipendenti, ma anche servizi di alta qualità. Si raccomanda una comunicazione interlinguistica di massimo livello: il cliente ti assegnerà una valutazione al termine dell'evento e potrà farti guadagnare fino a 3 punti extra.",
+  "positiveResult2": "Il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute tiene molto alla discrezione, efficienza e segretezza dei propri dipendenti, ma anche servizi di alta qualità. Si raccomanda una comunicazione interlinguistica di massimo livello: il cliente ti assegnerà una valutazione al termine dell'evento e potrà farti guadagnare un punto extra.",
   "nextButton": "PROSSIMA DOMANDA >",
   "backButton": "< INDIETRO",
   "questions": [
