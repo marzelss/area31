@@ -58,22 +58,27 @@ async function nextQuestion() {
 
     const q = strings.questions[questionIndex];
 
-    if (q.rightAnswer && selectedAnswer !== q.rightAnswer) {
+    // check if question has a correct answer
+    if (q.rightAnswer) {
 
-        terminal.innerHTML = strings.ineligibleResult;
-        answersContainer.innerHTML = "";
-        nextBtn.style.display = "none";
+        if (selectedAnswer !== q.rightAnswer) {
 
-        await update(ref(db, `${passcode}/interpreter`), {
-            eligible: false
-        });
+            terminal.innerHTML = strings.ineligibleResult;
+            answersContainer.innerHTML = "";
+            nextBtn.style.display = "none";
 
-        return;
+            await update(ref(db, `${passcode}/interpreter`), {
+                eligible: false
+            });
 
+            return; // STOP HERE
+        }
     }
 
+    // move to next question
     questionIndex++;
 
+    // if finished
     if (questionIndex >= strings.questions.length) {
 
         terminal.innerHTML = strings.pendingResult;
@@ -85,11 +90,10 @@ async function nextQuestion() {
         });
 
         return;
-
     }
 
+    // otherwise load next question
     renderQuestion();
-
 }
 
 async function init() {
