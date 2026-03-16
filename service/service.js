@@ -79,8 +79,8 @@ async function loadServicePage() {
                 await update(ref(db, `${interpreterPasscode}/interpreter/client`), {
                     [passcode]: { name: guestName, passcode: passcode }
                 });
-                container.remove();
-                renderChosenSection();
+                // Force reload the page
+                window.location.reload();
             };
 
             const refuseBtn = document.createElement("button");
@@ -89,8 +89,8 @@ async function loadServicePage() {
                 await update(ref(db, `${passcode}/service/refused`), {
                     [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
                 });
-                container.remove();
-                renderRefusedSection();
+                // Force reload the page
+                window.location.reload();
             };
 
             buttonsDiv.appendChild(acceptBtn);
