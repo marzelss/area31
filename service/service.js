@@ -193,7 +193,7 @@ async function loadServicePage() {
                 
                         // add 1 point to interpreter
                         const interpreterPoints = (data[key]?.points || 0) + 1;
-                        await update(ref(db, `${key}/points`), interpreterPoints);
+                        await set(ref(db, `${key}/points`), interpreterPoints);
                 
                         // mark rated
                         await update(ref(db, `${passcode}/service/interpreter/${key}`), {
