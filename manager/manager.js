@@ -3,39 +3,43 @@ import { ref, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-da
 import { loadLocale } from "../utils/i18n.js";
 
 const terminal = document.getElementById("terminal");
-const answersContainer = document.getElementById("answers");
-const nextBtn = document.getElementById("nextBtn");
-const backBtn = document.getElementById("backBtn");
+const explanationDiv = document.getElementById("explanation");
+const rulesDiv = document.getElementById("rules");
 
 const passcode = sessionStorage.getItem("passcode");
-const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
-let strings;
-
-// Optional: add a back button handler
-backBtn.onclick = () => {
-    window.location.href = "../index.html"; // change to your home
-};
-
-// Load i18n strings
 async function init() {
-    strings = await loadLocale("manager"); // create a `manager.json` in locales
+    const strings = await loadLocale("manager"); // create manager.json in locales
 
+    // --- Title ---
+    terminal.innerHTML = `<strong style="font-size: 1.5rem;">${strings.title}</strong>`;
+
+    // --- Explanation / Rules ---
+    explanationDiv.textContent = strings.explanation;
+    explanationDiv.style.fontSize = "1.2rem";
+    explanationDiv.style.marginTop = "1rem";
+    explanationDiv.style.marginBottom = "1rem";
+
+    rulesDiv.style.fontSize = "1rem";
+    rulesDiv.style.color = "#333";
+    rulesDiv.style.marginBottom = "1rem";
+
+    // --- Firebase check ---
     if (!passcode) {
-        showUnauthorized();
+        showUnauthorized(strings);
         return;
     }
 
     try {
         const snapshot = await get(ref(db));
         if (!snapshot.exists()) {
-            showUnauthorized();
+            showUnauthorized(strings);
             return;
         }
 
         const data = snapshot.val();
 
-        // Find the object where real-name === "Martina"
+        // find object where real-name === "Martina"
         let matchedCode = null;
         for (const [code, obj] of Object.entries(data)) {
             if (obj["real-name"] === "Martina") {
@@ -44,38 +48,35 @@ async function init() {
             }
         }
 
+        // compare with sessionStorage passcode
         if (matchedCode && matchedCode === passcode) {
-            showManagerContent();
+            showManagerContent(strings);
         } else {
-            showUnauthorized();
+            showUnauthorized(strings);
         }
 
     } catch (err) {
         console.error("Firebase error:", err);
-        showUnauthorized();
+        showUnauthorized(strings);
     }
 }
 
-// Show manager content inside terminal
-function showManagerContent() {
-    terminal.innerHTML = `
-        <strong>${strings.welcome}</strong><br><br>
-        ${strings.managerInstructions}
-    `;
+// --- Show manager content ---
+function showManagerContent(strings) {
+    explanationDiv.textContent = strings.managerInstructions;
 
-    // Example of a button in answersContainer
-    answersContainer.innerHTML = `
-        <div class="userRow">
-            <button onclick="alert('Do something!')">${strings.doSomething}</button>
-        </div>
-    `;
+    // Example: a button inside rulesDiv
+    const button = document.createElement("button");
+    button.textContent = strings.doSomething;
+    button.onclick = () => alert("You did something!");
+    rulesDiv.appendChild(button);
 }
 
-// Show UNAUTHORIZED in same style
-function showUnauthorized() {
-    terminal.innerHTML = `<div class="intruder-screen">
-        <div class="warning">UNAUTHORIZED</div>
-    </div>`;
+// --- Show UNAUTHORIZED ---
+function showUnauthorized(strings) {
+    explanationDiv.textContent = "";
+    rulesDiv.textContent = "";
+    terminal.innerHTML = `<strong style="font-size: 2rem; color: red;">${strings.unauthorized}</strong>`;
 }
 
 init();
