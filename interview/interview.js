@@ -14,6 +14,25 @@ let strings;
 let questionIndex = 0;
 let selectedAnswer = null;
 
+async function checkClient() {
+
+    const snapshot = await get(ref(db, `${passcode}/interpreter/client`));
+
+    if (!snapshot.exists()) {
+        return null;
+    }
+
+    const clients = snapshot.val();
+    const firstKey = Object.keys(clients)[0];
+
+    if (!firstKey) {
+        return null;
+    }
+
+    return clients[firstKey]["real-name"];
+
+}
+
 async function checkEligibility() {
 
     const snapshot = await get(ref(db, `${passcode}/interpreter/eligible`));
@@ -135,6 +154,23 @@ async function init() {
     backBtn.onclick = () => {
         window.location.href = "../promotion/promotion.html";
     };
+
+    // NEW: check if interpreter already has a client
+    const clientName = await checkClient();
+
+    if (clientName !== null) {
+
+        terminal.innerHTML = `
+            ${strings.positiveResult1}<br><br>
+            <strong>${clientName}</strong><br><br>
+            ${strings.positiveResult2}
+        `;
+
+        answersContainer.innerHTML = "";
+        nextBtn.style.display = "none";
+
+        return;
+    }
 
     const eligible = await checkEligibility();
 
