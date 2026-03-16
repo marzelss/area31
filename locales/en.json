@@ -72,9 +72,9 @@
   },
   "interview": {
   "ineligibleResult": "Thank you for submitting your application. After careful examination, the Official Department of Interrecognized Galactic Languages has determined that your profile does not meet the minimum standards required for this mission.",
-  "pendingResult": "Application received. Your request has been transmitted under the highest level of secrecy to the Official Department of Interrecognized Galactic Languages and is currently under evaluation. Return to this page to check its progress. If a guest who does not speak Italian requires your services, the assignment will appear here.",
+  "pendingResult": "Application received. Your request has been transmitted under the highest level of secrecy to the Official Department of Interrecognized Galactic Languages and is currently under evaluation. Return to this page to check its progress. If a guest with linguistic impedements requires your services, the assignment will appear here.",
   "negativeResult": "WARNING: Your application has been deemed highly suspicious by the Official Department of Interrecognized Galactic Languages. For linguistic security reasons, your interpretation services have not been authorized for this event.",
-  "positiveResult1": "Application approved. You have been officially selected as interpreter by the following client:",
+  "positiveResult1": "Application approved. You have been officially selected as interpreter by the following linguistically limited client:",
   "positiveResult2": "The Official Department of Interrecognized Galactic Languages places great importance on discretion, efficiency, and secrecy among its personnel, as well as the delivery of high-quality services. Maximum interlinguistic communication standards are expected: the client will assign you a rating at the end of the event and you may earn up to 3 extra points.",
     "questions": [
       {
