@@ -186,6 +186,7 @@ button:hover {
     border: 2px solid black;
     margin-right: 10px;
     margin-top: 3px;
+    flex-shrink: 0;
 }
 
 .checkbox.checked {
