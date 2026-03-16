@@ -33,37 +33,29 @@ async function init() {
         sessionStorage.setItem("passcode", passcode);
     }
 
-    await checkAccess();
+    await verifyUser(passcode);
 }
 
-async function checkAccess() {
+async function verifyUser(passcode) {
 
     try {
 
-        const snapshot = await get(ref(db));
+        const snapshot = await get(ref(db, `${passcode}/real-name`));
 
         if (!snapshot.exists()) {
             showUnauthorized();
             return;
         }
 
-        const data = snapshot.val();
+        const realName = snapshot.val();
 
-        // Find object where real-name === "Martina"
-        let matchedCode = null;
+        // Save in session storage
+        sessionStorage.setItem("realName", realName);
+        sessionStorage.setItem("passcode", passcode);
 
-        for (const [code, obj] of Object.entries(data)) {
-
-            if (obj["real-name"] === "Martina") {
-                matchedCode = code;
-                break;
-            }
-
-        }
-
-        // Compare with passcode
-        if (matchedCode && matchedCode === passcode) {
-            showManagerContent();
+        // Check authorization
+        if (realName === "Martina") {
+            showManagerContent(realName);
         } else {
             showUnauthorized();
         }
