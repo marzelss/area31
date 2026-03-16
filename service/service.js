@@ -72,14 +72,27 @@ async function loadServicePage() {
             const acceptBtn = document.createElement("button");
             acceptBtn.textContent = "ACCEPT";
             acceptBtn.onclick = async () => {
+                // 1) add to guest's chosen interpreters
                 await update(ref(db, `${passcode}/service/interpreter`), {
                     [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
                 });
+
+                // 2) add to interpreter's client list
                 const guestName = guestData["real-name"] || "UNKNOWN";
                 await update(ref(db, `${interpreterPasscode}/interpreter/client`), {
                     [passcode]: { name: guestName, passcode: passcode }
                 });
-                // Force reload the page
+
+                // 3) mark interpreter as not eligible
+                await update(ref(db, `${interpreterPasscode}/interpreter`), { eligible: false });
+
+                // 4) add points
+                const interpreterPoints = (data[interpreterPasscode]?.points || 0) + 2;
+                const guestPoints = (guestData.points || 0) + 1;
+                await update(ref(db, `${interpreterPasscode}/points`), interpreterPoints);
+                await update(ref(db, `${passcode}/points`), guestPoints);
+
+                // Force reload
                 window.location.reload();
             };
 
@@ -89,7 +102,6 @@ async function loadServicePage() {
                 await update(ref(db, `${passcode}/service/refused`), {
                     [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
                 });
-                // Force reload the page
                 window.location.reload();
             };
 
@@ -133,58 +145,82 @@ async function loadServicePage() {
             nameDiv.style.fontWeight = "normal";
             nameDiv.style.marginRight = "1rem";
 
-            const rateBtn = document.createElement("button");
-            rateBtn.textContent = "RATE GOOD SERVICE";
-            rateBtn.onclick = () => {
-                // Custom popup
-                const popup = document.createElement("div");
-                popup.style.position = "fixed";
-                popup.style.top = "0";
-                popup.style.left = "0";
-                popup.style.width = "100%";
-                popup.style.height = "100%";
-                popup.style.backgroundColor = "rgba(0,0,0,0.7)";
-                popup.style.display = "flex";
-                popup.style.flexDirection = "column";
-                popup.style.justifyContent = "center";
-                popup.style.alignItems = "center";
-                popup.style.zIndex = "10000";
-                popup.style.color = "#fff";
-                popup.style.fontFamily = "monospace";
-
-                const title = document.createElement("div");
-                title.textContent = `Do you want to rate ${chosenList[key].name} good service?`;
-                title.style.fontSize = "1.3rem";
-                title.style.marginBottom = "1rem";
-
-                const message = document.createElement("div");
-                message.textContent = "The user will earn 1 extra point.";
-                message.style.fontSize = "1.1rem";
-                message.style.marginBottom = "1.5rem";
-
-                const buttons = document.createElement("div");
-                buttons.style.display = "flex";
-                buttons.style.gap = "1rem";
-
-                const confirmBtn = document.createElement("button");
-                confirmBtn.textContent = "CONFIRM";
-                confirmBtn.onclick = () => popup.remove();
-
-                const cancelBtn = document.createElement("button");
-                cancelBtn.textContent = "CANCEL";
-                cancelBtn.onclick = () => popup.remove();
-
-                buttons.appendChild(confirmBtn);
-                buttons.appendChild(cancelBtn);
-                popup.appendChild(title);
-                popup.appendChild(message);
-                popup.appendChild(buttons);
-
-                document.body.appendChild(popup);
-            };
+            // Show rate button only if not already rated
+            if (!chosenList[key].rated) {
+                const rateBtn = document.createElement("button");
+                rateBtn.textContent = "RATE GOOD SERVICE";
+                rateBtn.onclick = () => {
+                    // Custom popup
+                    const popup = document.createElement("div");
+                    popup.style.position = "fixed";
+                    popup.style.top = "0";
+                    popup.style.left = "0";
+                    popup.style.width = "100%";
+                    popup.style.height = "100%";
+                    popup.style.backgroundColor = "rgba(0,0,0,0.7)";
+                    popup.style.display = "flex";
+                    popup.style.flexDirection = "column";
+                    popup.style.justifyContent = "center";
+                    popup.style.alignItems = "center";
+                    popup.style.zIndex = "10000";
+                    popup.style.color = "#fff";
+                    popup.style.fontFamily = "monospace";
+                
+                    const title = document.createElement("div");
+                    title.textContent = `Do you want to rate ${chosenList[key].name} good service?`;
+                    title.style.fontSize = "1.3rem";
+                    title.style.marginBottom = "1rem";
+                
+                    const message = document.createElement("div");
+                    message.textContent = "The user will earn 1 extra point.";
+                    message.style.fontSize = "1.1rem";
+                    message.style.marginBottom = "1.5rem";
+                
+                    const buttons = document.createElement("div");
+                    buttons.style.display = "flex";
+                    buttons.style.gap = "1rem";
+                
+                    const confirmBtn = document.createElement("button");
+                    confirmBtn.textContent = "CONFIRM";
+                    confirmBtn.onclick = async () => {
+                
+                        // check if already rated
+                        if (chosenList[key].rated === true) {
+                            popup.remove();
+                            return;
+                        }
+                
+                        // add 1 point to interpreter
+                        const interpreterPoints = (data[key]?.points || 0) + 1;
+                        await update(ref(db, `${key}/points`), interpreterPoints);
+                
+                        // mark rated
+                        await update(ref(db, `${passcode}/service/interpreter/${key}`), {
+                            rated: true
+                        });
+                
+                        popup.remove();
+                
+                        // reload page
+                        window.location.reload();
+                    };
+                
+                    const cancelBtn = document.createElement("button");
+                    cancelBtn.textContent = "CANCEL";
+                    cancelBtn.onclick = () => popup.remove();
+                
+                    buttons.appendChild(confirmBtn);
+                    buttons.appendChild(cancelBtn);
+                    popup.appendChild(title);
+                    popup.appendChild(message);
+                    popup.appendChild(buttons);
+                
+                    document.body.appendChild(popup);
+                };
+                container.appendChild(rateBtn);
+            }
 
             container.appendChild(nameDiv);
-            container.appendChild(rateBtn);
             chosenSection.appendChild(container);
         });
 
