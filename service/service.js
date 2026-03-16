@@ -10,7 +10,7 @@ const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
 // Instruction text under heading
 infoText.textContent = 
-  "As a guest with linguistic limitations, you can pick up to 3 interpreters who will follow you around for the entire duration of the event. For each interpreter you earn 2 points.\nAfter the event, you can rate the interpreter a good service and let them earn 3 extra points.";
+  "As a guest with linguistic limitations, you can pick up to 3 interpreters who will follow you around for the entire duration of the event. For each interpreter you earn 2 points.\nAfter the event, you can rate the interpreter a good service and let them earn 1 extra point.";
 infoText.style.fontSize = "1.2rem";
 infoText.style.marginBottom = "1.5rem";
 
