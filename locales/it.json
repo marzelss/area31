@@ -72,9 +72,9 @@
   },
   "interview": {
   "ineligibleResult": "Ti ringraziamo per aver inviato la tua candidatura. Dopo un'attenta esaminazione, il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ha stabilito che il tuo profilo non soddisfa gli standard minimi richiesti per questa missione.",
-  "pendingResult": "Candidatura ricevuta. La tua richiesta è stata inviata nella massima segretezza al Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ed è in fase di valutazione. Torna su questa pagina per controllarne lo stato di avanzamento. Se un ospite che non parla Italiano richiederà i tuoi servizi, comparirà qui.",
+  "pendingResult": "Candidatura ricevuta. La tua richiesta è stata inviata nella massima segretezza al Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ed è in fase di valutazione. Torna su questa pagina per controllarne lo stato di avanzamento. Se un ospite affetto da impedimento linguistico richiederà i tuoi servizi, comparirà qui.",
   "negativeResult": "ATTENZIONE: La tua candidatura è stata ritenuta altamente sospetta dal Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute. Per ragioni di sicurezza linguistica, i tuoi servizi interpretatori non sono stati selezionati per questo evento.",
-  "positiveResult1": "Candidatura approvata. Sei stato ufficialmente selezionato come interprete dal seguente cliente:",
+  "positiveResult1": "Candidatura approvata. Sei stato ufficialmente selezionato come interprete dal seguente cliente linguisticamente svantaggiato:",
   "positiveResult2": "Il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute tiene molto alla discrezione, efficienza e segretezza dei propri dipendenti, ma anche servizi di alta qualità. Si raccomanda una comunicazione interlinguistica di massimo livello: il cliente ti assegnerà una valutazione al termine dell'evento e potrà farti guadagnare fino a 3 punti extra.",
   "questions": [
     {
