@@ -51,6 +51,7 @@ async function init() {
                 });
 
                 button.remove();
+                window.location.reload();
 
             };
 
