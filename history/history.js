@@ -1,5 +1,6 @@
 import { db } from "../sources/firebase.js";
 import { ref, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { loadLocale } from "../utils/i18n.js";
 
 const terminal = document.getElementById("terminal");
 const reportsList = document.getElementById("reportsList");
@@ -9,9 +10,13 @@ const backButton = document.getElementById("backButton");
 let passcode = sessionStorage.getItem("passcode");
 let lang = sessionStorage.getItem("lang") || "en";
 
+// --- Load locale strings ---
+const strings = await loadLocale("reportHistory");
+
 async function init() {
 
-    terminal.innerHTML = `<strong style="font-size: 1.5rem;">REPORT HISTORY</strong>`;
+    // --- Title ---
+    terminal.innerHTML = `<strong style="font-size: 1.5rem;">${strings.title}</strong>`;
 
     if (!passcode) {
         showUnauthorized();
@@ -21,7 +26,7 @@ async function init() {
     const snapshot = await get(ref(db, `${passcode}/reports`));
 
     if (!snapshot.exists()) {
-        emptyState.textContent = "No reports yet.";
+        emptyState.textContent = "—";
         return;
     }
 
@@ -29,8 +34,17 @@ async function init() {
 
     await renderReportsAnimated(Object.values(reports));
 
-    backButton.textContent = "← Back";
+    // --- Message above back button ---
+    const message = document.createElement("div");
+    message.textContent = strings.message;
+    message.style.marginTop = "1.5rem";
+
+    document.body.insertBefore(message, backButton);
+
+    // --- Back button ---
+    backButton.textContent = strings.backButton;
     backButton.style.cursor = "pointer";
+    backButton.style.textDecoration = "underline";
 
     backButton.onclick = () => {
         window.history.back();
@@ -50,7 +64,7 @@ async function renderReportsAnimated(reports) {
 
         reportsList.appendChild(line);
 
-        await delay(120); // typing effect
+        await delay(120);
     }
 }
 
