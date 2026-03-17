@@ -102,11 +102,54 @@ async function init() {
     userDropdown.addEventListener("change", checkSelections);
     roleDropdown.addEventListener("change", checkSelections);
 
-    submitBtn.onclick = () => {
-        const selectedUser = userDropdown.value;
-        const selectedRole = roleDropdown.value;
+    submitBtn.onclick = async () => {
     
-        console.log(selectedUser, selectedRole);
+        const exposedPasscode = userDropdown.value;
+    
+        const selectedRole =
+            roleDropdown.options[roleDropdown.selectedIndex].textContent;
+    
+        try {
+    
+            // --- get exposed user's role in current locale ---
+            const roleSnap = await get(ref(db, `${exposedPasscode}/role/${userLang}/name`));
+    
+            if (!roleSnap.exists()) {
+                console.log("Role not found for exposed user");
+                return;
+            }
+    
+            const exposedRole = roleSnap.val();
+    
+            // --- compare roles (case insensitive) ---
+            if (exposedRole.toLowerCase() === selectedRole.toLowerCase()) {
+    
+                // --- CURRENT USER POINTS ---
+                const myPointsRef = ref(db, `${passcode}/points`);
+                const myPointsSnap = await get(myPointsRef);
+                const myPoints = myPointsSnap.exists() ? myPointsSnap.val() : 0;
+    
+                await set(myPointsRef, myPoints + 3);
+    
+    
+                // --- EXPOSED USER POINTS ---
+                const exposedPointsRef = ref(db, `${exposedPasscode}/points`);
+                const exposedPointsSnap = await get(exposedPointsRef);
+                const exposedPoints = exposedPointsSnap.exists() ? exposedPointsSnap.val() : 0;
+    
+                await set(exposedPointsRef, exposedPoints - 1);
+    
+                console.log("Report correct. Points updated.");
+    
+            } else {
+    
+                console.log("Report incorrect. Roles do not match.");
+    
+            }
+    
+        } catch (error) {
+            console.error("Error during report:", error);
+        }
     };
 }
 
