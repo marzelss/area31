@@ -23,68 +23,24 @@ async function init() {
 
     // --- Handle empty state if too early, no more entries, or party over ---
     if (filteredUsers.length === 0) {
-        
-        // check if past 26 Mar 21:45
-        const now = new Date();
-        const cutoff = new Date('2026-03-26T21:45:00');
-
-        // create empty state label
-        const label = document.createElement("div");
-
-        // check if party started and any guests arrived
-        const anyArrived = await anyGuestsArrived();
-
-        // show game ended label if party over
-        if (now >= cutoff) {
-            label.textContent = strings.noMoreEntries;
-        // else handle empty state
-        } else {
-            // party has started
-            if (anyArrived) {
-                label.textContent = strings.tryAgainLater;
-            // party yet to start
-            } else {
-                label.textContent = strings.emptyState;
-            }
-        }
-
-        label.style.fontSize = "1.1rem";
-        label.style.marginTop = "1rem";
-        rulesDiv.appendChild(label);
-        
+        // handle empty state
+        handleEmptyState(strings)
         // stop here, no dropdowns
         return;
     }
 
-    // --- Add top dropdown ---
+    // --- Users dropdown ---
     addDropdown(rulesDiv, strings.userField, filteredUsers.map(u => ({ value: u.passcode, text: u.userName })));
 
     // --- Roles Dropdown ---
     const rolesOptions = await getRolesOptions();
-
-    // Get current user's role name for this locale
     const currentUserRoleSnapshot = await get(ref(db, `${passcode}/role/${userLang}/name`));
     const currentUserRoleName = currentUserRoleSnapshot.exists() ? currentUserRoleSnapshot.val() : null;
-
     const filteredRoles = rolesOptions.filter(r => r[userLang] !== currentUserRoleName);
-
     addDropdown(rulesDiv, strings.identityField, filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
 
     // --- Submit Button ---
-    const submitBtn = document.createElement("button");
-    submitBtn.textContent = strings.submitButton;
-    submitBtn.style.fontFamily = "monospace";
-    submitBtn.style.fontSize = "1rem";
-    submitBtn.style.padding = "0.5rem 1rem";
-    submitBtn.style.marginTop = "1rem";
-    submitBtn.style.marginBottom = "0.5rem";
-    submitBtn.style.marginTop = "1rem";
-    submitBtn.style.backgroundColor = "rgba(0,0,0,0.9)";
-    submitBtn.style.color = "rgba(255,255,255,0.9)";
-    submitBtn.style.border = "none";
-    submitBtn.style.borderRadius = "4px";
-    submitBtn.style.cursor = "pointer";
-    submitBtn.style.display = "none"; // hidden initially
+    const submitBtn = createSubmitButton(strings);
     rulesDiv.appendChild(submitBtn);
     
     // --- Get dropdowns ---
@@ -107,49 +63,162 @@ async function init() {
     userDropdown.addEventListener("change", checkSelections);
     roleDropdown.addEventListener("change", checkSelections);
 
-    submitBtn.onclick = () => {
+    submitBtn.onclick = () => handleSubmit(userDropdown, roleDropdown, strings);
+}
+
+// ------------
+// ---- UI ----
+// ------------
+
+// --- TITLE ---
+function setupTitle() {
+    terminal.innerHTML = `<strong style="font-size: 1.5rem;">REPORT</strong>`;
+}
+
+// --- EXPLANATION ---
+function setupExplanation(strings) {
+    explanationDiv.textContent = strings.explanation;
+    explanationDiv.style.fontSize = "1.2rem";
+    explanationDiv.style.marginTop = "1rem";
+    explanationDiv.style.marginBottom = "1rem";
+}
+
+// --- RULES ---
+function setupRules(strings) {
+    rulesDiv.textContent = strings.rules;
+    rulesDiv.style.fontSize = "1rem";
+    rulesDiv.style.color = "#333";
+    rulesDiv.style.marginBottom = "1rem";
+}
+
+// --- EMPTY STATE ---
+async function handleEmptyState(strings) {
+    
+    // create conditions
+    const now = new Date();
+    const cutoff = new Date('2026-03-26T21:45:00');
+    const anyArrived = await anyGuestsArrived();
+
+    // create empty state label
+    const label = document.createElement("div");
+    
+    // show game ended label if party over
+    if (now >= cutoff) {
+        label.textContent = strings.noMoreEntries;
+    // else handle empty state
+    } else {
+        // party has started
+        if (anyArrived) {
+            label.textContent = strings.tryAgainLater;
+        // party yet to start
+        } else {
+            label.textContent = strings.emptyState;
+        }
+    }
+
+    // set up empty state
+    label.style.fontSize = "1.1rem";
+    label.style.marginTop = "1rem";
+    rulesDiv.appendChild(label);
+}
+
+// --- SUBMIT BUTTON ---
+function createSubmitButton(strings) {
+    const btn = document.createElement("button");
+    btn.textContent = strings.submitButton;
+    btn.style.fontFamily = "monospace";
+    btn.style.fontSize = "1rem";
+    btn.style.padding = "0.5rem 1rem";
+    btn.style.marginTop = "1rem";
+    btn.style.marginBottom = "0.5rem";
+    btn.style.backgroundColor = "rgba(0,0,0,0.9)";
+    btn.style.color = "rgba(255,255,255,0.9)";
+    btn.style.border = "none";
+    btn.style.borderRadius = "4px";
+    btn.style.cursor = "pointer";
+    btn.style.display = "none";
+    return btn;
+}
+
+// --- CUSTOM POPUP ---
+function setupPopup() {
+    const popup = document.createElement("div");
+    popup.style.position = "fixed";
+    popup.style.top = "0";
+    popup.style.left = "0";
+    popup.style.width = "100%";
+    popup.style.height = "100%";
+    popup.style.backgroundColor = "rgba(0,0,0,0.7)";
+    popup.style.display = "flex";
+    popup.style.flexDirection = "column";
+    popup.style.justifyContent = "center";
+    popup.style.alignItems = "center";
+    popup.style.zIndex = "10000";
+    popup.style.color = "#fff";
+    popup.style.fontFamily = "monospace";
+    popup.style.padding = "1.5rem";
+    return popup;
+}
+
+function setupPopupMessage(strings) {
+    const messageDiv = document.createElement("div");
+    messageDiv.textContent = strings.warningMessage;
+    messageDiv.style.fontSize = "1.2rem";
+    messageDiv.style.marginBottom = "1.5rem";
+    return messageDiv;
+}
+
+function setupPopupButtons() {
+    const buttonsDiv = document.createElement("div");
+    buttonsDiv.style.display = "flex";
+    buttonsDiv.style.gap = "1rem";
+    return buttonsDiv;
+}
+
+function setupConfirmButton(strings) {
+    const confirmBtn = document.createElement("button");
+    confirmBtn.textContent = strings.submitButton;
+    confirmBtn.style.fontFamily = "monospace";
+    confirmBtn.style.padding = "0.5rem 1rem";
+    confirmBtn.style.backgroundColor = "rgba(0,0,0,0.9)";
+    confirmBtn.style.color = "#fff";
+    confirmBtn.style.border = "none";
+    confirmBtn.style.borderRadius = "4px";
+    confirmBtn.style.cursor = "pointer";
+    return confirmBtn;
+}
+
+function setupCancelButton(strings) {
+    const cancelBtn = document.createElement("button");
+    cancelBtn.textContent = strings.cancelButton;
+    cancelBtn.style.fontFamily = "monospace";
+    cancelBtn.style.padding = "0.5rem 1rem";
+    cancelBtn.style.backgroundColor = "rgba(50,50,50,0.9)";
+    cancelBtn.style.color = "#fff";
+    cancelBtn.style.border = "none";
+    cancelBtn.style.borderRadius = "4px";
+    cancelBtn.style.cursor = "pointer";
+    return cancelBtn;
+}
+
+// ------------
+// ---- UX ----
+// ------------
+
+// --- Handle submission ---
+
+function handleSubmit(userDropdown, roleDropdown, strings) {
     
         const exposedPasscode = userDropdown.value;
         const exposedUserName = userDropdown.options[userDropdown.selectedIndex].textContent;
         const selectedRoleText = roleDropdown.options[roleDropdown.selectedIndex].textContent;
-        const roleIndex = roleDropdown.selectedIndex - 1; // because index 0 is placeholder
+        const roleIndex = roleDropdown.selectedIndex - 1; // index 0 is placeholder
     
         // --- Custom confirmation popup ---
-        const popup = document.createElement("div");
-        popup.style.position = "fixed";
-        popup.style.top = "0";
-        popup.style.left = "0";
-        popup.style.width = "100%";
-        popup.style.height = "100%";
-        popup.style.backgroundColor = "rgba(0,0,0,0.7)";
-        popup.style.display = "flex";
-        popup.style.flexDirection = "column";
-        popup.style.justifyContent = "center";
-        popup.style.alignItems = "center";
-        popup.style.zIndex = "10000";
-        popup.style.color = "#fff";
-        popup.style.fontFamily = "monospace";
-        popup.style.padding = "1.5rem"
-    
-        const messageDiv = document.createElement("div");
-        messageDiv.textContent = strings.warningMessage;
-        messageDiv.style.fontSize = "1.2rem";
-        messageDiv.style.marginBottom = "1.5rem";
-    
-        const buttonsDiv = document.createElement("div");
-        buttonsDiv.style.display = "flex";
-        buttonsDiv.style.gap = "1rem";
-    
-        // --- Confirm Button ---
-        const confirmBtn = document.createElement("button");
-        confirmBtn.textContent = strings.submitButton;
-        confirmBtn.style.fontFamily = "monospace";
-        confirmBtn.style.padding = "0.5rem 1rem";
-        confirmBtn.style.backgroundColor = "rgba(0,0,0,0.9)";
-        confirmBtn.style.color = "#fff";
-        confirmBtn.style.border = "none";
-        confirmBtn.style.borderRadius = "4px";
-        confirmBtn.style.cursor = "pointer";
+        const popup = setupPopup();
+        const messageDiv = setupPopupMessage(strings);
+        const buttonsDiv = setupPopupButtons();
+        const confirmBtn = setupConfirmButton(strings);
     
         confirmBtn.onclick = async () => {
             try {
@@ -206,20 +275,10 @@ async function init() {
             }
     
             popup.remove();
-            // Optionally reload page if you want UI refreshed:
-            // window.location.reload();
         };
     
         // --- Cancel Button ---
-        const cancelBtn = document.createElement("button");
-        cancelBtn.textContent = strings.cancelButton;
-        cancelBtn.style.fontFamily = "monospace";
-        cancelBtn.style.padding = "0.5rem 1rem";
-        cancelBtn.style.backgroundColor = "rgba(50,50,50,0.9)";
-        cancelBtn.style.color = "#fff";
-        cancelBtn.style.border = "none";
-        cancelBtn.style.borderRadius = "4px";
-        cancelBtn.style.cursor = "pointer";
+        const cancelBtn = setupCancelButton(strings);
     
         cancelBtn.onclick = () => popup.remove();
     
@@ -229,28 +288,6 @@ async function init() {
         popup.appendChild(messageDiv);
         popup.appendChild(buttonsDiv);
         document.body.appendChild(popup);
-    };
-}
-
-// --- TITLE ---
-function setupTitle() {
-    terminal.innerHTML = `<strong style="font-size: 1.5rem;">REPORT</strong>`;
-}
-
-// --- EXPLANATION ---
-function setupExplanation(strings) {
-    explanationDiv.textContent = strings.explanation;
-    explanationDiv.style.fontSize = "1.2rem";
-    explanationDiv.style.marginTop = "1rem";
-    explanationDiv.style.marginBottom = "1rem";
-}
-
-// --- RULES ---
-function setupRules(strings) {
-    rulesDiv.textContent = strings.rules;
-    rulesDiv.style.fontSize = "1rem";
-    rulesDiv.style.color = "#333";
-    rulesDiv.style.marginBottom = "1rem";
 }
 
 // --- Check if at least one guest has arrived ---
