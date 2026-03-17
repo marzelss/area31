@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>History</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
@@ -12,25 +10,12 @@ body {
     margin: 2rem;
 }
 
-#container {
-    max-width: 600px;
-}
-
-.reportItem {
-    margin-bottom: 1rem;
-}
-
-.name {
-    font-weight: bold;
-}
-
-.role {
-    margin-left: 1rem;
+#reportsList {
+    margin-top: 1rem;
 }
 
 #backButton {
     margin-top: 2rem;
-    cursor: pointer;
     text-decoration: underline;
 }
 </style>
@@ -38,17 +23,13 @@ body {
 
 <body>
 
-<div id="container">
-
-<h2 id="title"></h2>
+<div id="terminal"></div>
 
 <div id="reportsList"></div>
 
 <div id="emptyState"></div>
 
 <div id="backButton"></div>
-
-</div>
 
 <script type="module" src="./history.js"></script>
 
