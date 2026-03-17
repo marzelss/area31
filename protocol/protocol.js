@@ -252,7 +252,7 @@ async function init() {
     // Determine status and reveal time
     const user = await getUser();
     const status = user.status;
-    const revealDate = new Date("2026-03-25T18:00:00+01:00");
+    const revealDate = new Date("2026-03-15T18:00:00+01:00");
     const isRevealTime = new Date() >= revealDate;
 
     // If location was not revealed yet and it's time
