@@ -64,7 +64,7 @@ async function init() {
                         
                         // Push a new object as a child
                         await update(userOptionsRef, {
-                            [Date.now()]: {
+                            [code]: {
                                 passcode: code,
                                 "real-name": user["real-name"]
                             }
