@@ -95,3 +95,61 @@ export async function dbLogEvent(message, data = {}) {
         console.error("Analytics error:", err);
     }
 }
+
+/**
+ * Logs an event to the database.
+ * @param {"info"|"error"|"db"} type - Type of log for emoji/prefix
+ * @param {string} message - Custom message
+ * @param {object} data - Optional dictionary
+ */
+export async function reportLogEvent(message, data = {}) {
+    try {
+        const passcode = sessionStorage.getItem("passcode");
+        if (!passcode) return;
+
+        // Determine prefix based on type
+        let prefix = "📑 Report - ";
+        const timestamp = Date.now();
+        const fullMessage = `${prefix}${formatTimestamp(timestamp)}\n${message}`;
+
+        const event = {
+            timestamp: timestamp,
+            message: fullMessage,
+            data: data
+        };
+
+        await push(ref(db, `${passcode}/analytics`), event);
+
+    } catch (err) {
+        console.error("Analytics error:", err);
+    }
+}
+
+/**
+ * Logs an event to the database.
+ * @param {"info"|"error"|"db"} type - Type of log for emoji/prefix
+ * @param {string} message - Custom message
+ * @param {object} data - Optional dictionary
+ */
+export async function promotionLogEvent(message, data = {}) {
+    try {
+        const passcode = sessionStorage.getItem("passcode");
+        if (!passcode) return;
+
+        // Determine prefix based on type
+        let prefix = "🎖️ Promotion - ";
+        const timestamp = Date.now();
+        const fullMessage = `${prefix}${formatTimestamp(timestamp)}\n${message}`;
+
+        const event = {
+            timestamp: timestamp,
+            message: fullMessage,
+            data: data
+        };
+
+        await push(ref(db, `${passcode}/analytics`), event);
+
+    } catch (err) {
+        console.error("Analytics error:", err);
+    }
+}
