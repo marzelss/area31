@@ -38,10 +38,12 @@ async function init() {
         const cutoff = new Date('2026-03-26T21:30:00'); // adjust year as needed
         const label = document.createElement("div");
 
+        const anyArrived = await anyGuestsArrived();
+        
         if (now >= cutoff) {
             label.textContent = strings.noMoreEntries;
         } else {
-            if (arrivedUsers.length > 0) {
+            if (anyArrived) {
                 label.textContent = strings.tryAgainLater;
             } else {
                 label.textContent = strings.emptyState;
@@ -226,6 +228,16 @@ async function init() {
         popup.appendChild(buttonsDiv);
         document.body.appendChild(popup);
     };
+}
+
+// --- Check if at least one guest has arrived ---
+async function anyGuestsArrived() {
+    const snapshot = await get(ref(db, "/")); // root or adjust path if needed
+    if (!snapshot.exists()) return false;
+
+    const allUsers = snapshot.val();
+    // Check if any user has arrived === true
+    return Object.values(allUsers).some(userData => userData.arrived === true);
 }
 
 // --- Fetch all users from entries/userOptions ---
