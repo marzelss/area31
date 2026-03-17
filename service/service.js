@@ -170,6 +170,7 @@ async function loadServicePage() {
                 const rateBtn = document.createElement("button");
                 rateBtn.textContent = "RATE GOOD SERVICE";
                 rateBtn.onclick = () => {
+                    infoLogEvent(`User selected button: REQUEST SERVICE: RATE GOOD SERVICE: ${chosenList[key].name}`);
                     // Custom popup
                     const popup = document.createElement("div");
                     popup.style.position = "fixed";
@@ -203,6 +204,7 @@ async function loadServicePage() {
                     const confirmBtn = document.createElement("button");
                     confirmBtn.textContent = "CONFIRM";
                     confirmBtn.onclick = async () => {
+                        infoLogEvent(`User selected button: REQUEST SERVICE: RATE GOOD SERVICE: ${chosenList[key].name}: CONFIRM`);
                 
                         // check if already rated
                         if (chosenList[key].rated === true) {
