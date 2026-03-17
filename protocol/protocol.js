@@ -17,6 +17,21 @@ let strings;
 let presentationStrings;
 const realName = sessionStorage.getItem("realName");
 const passcode = sessionStorage.getItem("passcode");
+
+// Protect page: redirect if sessionStorage missing required keys
+(function checkSession() {
+    const realName = sessionStorage.getItem("realName");
+    const passcode = sessionStorage.getItem("passcode");
+
+    if (!realName || !passcode) {
+        // Clear session storage just in case
+        sessionStorage.clear();
+
+        // Redirect to index.html and replace history so back button won't work
+        location.replace("../index.html");
+    }
+})();
+
 if (!passcode) window.location.href = "../index.html";
 
 const storage = getStorage();
