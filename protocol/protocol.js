@@ -80,6 +80,7 @@ function typeLines(lines, isNonItalianSpeaker) {
             }
             presentationBtn.style.display = "inline-block";
             infoLogEvent("User read protocol.");
+            dbLogEvent("Update:", { status: "DELIVERED" });
             update(ref(db, passcode), { status: "DELIVERED" });
             return;
         }
