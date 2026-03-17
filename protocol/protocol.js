@@ -185,20 +185,21 @@ function showLocationPopup() {
     okBtn.style.cursor = "pointer";
 
     // Remove popup on click
-    okBtn.addEventListener("click", () => {
+    okBtn.addEventListener("click", async () => {
         // Remove popup
         document.body.removeChild(popup);
-
-        // Remove first reveal lines from terminal
+    
+        // Clear terminal
         terminal.innerHTML = "";
-
+    
         // Start second reveal sequence
         const nextLines = [
             strings.locationReveal5,
             strings.locationReveal6,
             strings.locationReveal7
         ];
-        typeLinesWithCallback(nextLines, () => {
+    
+        typeLinesWithCallback(nextLines, async () => {
             // Set user status to UNLOCKED in database
             await update(ref(db, passcode), { status: "UNLOCKED" });
     
