@@ -365,6 +365,26 @@ function initMap() {
     const mapDiv = document.getElementById("map");
     mapDiv.style.display = "block";
 
+        // --- Add label above the map ---
+    let mapLabel = document.getElementById("mapLabel");
+    if (!mapLabel) {
+        mapLabel = document.createElement("div");
+        mapLabel.id = "mapLabel";
+        mapLabel.style.fontFamily = "monospace";
+        mapLabel.style.color = "#fff";
+        mapLabel.style.backgroundColor = "rgba(0,0,0,0.7)";
+        mapLabel.style.padding = "1rem";
+        mapLabel.style.marginBottom = "0.5rem";
+        mapLabel.style.borderRadius = "4px";
+        mapLabel.style.textAlign = "center";
+        mapLabel.style.maxWidth = "600px";
+        mapLabel.style.margin = "0 auto 0.5rem auto"; // center above map
+
+        mapDiv.parentNode.insertBefore(mapLabel, mapDiv);
+    }
+
+    mapLabel.textContent = strings.locationReveal8;
+
     const map = L.map('map').setView([lat, lng], 15);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -376,7 +396,7 @@ function initMap() {
     marker.bindPopup(`
         <strong>MISSION LOCATION</strong><br>
         <a href="https://maps.google.com/?q=${lat},${lng}" target="_blank">
-        Open in Maps
+        Via Cadore 1, Gallarate
         </a>
     `);
 }
