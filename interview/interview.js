@@ -1,7 +1,7 @@
 import { db } from "../sources/firebase.js";
 import { ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 import { loadLocale } from "../utils/i18n.js";
-import { infoLogEvent, errorLogEvent, dbLogEvent } from "../utils/analytics.js";
+import { infoLogEvent, errorLogEvent, dbLogEvent, promotionLogEvent } from "../utils/analytics.js";
 
 const terminal = document.getElementById("terminal");
 const answersContainer = document.getElementById("answers");
@@ -156,7 +156,7 @@ async function nextQuestion() {
             eligible: true
         });
 
-        infoLogEvent("User selected button: ASK FOR PROMOTION: APPLY: Interview completed");
+        promotionLogEvent("User selected button: ASK FOR PROMOTION: APPLY: Interview completed");
         return;
     }
 
