@@ -41,7 +41,11 @@ async function init() {
         if (now >= cutoff) {
             label.textContent = strings.noMoreEntries;
         } else {
-            label.textContent = strings.emptyState;
+            if (filteredUsers.length > 0) {
+                label.textContent = strings.tryAgainLater;
+            } else {
+                label.textContent = strings.emptyState;
+            }
         }
 
         label.style.fontSize = "1.1rem";
