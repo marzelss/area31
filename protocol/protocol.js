@@ -193,7 +193,6 @@ async function init() {
     };
 
     // Define text
-    const user = await getUser();
     const isNonItalianSpeaker = user["non-italian-speaker"] === true;
     const roleName = user.role?.[userLang]?.name ?? "UNKNOWN ROLE";
     const roleTask = user.role?.[userLang]?.task ?? "NO TASK ASSIGNED";
