@@ -1,52 +1,68 @@
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"
+import { db } from "../sources/firebase.js";
+import { ref, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-const db = getDatabase()
+const terminal = document.getElementById("terminal");
+const reportsList = document.getElementById("reportsList");
+const emptyState = document.getElementById("emptyState");
+const backButton = document.getElementById("backButton");
 
-const container = document.getElementById("container")
-const reportsList = document.getElementById("reportsList")
-const emptyState = document.getElementById("emptyState")
-const title = document.getElementById("title")
-const backButton = document.getElementById("backButton")
+let passcode = sessionStorage.getItem("passcode");
+let lang = sessionStorage.getItem("lang") || "en";
 
 async function init() {
 
-    title.textContent = strings.historyTitle || "Report History"
+    terminal.innerHTML = `<strong style="font-size: 1.5rem;">REPORT HISTORY</strong>`;
 
-    const reportsRef = ref(db, `${passcode}/reports`)
-    const snapshot = await get(reportsRef)
+    if (!passcode) {
+        showUnauthorized();
+        return;
+    }
+
+    const snapshot = await get(ref(db, `${passcode}/reports`));
 
     if (!snapshot.exists()) {
-        emptyState.textContent = strings.noReports || "No reports yet."
-        return
+        emptyState.textContent = "No reports yet.";
+        return;
     }
 
-    const reports = snapshot.val()
-    const lang = strings.lang || "en"
+    const reports = snapshot.val();
 
-    Object.values(reports).forEach(report => {
+    await renderReportsAnimated(Object.values(reports));
 
-        const item = document.createElement("div")
-        item.className = "reportItem"
+    backButton.textContent = "← Back";
+    backButton.style.cursor = "pointer";
 
-        const name = document.createElement("div")
-        name.className = "name"
-        name.textContent = report.name
-
-        const role = document.createElement("div")
-        role.className = "role"
-        role.textContent = report.role[lang] || report.role.en
-
-        item.appendChild(name)
-        item.appendChild(role)
-
-        reportsList.appendChild(item)
-    })
-
-    backButton.textContent = strings.back || "← Back"
     backButton.onclick = () => {
-        window.history.back()
-    }
-
+        window.history.back();
+    };
 }
 
-init()
+async function renderReportsAnimated(reports) {
+
+    for (const report of reports) {
+
+        const line = document.createElement("div");
+
+        const roleText = report.role[lang] || report.role.en;
+
+        line.textContent = `[✓] ${report.name} → ${roleText}`;
+        line.style.marginBottom = "0.5rem";
+
+        reportsList.appendChild(line);
+
+        await delay(120); // typing effect
+    }
+}
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function showUnauthorized() {
+
+    terminal.innerHTML = `<strong style="font-size: 2rem; color: red;">UNAUTHORIZED</strong>`;
+    reportsList.textContent = "";
+    emptyState.textContent = "";
+}
+
+init();
