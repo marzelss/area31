@@ -86,12 +86,17 @@ function showGuestPopup(guest, guestKey) {
     }
     if (guest.arrived === "TRUE") {
         const li = document.createElement("li");
-        li.textContent = "📍 USER ARRIVED";
+        li.textContent = "📍 HAS ARRIVED";
+        statusList.appendChild(li);
+    }
+    if (guest.presentation === "TRUE") {
+        const li = document.createElement("li");
+        li.textContent = "🎞️ HAS PRESENTATION";
         statusList.appendChild(li);
     }
     if (guest.reports && Object.keys(guest.reports).length > 0) {
         const li = document.createElement("li");
-        li.textContent = "💬 USER HAS FILED REPORTS";
+        li.textContent = "💬 HAS FILED REPORTS";
         statusList.appendChild(li);
     }
 
