@@ -209,8 +209,8 @@ async function init() {
 
 function initMap() {
 
-    const lat = 45.4642;   // change this
-    const lng = 9.1900;    // change this
+    const lat = 45.6557;
+    const lng = 8.79763; 
 
     const map = L.map('map').setView([lat, lng], 15);
 
