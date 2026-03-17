@@ -51,7 +51,7 @@ function renderRules(strings) {
 async function handleEmptyState(filteredUsers, strings, anyArrived) {
     if (filteredUsers.length === 0) {
         const now = new Date();
-        const cutoff = new Date('2026-03-26T21:30:00'); // adjust year if needed
+        const cutoff = new Date('2026-03-16T21:30:00'); // adjust year if needed
         const label = document.createElement("div");
 
         if (now >= cutoff) {
