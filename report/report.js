@@ -27,10 +27,30 @@ async function init() {
     rulesDiv.style.color = "#333";
     rulesDiv.style.marginBottom = "1rem";
 
-    // --- Get all users that arrived, excluding current user ---
+    // --- Get all users from entries/userOptions ---
     const arrivedUsers = await getArrivedUsers();
     const filteredUsers = arrivedUsers.filter(u => u.passcode !== passcode);
 
+    // --- Empty state: no users arrived at all ---
+    if (filteredUsers.length === 0) {
+        // check if past 26 Mar 21:30
+        const now = new Date();
+        const cutoff = new Date('2026-03-26T21:30:00'); // adjust year as needed
+        const label = document.createElement("div");
+
+        if (now >= cutoff) {
+            label.textContent = strings.noMoreEntries;
+        } else {
+            label.textContent = strings.emptyState;
+        }
+
+        label.style.fontSize = "1.1rem";
+        label.style.marginTop = "1rem";
+        rulesDiv.appendChild(label);
+        return; // stop here, no dropdowns
+    }
+
+    // --- Add top dropdown ---
     addDropdown(rulesDiv, strings.userField, filteredUsers.map(u => ({ value: u.passcode, text: u.userName })));
 
     // --- Roles Dropdown ---
@@ -45,7 +65,7 @@ async function init() {
     addDropdown(rulesDiv, strings.identityField, filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
 }
 
-// --- Fetch all users that have "arrived" === true ---
+// --- Fetch all users from entries/userOptions ---
 async function getArrivedUsers() {
     const snapshot = await get(ref(db, `${passcode}/entries/userOptions`));
 
@@ -55,12 +75,12 @@ async function getArrivedUsers() {
 
     const userOptions = snapshot.val();
 
-    const arrivedUsers = Object.values(userOptions).map(entry => ({
+    const usersArray = Object.values(userOptions).map(entry => ({
         passcode: entry.passcode,
         userName: entry["real-name"]
     }));
 
-    return arrivedUsers;
+    return usersArray;
 }
 
 // --- Fetch rolesOptions from current user's entries, or create them if they don't exist ---
