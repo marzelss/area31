@@ -150,7 +150,7 @@ function typeLocationReveal() {
     type();
 }
 
-function loadFullProtocol(strings) {
+async function loadFullProtocol(strings) {
     const user = await getUser();
     presentationStrings = await loadLocale("presentation");
 
@@ -255,13 +255,19 @@ async function init() {
     const revealDate = new Date("2026-03-25T18:00:00+01:00");
     const isRevealTime = new Date() >= revealDate;
 
+    // If location was not revealed yet and it's time
+    if (isRevealTime && status !== "UNLOCKED") {
+        typeLocationReveal();
+        return; // stop here, skip everything else
+    }
+
     // If location was already revealed
     if (isRevealTime && status === "UNLOCKED") {
         initMap();
     }
 
     // Load full protocol
-    loadFullProtocol(strings)
+    await loadFullProtocol(strings)
 }
 
 function initMap() {
