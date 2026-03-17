@@ -409,8 +409,8 @@ async function init() {
 
 function initMap() {
 
-    const lat = 45.65605;
-    const lng = 8.79769; 
+    const lat = 45.656056;
+    const lng = 8.797694;
 
     const mapDiv = document.getElementById("map");
     mapDiv.style.display = "block";
