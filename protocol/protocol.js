@@ -114,28 +114,20 @@ function formatColonLine(text) {
     return `<strong>${prefix}:</strong>${rest}`;
 }
 
-function typeLocationReveal() {
-    const revealLines = [
-        strings.locationReveal1,
-        strings.locationReveal2,
-        strings.loadingLocation1,
-        strings.loadingLocation2,
-        " ",
-        strings.locationReveal3
-    ];
-
+// Generic typewriter for any set of lines
+function typeLinesWithCallback(lines, callback) {
     let currentLine = 0;
     let currentChar = 0;
 
     function type() {
-        if (currentLine >= revealLines.length) {
+        if (currentLine >= lines.length) {
             terminal.innerHTML += "\n";
-            showLocationPopup();
+            if (callback) callback();
             return;
         }
 
-        const line = revealLines[currentLine];
-        const previousLines = revealLines.slice(0, currentLine).join("\n");
+        const line = lines[currentLine];
+        const previousLines = lines.slice(0, currentLine).join("\n");
         const visibleText = line.substring(0, currentChar);
 
         terminal.innerHTML = previousLines + "\n" + visibleText;
@@ -152,6 +144,19 @@ function typeLocationReveal() {
     }
 
     type();
+}
+
+// --- First reveal sequence ---
+function typeLocationReveal() {
+    const revealLines = [
+        strings.locationReveal1,
+        strings.locationReveal2,
+        strings.loadingLocation1,
+        strings.loadingLocation2,
+        strings.locationReveal3
+    ];
+
+    typeLinesWithCallback(revealLines, showLocationPopup);
 }
 
 // --- CUSTOM POPUP FOR LOCATION REVEAL ---
@@ -181,10 +186,25 @@ function showLocationPopup() {
 
     // Remove popup on click
     okBtn.addEventListener("click", () => {
+        // Remove popup
         document.body.removeChild(popup);
 
-        // Optionally: trigger next part of the flow here
-        // e.g., initMap() or next typing sequence
+        // Remove first reveal lines from terminal
+        terminal.innerHTML = "";
+
+        // Start second reveal sequence
+        const nextLines = [
+            strings.locationReveal5,
+            strings.locationReveal6,
+            strings.locationReveal7
+        ];
+        typeLinesWithCallback(nextLines, () => {
+            // Set user status to UNLOCKED in database
+            await update(ref(db, passcode), { status: "UNLOCKED" });
+    
+            // Reload page after 2 seconds
+            setTimeout(() => location.reload(), 2000);
+        });
     });
 
     buttonsDiv.appendChild(okBtn);
