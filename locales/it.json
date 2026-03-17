@@ -58,6 +58,7 @@
     "submitButton": "INVIA",
     "thankYouMessage": "Rapporto ricevuto. Il tuo contributo alla sicurezza internazionale è stato considerato. Continua a monitorare la situazione e segnala eventuali ulteriori anomalie.",
     "emptyState": "Le operazioni di sorveglianza non hanno ancora avuto inizio. La compilazione del report sarà autorizzata all'inizio ufficiale dell'evento.",
+    "tryAgainLater": "Continua a monitorare la situazione. Potrebbero succedere altre cose sospette da inserire nel report.",
     "noMoreEntries": "Limite di invii raggiunto. Il tuo contributo alla sicurezza planetaria è stato ritenuto sufficiente. Non sono richieste ulteriori attività di sorveglianza al momento."
   },
   "presentation": {
