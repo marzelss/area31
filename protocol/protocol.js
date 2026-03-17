@@ -371,8 +371,7 @@ function initMap() {
         mapLabel = document.createElement("div");
         mapLabel.id = "mapLabel";
         mapLabel.style.fontFamily = "monospace";
-        mapLabel.style.color = "#fff";
-        mapLabel.style.backgroundColor = "rgba(0,0,0,0.7)";
+        mapLabel.style.color = "rgba(0,0,0,0.7)";
         mapLabel.style.padding = "1rem";
         mapLabel.style.marginBottom = "0.5rem";
         mapLabel.style.borderRadius = "4px";
