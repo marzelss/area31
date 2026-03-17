@@ -83,7 +83,7 @@ function showManagerContent() {
     rulesDiv.appendChild(button);
 
 
-    const consoleButton = document.createElement("consoleButton");
+    const consoleButton = document.createElement("button");
     consoleButton.textContent = "Console";
 
     consoleButton.onclick = () => {
