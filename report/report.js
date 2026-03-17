@@ -29,6 +29,9 @@ async function init() {
         return;
     }
 
+    // --- History link ---
+    await addHistoryLink(strings);
+
     // --- Users dropdown ---
     addDropdown(rulesDiv, strings.userField, filteredUsers.map(u => ({ value: u.passcode, text: u.userName })));
 
@@ -120,6 +123,31 @@ async function handleEmptyState(strings) {
     label.style.fontSize = "1.1rem";
     label.style.marginTop = "1rem";
     rulesDiv.appendChild(label);
+}
+
+// --- VIEW HISTORY LINK ---
+async function addHistoryLink(strings) {
+
+    const reportsSnap = await get(ref(db, `${passcode}/reports`));
+
+    // nothing to show
+    if (!reportsSnap.exists()) return;
+
+    const historyLink = document.createElement("div");
+    historyLink.textContent = strings.viewHistory;
+
+    historyLink.style.fontFamily = "monospace";
+    historyLink.style.fontWeight = "bold";
+    historyLink.style.cursor = "pointer";
+    historyLink.style.marginTop = "1rem";
+    historyLink.style.marginBottom = "1rem";
+    historyLink.style.textDecoration = "underline";
+
+    historyLink.onclick = () => {
+        window.location.href = "../history/history.html";
+    };
+
+    rulesDiv.appendChild(historyLink);
 }
 
 // --- SUBMIT BUTTON ---
