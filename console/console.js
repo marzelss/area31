@@ -95,6 +95,35 @@ function showGuestPopup(guest, guestKey) {
         statusList.appendChild(li);
     }
 
+    // --- NEW: Add hasExposed / wasExposed / points ---
+    (async () => {
+        try {
+            const [hasExposedSnap, wasExposedSnap, pointsSnap] = await Promise.all([
+                get(ref(db, `${guestKey}/hasExposed`)),
+                get(ref(db, `${guestKey}/wasExposed`)),
+                get(ref(db, `${guestKey}/points`))
+            ]);
+    
+            const hasExposed = hasExposedSnap.exists() ? hasExposedSnap.val() : 0;
+            const wasExposed = wasExposedSnap.exists() ? wasExposedSnap.val() : 0;
+            const points = pointsSnap.exists() ? pointsSnap.val() : 0;
+    
+            const li1 = document.createElement("li");
+            li1.textContent = `👀 HAS EXPOSED: ${hasExposed}`;
+            statusList.appendChild(li1);
+    
+            const li2 = document.createElement("li");
+            li2.textContent = `🕶️ WAS EXPOSED BY: ${wasExposed}`;
+            statusList.appendChild(li2);
+    
+            const li3 = document.createElement("li");
+            li3.textContent = `💯 POINTS: ${points}`;
+            statusList.appendChild(li3);
+        } catch (err) {
+            console.error("Failed to load extra stats:", err);
+        }
+    })();
+
     content.appendChild(statusList);
 
     // Two line breaks
