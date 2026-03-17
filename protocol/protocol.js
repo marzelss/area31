@@ -2,7 +2,7 @@ import { db } from "../sources/firebase.js";
 import { ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 import { getStorage, ref as storageRef, uploadBytes } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js";
 import { loadLocale } from "../utils/i18n.js";
-import { ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { infoLogEvent, errorLogEvent, dbLogEvent } from "../utils/analytics.js";
 
 const terminal = document.getElementById("terminal");
 const reportBtn = document.getElementById("reportBtn");
