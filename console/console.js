@@ -17,7 +17,7 @@ async function loadGuests() {
         const btn = document.createElement("button");
         btn.className = "guest-btn";
         btn.textContent = guest["real-name"] || `Guest ${key}`;
-        btn.addEventListener("click", () => showGuestPopup(guest));
+        btn.addEventListener("click", () => showGuestPopup(guest, key));
         guestListDiv.appendChild(btn);
     });
 }
