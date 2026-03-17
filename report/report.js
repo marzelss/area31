@@ -52,14 +52,14 @@ async function init() {
     await addHistoryLink(strings);
 
     // --- Users dropdown ---
-    addDropdown(rulesDiv, strings.userField, filteredUsers.map(u => ({ value: u.passcode, text: u.userName })));
+    addDropdown(rulesDiv, strings.userField, filteredUsers.map(u => ({ value: u.passcode, text: u.userName })), true);
 
     // --- Roles Dropdown ---
     const rolesOptions = await getRolesOptions();
     const currentUserRoleSnapshot = await get(ref(db, `${passcode}/role/${userLang}/name`));
     const currentUserRoleName = currentUserRoleSnapshot.exists() ? currentUserRoleSnapshot.val() : null;
     const filteredRoles = rolesOptions.filter(r => r[userLang] !== currentUserRoleName);
-    addDropdown(rulesDiv, strings.identityField, filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
+    addDropdown(rulesDiv, strings.identityField, filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })), false);
 
     // --- Submit Button ---
     const submitBtn = createSubmitButton(strings);
@@ -433,8 +433,8 @@ async function getRolesOptions() {
     }
 }
 
-// --- Helper to add a dropdown with label ---
-function addDropdown(parentDiv, labelText, optionsArray) {
+// --- Helper to add a dropdown with optional shuffle ---
+function addDropdown(parentDiv, labelText, optionsArray, shuffle = false) {
     const label = document.createElement("div");
     label.textContent = labelText;
     label.style.fontSize = "1.1rem";
@@ -443,13 +443,25 @@ function addDropdown(parentDiv, labelText, optionsArray) {
     parentDiv.appendChild(label);
 
     const select = document.createElement("select");
+
+    // Add placeholder
     const placeholder = document.createElement("option");
     placeholder.textContent = "Select...";
     placeholder.disabled = true;
     placeholder.selected = true;
     select.appendChild(placeholder);
 
-    optionsArray.forEach(o => {
+    // Optionally shuffle
+    let finalOptions = optionsArray.slice(); // copy array
+    if (shuffle) {
+        for (let i = finalOptions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [finalOptions[i], finalOptions[j]] = [finalOptions[j], finalOptions[i]];
+        }
+    }
+
+    // Add options to dropdown
+    finalOptions.forEach(o => {
         const option = document.createElement("option");
         option.value = o.value;
         option.textContent = o.text;
