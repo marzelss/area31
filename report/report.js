@@ -1,5 +1,5 @@
 import { db } from "../sources/firebase.js";
-import { ref, get, set } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { ref, get, set, remove } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 import { loadLocale } from "../utils/i18n.js";
 
 const terminal = document.getElementById("terminal");
@@ -27,10 +27,34 @@ async function init() {
     rulesDiv.style.color = "#333";
     rulesDiv.style.marginBottom = "1rem";
 
-    // --- Get all users that arrived, excluding current user ---
+    // --- Get all users from entries/userOptions ---
     const arrivedUsers = await getArrivedUsers();
     const filteredUsers = arrivedUsers.filter(u => u.passcode !== passcode);
 
+    // --- Empty state: no users arrived at all ---
+    if (filteredUsers.length === 0) {
+        // check if past 26 Mar 21:30
+        const now = new Date();
+        const cutoff = new Date('2026-03-26T21:30:00'); // adjust year as needed
+        const label = document.createElement("div");
+
+        if (now >= cutoff) {
+            label.textContent = strings.noMoreEntries;
+        } else {
+            if (arrivedUsers.length > 0) {
+                label.textContent = strings.tryAgainLater;
+            } else {
+                label.textContent = strings.emptyState;
+            }
+        }
+
+        label.style.fontSize = "1.1rem";
+        label.style.marginTop = "1rem";
+        rulesDiv.appendChild(label);
+        return; // stop here, no dropdowns
+    }
+
+    // --- Add top dropdown ---
     addDropdown(rulesDiv, strings.userField, filteredUsers.map(u => ({ value: u.passcode, text: u.userName })));
 
     // --- Roles Dropdown ---
@@ -43,9 +67,125 @@ async function init() {
     const filteredRoles = rolesOptions.filter(r => r[userLang] !== currentUserRoleName);
 
     addDropdown(rulesDiv, strings.identityField, filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
+
+    // --- Submit Button ---
+    const submitBtn = document.createElement("button");
+    submitBtn.textContent = strings.submitButton;
+    submitBtn.style.fontFamily = "monospace";
+    submitBtn.style.fontSize = "1rem";
+    submitBtn.style.padding = "0.5rem 1rem";
+    submitBtn.style.marginTop = "1rem";
+    submitBtn.style.marginBottom = "0.5rem";
+    submitBtn.style.marginTop = "1rem";
+    submitBtn.style.backgroundColor = "rgba(0,0,0,0.9)";
+    submitBtn.style.color = "rgba(255,255,255,0.9)";
+    submitBtn.style.border = "none";
+    submitBtn.style.borderRadius = "4px";
+    submitBtn.style.cursor = "pointer";
+    submitBtn.style.display = "none"; // hidden initially
+    
+    rulesDiv.appendChild(submitBtn);
+    
+    // --- Get dropdowns ---
+    const dropdowns = rulesDiv.querySelectorAll("select");
+    const userDropdown = dropdowns[0];
+    const roleDropdown = dropdowns[1];
+    
+    // --- Show button only when both dropdowns have values ---
+    function checkSelections() {
+        const userSelected = userDropdown.selectedIndex > 0;
+        const roleSelected = roleDropdown.selectedIndex > 0;
+    
+        if (userSelected && roleSelected) {
+            submitBtn.style.display = "block";
+        } else {
+            submitBtn.style.display = "none";
+        }
+    }
+    
+    userDropdown.addEventListener("change", checkSelections);
+    roleDropdown.addEventListener("change", checkSelections);
+
+    submitBtn.onclick = async () => {
+    
+        const exposedPasscode = userDropdown.value;
+    
+        const exposedUserName =
+            userDropdown.options[userDropdown.selectedIndex].textContent;
+    
+        const selectedRoleText =
+            roleDropdown.options[roleDropdown.selectedIndex].textContent;
+    
+        const roleIndex = roleDropdown.selectedIndex - 1; // because index 0 is placeholder
+    
+        try {
+    
+            // --- get exposed user's role ---
+            const roleSnap = await get(ref(db, `${exposedPasscode}/role/${userLang}/name`));
+    
+            if (!roleSnap.exists()) {
+                console.log("Role not found for exposed user");
+                return;
+            }
+    
+            const exposedRole = roleSnap.val();
+    
+            // --- check correctness ---
+            if (exposedRole.toLowerCase() === selectedRoleText.toLowerCase()) {
+    
+                // add points to current user
+                const myPointsRef = ref(db, `${passcode}/points`);
+                const myPointsSnap = await get(myPointsRef);
+                const myPoints = myPointsSnap.exists() ? myPointsSnap.val() : 0;
+    
+                await set(myPointsRef, myPoints + 3);
+    
+                // remove point from exposed user
+                const exposedPointsRef = ref(db, `${exposedPasscode}/points`);
+                const exposedPointsSnap = await get(exposedPointsRef);
+                const exposedPoints = exposedPointsSnap.exists() ? exposedPointsSnap.val() : 0;
+    
+                await set(exposedPointsRef, exposedPoints - 1);
+    
+                console.log("Correct report");
+    
+            } else {
+                console.log("Incorrect report");
+            }
+    
+            // --- Save report ---
+            const reportData = {
+                name: exposedUserName,
+                role: {
+                    it: roleDropdown.value.split("|")[0],
+                    en: roleDropdown.value.split("|")[1]
+                }
+            };
+    
+            await set(
+                ref(db, `${passcode}/reports/${exposedPasscode}`),
+                reportData
+            );
+    
+            // --- Remove exposed user from userOptions ---
+            await remove(
+                ref(db, `${passcode}/entries/userOptions/${exposedPasscode}`)
+            );
+    
+            // --- Remove role from rolesOptions ---
+            await remove(
+                ref(db, `${passcode}/entries/rolesOptions/${roleIndex}`)
+            );
+    
+            console.log("Report stored and options cleaned");
+    
+        } catch (error) {
+            console.error("Error during report:", error);
+        }
+    };
 }
 
-// --- Fetch all users that have "arrived" === true ---
+// --- Fetch all users from entries/userOptions ---
 async function getArrivedUsers() {
     const snapshot = await get(ref(db, `${passcode}/entries/userOptions`));
 
@@ -55,12 +195,12 @@ async function getArrivedUsers() {
 
     const userOptions = snapshot.val();
 
-    const arrivedUsers = Object.values(userOptions).map(entry => ({
+    const usersArray = Object.values(userOptions).map(entry => ({
         passcode: entry.passcode,
         userName: entry["real-name"]
     }));
 
-    return arrivedUsers;
+    return usersArray;
 }
 
 // --- Fetch rolesOptions from current user's entries, or create them if they don't exist ---
