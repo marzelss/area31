@@ -214,12 +214,8 @@ function initMap() {
 
     const map = L.map('map').setView([lat, lng], 15);
 
-    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //     attribution: '© OpenStreetMap'
-    // }).addTo(map);
-
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-     attribution: '&copy; OpenStreetMap contributors'
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         attribution: '© OpenStreetMap'
     }).addTo(map);
 
     const marker = L.marker([lat, lng]).addTo(map);
