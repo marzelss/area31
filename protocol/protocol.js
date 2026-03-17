@@ -130,6 +130,7 @@ function typeLocationReveal() {
     function type() {
         if (currentLine >= revealLines.length) {
             terminal.innerHTML += "\n";
+            showLocationPopup();
             return;
         }
 
@@ -151,6 +152,68 @@ function typeLocationReveal() {
     }
 
     type();
+}
+
+// --- CUSTOM POPUP FOR LOCATION REVEAL ---
+function showLocationPopup() {
+    // Create popup container
+    const popup = setupPopup();
+
+    // Create message div (hardcoded for this popup)
+    const messageDiv = document.createElement("div");
+    messageDiv.textContent = strings.locationReveal4; // hardcoded string
+    messageDiv.style.fontSize = "1.2rem";
+    messageDiv.style.marginBottom = "1.5rem";
+
+    // Create buttons container
+    const buttonsDiv = document.createElement("div");
+
+    // Only one OK button
+    const okBtn = document.createElement("button");
+    okBtn.textContent = "OK";
+    okBtn.style.fontFamily = "monospace";
+    okBtn.style.padding = "0.5rem 1rem";
+    okBtn.style.backgroundColor = "rgba(0,0,0,0.9)";
+    okBtn.style.color = "#fff";
+    okBtn.style.border = "none";
+    okBtn.style.borderRadius = "4px";
+    okBtn.style.cursor = "pointer";
+
+    // Remove popup on click
+    okBtn.addEventListener("click", () => {
+        document.body.removeChild(popup);
+
+        // Optionally: trigger next part of the flow here
+        // e.g., initMap() or next typing sequence
+    });
+
+    buttonsDiv.appendChild(okBtn);
+
+    // Assemble popup
+    popup.appendChild(messageDiv);
+    popup.appendChild(buttonsDiv);
+
+    document.body.appendChild(popup);
+}
+
+// Reuse your generic popup container setup
+function setupPopup() {
+    const popup = document.createElement("div");
+    popup.style.position = "fixed";
+    popup.style.top = "0";
+    popup.style.left = "0";
+    popup.style.width = "100%";
+    popup.style.height = "100%";
+    popup.style.backgroundColor = "rgba(0,0,0,0.7)";
+    popup.style.display = "flex";
+    popup.style.flexDirection = "column";
+    popup.style.justifyContent = "center";
+    popup.style.alignItems = "center";
+    popup.style.zIndex = "10000";
+    popup.style.color = "#fff";
+    popup.style.fontFamily = "monospace";
+    popup.style.padding = "1.5rem";
+    return popup;
 }
 
 async function loadFullProtocol(strings) {
