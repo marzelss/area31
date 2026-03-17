@@ -21,6 +21,14 @@
     "reload": "Reload the page to try again."
   },
   "protocol": {
+    "locationReveal1": "Strange events are occurring in the Gallarate area...",
+    "locationReveal2": "We must intervene before the gover8% @x£òç#001§*éç_/(RTjwrl&/)àé:é%$&/(°",
+    "locationReveal3": "We've been intercepted! Cut the transmission! Now!",
+    "locationReveal4": "Some hackers have managed to access our systems, but not without leaving traces behind. We have detected their location through their IP address.",
+    "locationReveal5": "IDENTIFYING TARGET...",
+    "locationReveal6": "LOADING GEOLOCATION...",
+    "locationReveal7": "TARGET CONFIRMED. INITIATING MISSION...",
+    "locationReveal8": "Location confirmed. Reach the other operatives at these coordinates:",
     "confidential": "WARNING: THIS DOCUMENT IS CONFIDENTIAL. DO NOT SHARE THIS INFORMATION.",
     "protocol": "PROTOCOL 1995",
     "archive": "ARCHIVE 263",
