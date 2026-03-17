@@ -60,10 +60,20 @@ async function init() {
             button.textContent = realName;
 
             button.onclick = async () => {
+                try {
+                    // 1️⃣ Mark presentation as true
+                    await update(ref(db, `${code}`), { presentation: true });
             
-                await update(ref(db, `${code}`), { presentation: true });
+                    // 2️⃣ Add 5 points
+                    const pointsRef = ref(db, `${code}/points`);
+                    const pointsSnap = await get(pointsRef);
+                    const currentPoints = pointsSnap.exists() ? pointsSnap.val() : 0;
+                    await set(pointsRef, currentPoints + 5);
             
-                button.remove();
+                    button.remove();
+                } catch (err) {
+                    console.error("Failed to update user:", err);
+                }
             };
 
             rulesDiv.appendChild(button);
