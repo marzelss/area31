@@ -199,7 +199,9 @@ async function init() {
                 await remove(ref(db, `${passcode}/entries/rolesOptions/${roleIndex}`));
     
                 console.log("Report stored and options cleaned");
-    
+
+                window.location.reload();
+                
             } catch (error) {
                 console.error("Error during report:", error);
             }
