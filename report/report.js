@@ -89,7 +89,10 @@ async function init() {
     
     // --- Show button only when both dropdowns have values ---
     function checkSelections() {
-        if (userDropdown.value && roleDropdown.value) {
+        const userSelected = userDropdown.selectedIndex > 0;
+        const roleSelected = roleDropdown.selectedIndex > 0;
+    
+        if (userSelected && roleSelected) {
             submitBtn.style.display = "block";
         } else {
             submitBtn.style.display = "none";
