@@ -113,6 +113,7 @@ function formatColonLine(text) {
 }
 
 async function init() {
+    initMap()
     strings = await loadLocale("protocol");
     presentationStrings = await loadLocale("presentation");
 
@@ -204,6 +205,27 @@ async function init() {
     alreadyDelivered
     ? renderInstant(lines, isNonItalianSpeaker)
     : typeLines(lines, isNonItalianSpeaker);
+}
+
+function initMap() {
+
+    const lat = 45.4642;   // change this
+    const lng = 9.1900;    // change this
+
+    const map = L.map('map').setView([lat, lng], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    const marker = L.marker([lat, lng]).addTo(map);
+
+    marker.bindPopup(`
+        <strong>MISSION LOCATION</strong><br>
+        <a href="https://maps.google.com/?q=${lat},${lng}" target="_blank">
+        Open in Maps
+        </a>
+    `);
 }
 
 init();
