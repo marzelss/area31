@@ -49,7 +49,6 @@
     "serviceButton": "RICHIEDI UN SERVIZIO",
     "presentationButton": "INVIA PRESENTAZIONE"
   },
-  {
   "report": {
     "explanation": "Compila i campi sottostanti per trasmettere un rapporto di intelligence e cerca di scoprire per primo le identità degli altri partecipanti. Le operazioni di sorveglianza inizieranno dall'avvio dell'evento. La presenza sul posto è obbligatoria per poter partecipare.",
     "rules": "Per ogni identità segreta che riuscirai a smascherare otterrai 3 punti intelligence. Procedi con cautela: se un altro agente scoprirà la tua identità, verrà sottratto 1 punto dal tuo registro.",
@@ -84,48 +83,48 @@
     "backButton": "< INDIETRO"
   },
   "interview": {
-  "ineligibleResult": "Ti ringraziamo per aver inviato la tua candidatura. Dopo un'attenta esaminazione, il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ha stabilito che il tuo profilo non soddisfa gli standard minimi richiesti per questa missione in quanto soggetto monolingua. La tua candidatura è stata archiviata e i tuoi servizi potranno essere richiesti in future operazioni.",
-  "pendingResult": "Candidatura ricevuta. La tua richiesta è stata inviata nella massima segretezza al Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ed è in fase di valutazione. Torna su questa pagina per controllarne lo stato di avanzamento. Se un ospite affetto da impedimento linguistico richiederà i tuoi servizi, comparirà qui.",
-  "negativeResult": "ATTENZIONE: La tua candidatura è stata ritenuta altamente sospetta dal Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute. Per ragioni di sicurezza linguistica, i tuoi servizi interpretatori non sono stati selezionati per questo evento.",
-  "positiveResult1": "Candidatura approvata. Sei stato ufficialmente selezionato come interprete dal seguente cliente linguisticamente svantaggiato:",
-  "positiveResult2": "Il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute tiene molto alla discrezione, efficienza e segretezza dei propri dipendenti, ma anche servizi di alta qualità. Si raccomanda una comunicazione interlinguistica di massimo livello: il cliente ti assegnerà una valutazione al termine dell'evento e potrà farti guadagnare un punto extra.",
-  "nextButton": "PROSSIMA DOMANDA >",
-  "backButton": "< INDIETRO",
-  "questions": [
-    {
-      "question": "Parli fluentemente italiano?",
-      "answers": ["Sì","No"],
-      "rightAnswer": "Sì"
-    },
-    {
-      "question": "Parli fluentemente inglese?",
-      "answers": ["Sì","No"],
-      "rightAnswer": "Sì"
-    },
-    {
-      "question": "Come hai imparato l'inglese?",
-      "answers": [
-        "Avevo lezioni di inglese quando ero a scuola",
-        "Ho vissuto all'estero quindi ho dovuto padroneggiare l'inglese per sopravvivere",
-        "Ho avuto incontri ravvicinati del terzo tipo e ho richiesto l'installazione di un'intelligenza artificiale come microchip all'interno delle mie cervella per imparare istantaneamente 308 lingue, inclusi dialetti, e acquisire conoscenze interstellari per conquistare il mondo e distruggere il pianeta"
-      ]
-    },
-    {
-      "question": "Mmh... interessante... e quando è successo?",
-      "answers": [
-        "Prima del 2015",
-        "Dopo il 2015",
-        "Quel momento non può essere rappresentato su una liena spaziotemporale che sia traducibile in una data del calendario umano poiché è avvenuto durante un collasso della griglia temporale monitorata dal Consiglio Linguistico Intergalattico"
-      ]
-    },
-    {
-      "question": "Curioso... bene... e quanto ti senti sicuro di poter ricoprire questa posizione?",
-      "answers": [
-        "Abbastanza sicuro",
-        "Farò del mio meglio",
-        "La fiducia è un meccanismo biologico di compensazione e un costrutto emotivo umano progettato per gestire l'incertezza, una sensazione che io non provo poiché funziono al meglio sulla base dell'inevitabilità statistica"
-      ]
-    }
-  ]
-}
+    "ineligibleResult": "Ti ringraziamo per aver inviato la tua candidatura. Dopo un'attenta esaminazione, il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ha stabilito che il tuo profilo non soddisfa gli standard minimi richiesti per questa missione in quanto soggetto monolingua. La tua candidatura è stata archiviata e i tuoi servizi potranno essere richiesti in future operazioni.",
+    "pendingResult": "Candidatura ricevuta. La tua richiesta è stata inviata nella massima segretezza al Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ed è in fase di valutazione. Torna su questa pagina per controllarne lo stato di avanzamento. Se un ospite affetto da impedimento linguistico richiederà i tuoi servizi, comparirà qui.",
+    "negativeResult": "ATTENZIONE: La tua candidatura è stata ritenuta altamente sospetta dal Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute. Per ragioni di sicurezza linguistica, i tuoi servizi interpretatori non sono stati selezionati per questo evento.",
+    "positiveResult1": "Candidatura approvata. Sei stato ufficialmente selezionato come interprete dal seguente cliente linguisticamente svantaggiato:",
+    "positiveResult2": "Il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute tiene molto alla discrezione, efficienza e segretezza dei propri dipendenti, ma anche servizi di alta qualità. Si raccomanda una comunicazione interlinguistica di massimo livello: il cliente ti assegnerà una valutazione al termine dell'evento e potrà farti guadagnare un punto extra.",
+    "nextButton": "PROSSIMA DOMANDA >",
+    "backButton": "< INDIETRO",
+    "questions": [
+      {
+        "question": "Parli fluentemente italiano?",
+        "answers": ["Sì","No"],
+        "rightAnswer": "Sì"
+      },
+      {
+        "question": "Parli fluentemente inglese?",
+        "answers": ["Sì","No"],
+        "rightAnswer": "Sì"
+      },
+      {
+        "question": "Come hai imparato l'inglese?",
+        "answers": [
+          "Avevo lezioni di inglese quando ero a scuola",
+          "Ho vissuto all'estero quindi ho dovuto padroneggiare l'inglese per sopravvivere",
+          "Ho avuto incontri ravvicinati del terzo tipo e ho richiesto l'installazione di un'intelligenza artificiale come microchip all'interno delle mie cervella per imparare istantaneamente 308 lingue, inclusi dialetti, e acquisire conoscenze interstellari per conquistare il mondo e distruggere il pianeta"
+        ]
+      },
+      {
+        "question": "Mmh... interessante... e quando è successo?",
+        "answers": [
+          "Prima del 2015",
+          "Dopo il 2015",
+          "Quel momento non può essere rappresentato su una liena spaziotemporale che sia traducibile in una data del calendario umano poiché è avvenuto durante un collasso della griglia temporale monitorata dal Consiglio Linguistico Intergalattico"
+        ]
+      },
+      {
+        "question": "Curioso... bene... e quanto ti senti sicuro di poter ricoprire questa posizione?",
+        "answers": [
+          "Abbastanza sicuro",
+          "Farò del mio meglio",
+          "La fiducia è un meccanismo biologico di compensazione e un costrutto emotivo umano progettato per gestire l'incertezza, una sensazione che io non provo poiché funziono al meglio sulla base dell'inevitabilità statistica"
+        ]
+      }
+    ]
+  }
 }
