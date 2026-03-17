@@ -118,9 +118,9 @@ function typeLocationReveal() {
     const revealLines = [
         strings.locationReveal1,
         strings.locationReveal2,
-        strings.locationReveal3,
         strings.loadingLocation1,
         strings.loadingLocation2,
+        strings.locationReveal3
     ];
 
     let currentLine = 0;
