@@ -92,6 +92,16 @@ function showManagerContent() {
 
     rulesDiv.appendChild(consoleButton);
 
+    
+    const presentationsButton = document.createElement("button");
+    presentationsButton.textContent = "Presentations";
+
+    presentationsButton.onclick = () => {
+        window.location.href = "../presentations/presentations.html";
+    };
+
+    rulesDiv.appendChild(presentationsButton);
+
 }
 
 function showUnauthorized() {
