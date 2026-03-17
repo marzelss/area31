@@ -61,6 +61,7 @@ async function loadServicePage() {
     pendingTitle.style.marginBottom = "0.5rem";
     pendingSection.appendChild(pendingTitle);
 
+    infoLogEvent(`User selected button: REQUEST SERVICE: ${pendingUsers.length} applications: ${chosenKeys.length} interpreters`);
     if (pendingUsers.length === 0 || chosenKeys.length >= 3) {
         const noPending = document.createElement("div");
         noPending.style.fontSize = "1.2rem";
@@ -98,6 +99,7 @@ async function loadServicePage() {
                 await update(ref(db, `${interpreterPasscode}/interpreter/client`), {
                     [passcode]: { name: guestName, passcode: passcode }
                 });
+                infoLogEvent(`User selected button: REQUEST SERVICE: accepted applicant: ${guestName}`);
 
                 // 3) mark interpreter as not eligible
                 await update(ref(db, `${interpreterPasscode}/interpreter`), { eligible: false });
@@ -118,6 +120,7 @@ async function loadServicePage() {
                 await update(ref(db, `${passcode}/service/refused`), {
                     [interpreterPasscode]: { name: user["real-name"], passcode: interpreterPasscode }
                 });
+                infoLogEvent(`User selected button: REQUEST SERVICE: refused applicant: ${user["real-name"]}`);
                 window.location.reload();
             };
 
