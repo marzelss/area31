@@ -82,6 +82,16 @@ function showManagerContent() {
 
     rulesDiv.appendChild(button);
 
+
+    const consoleButton = document.createElement("consoleButton");
+    consoleButton.textContent = "Console";
+
+    consoleButton.onclick = () => {
+        window.location.href = "../console/console.html";
+    };
+
+    rulesDiv.appendChild(consoleButton);
+
 }
 
 function showUnauthorized() {
