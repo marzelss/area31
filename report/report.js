@@ -63,6 +63,46 @@ async function init() {
     const filteredRoles = rolesOptions.filter(r => r[userLang] !== currentUserRoleName);
 
     addDropdown(rulesDiv, strings.identityField, filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
+
+    // --- Submit Button ---
+    const submitBtn = document.createElement("button");
+    submitBtn.textContent = strings.submitButton;
+    submitBtn.style.fontFamily = "monospace";
+    submitBtn.style.fontSize = "1rem";
+    submitBtn.style.padding = "0.5rem 1rem";
+    submitBtn.style.marginTop = "1rem";
+    submitBtn.style.backgroundColor = "rgba(0,0,0,0.9)";
+    submitBtn.style.color = "rgba(255,255,255,0.9)";
+    submitBtn.style.border = "none";
+    submitBtn.style.borderRadius = "4px";
+    submitBtn.style.cursor = "pointer";
+    submitBtn.style.display = "none"; // hidden initially
+    
+    rulesDiv.appendChild(submitBtn);
+    
+    // --- Get dropdowns ---
+    const dropdowns = rulesDiv.querySelectorAll("select");
+    const userDropdown = dropdowns[0];
+    const roleDropdown = dropdowns[1];
+    
+    // --- Show button only when both dropdowns have values ---
+    function checkSelections() {
+        if (userDropdown.value && roleDropdown.value) {
+            submitBtn.style.display = "inline-block";
+        } else {
+            submitBtn.style.display = "none";
+        }
+    }
+    
+    userDropdown.addEventListener("change", checkSelections);
+    roleDropdown.addEventListener("change", checkSelections);
+
+    submitBtn.onclick = () => {
+        const selectedUser = userDropdown.value;
+        const selectedRole = roleDropdown.value;
+    
+        console.log(selectedUser, selectedRole);
+    };
 }
 
 // --- Fetch all users from entries/userOptions ---
