@@ -37,6 +37,8 @@ async function loadServicePage() {
         return;
     }
 
+    addBackButton()
+
     const data = snapshot.val();
     const guestData = data[passcode] || {};
     const acceptedList = guestData.service?.interpreter || {};
@@ -281,6 +283,22 @@ async function loadServicePage() {
 
     renderChosenSection();
     renderRefusedSection();
+}
+
+// --- BACK BUTTON ---
+function addBackButton() {
+    const backBtn = document.createElement("div");
+    backBtn.textContent = "< BACK";
+    backBtn.style.fontFamily = "monospace";
+    backBtn.style.fontSize = "1.1rem";
+    backBtn.style.cursor = "pointer";
+    backBtn.style.textDecoration = "underline";
+    backBtn.style.marginTop = "1rem";
+    backBtn.style.marginBottom = "1rem";
+    backBtn.onclick = () => {
+        window.history.back();
+    };
+    document.body.appendChild(backBtn);
 }
 
 loadServicePage();
