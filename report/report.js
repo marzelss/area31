@@ -71,6 +71,8 @@ async function init() {
     submitBtn.style.fontSize = "1rem";
     submitBtn.style.padding = "0.5rem 1rem";
     submitBtn.style.marginTop = "1rem";
+    submitBtn.style.marginBottom = "0.5rem";
+    submitBtn.style.marginTop = "1rem";
     submitBtn.style.backgroundColor = "rgba(0,0,0,0.9)";
     submitBtn.style.color = "rgba(255,255,255,0.9)";
     submitBtn.style.border = "none";
@@ -88,7 +90,7 @@ async function init() {
     // --- Show button only when both dropdowns have values ---
     function checkSelections() {
         if (userDropdown.value && roleDropdown.value) {
-            submitBtn.style.display = "inline-block";
+            submitBtn.style.display = "block";
         } else {
             submitBtn.style.display = "none";
         }
