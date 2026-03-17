@@ -13,6 +13,7 @@ async function init() {
     const strings = await loadLocale("report");
 
     // --- These elements are always present ---
+    addBackButton(strings)
     setupTitle();
     setupExplanation(strings);
     setupRules(strings);
@@ -72,6 +73,22 @@ async function init() {
 // ------------
 // ---- UI ----
 // ------------
+
+// --- BACK BUTTON ---
+function addBackButton(strings) {
+    const backBtn = document.createElement("div");
+    backBtn.textContent = strings.backButton;
+    backBtn.style.fontFamily = "monospace";
+    backBtn.style.fontSize = "1.1rem";
+    backBtn.style.cursor = "pointer";
+    backBtn.style.textDecoration = "underline";
+    backBtn.style.marginTop = "1rem";
+    backBtn.style.marginBottom = "1rem";
+    backBtn.onclick = () => {
+        window.history.back();
+    };
+    document.body.appendChild(backBtn);
+}
 
 // --- TITLE ---
 function setupTitle() {
