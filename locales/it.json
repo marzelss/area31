@@ -22,8 +22,10 @@
   },
   "protocol": {
     "locationReveal1": "Degli strani avvenimenti si stanno verificando nella zona di Gallarate...",
-    "locationReveal2": "Dobbiamo intervenire prima che il gover8% @x£òç#001§*éç_/(RTjwrl&/)àé:é%$&/(°",
-    "locationReveal3": "Ci hanno intercettati! Stacca, stacca!",
+    "locationReveal2": "Dobbiamo intervenire prima che il gover8% @x£òç#001§*",
+    "loadingLocation1": "Non séç_/(RTjwr perl&/)àé: cosé%$&/(°",
+    "loadingLocation2": "...",
+    "locationReveal3": "\nCi hanno intercettati! Stacca, stacca!",
     "locationReveal4": "Degli hackers sono riusciti ad accedere ai nostri sistemi, ma non senza lasciare tracce. Abbiamo rilevato la loro location tramite il loro indirizzo ip.",
     "locationReveal5": "IDENTIFICAZIONE OBIETTIVO...",
     "locationReveal6": "CARICAMENTO GEOLOCALIZZAZIONE...",
