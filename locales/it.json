@@ -63,6 +63,11 @@
     "noMoreEntries": "Limite di invii raggiunto. Il tuo contributo alla sicurezza planetaria è stato ritenuto sufficiente. Non sono richieste ulteriori attività di sorveglianza al momento.",
     "viewHistory": "I tuoi report >"
   },
+  "reportHistory": {
+    "title": "CRONOLOGIA REPORT",
+    "message": "È previsto un debriefing alle ore 21:45 dove verranno analizzati tutti i dati raccolti durante l'evento. Hai tempo fino ad allora per compilare altri report.",
+    "backButton": "< Indietro"
+  },
   "presentation": {
     "address": "area31@yopmail.com",
     "subject": "Presentazione",
