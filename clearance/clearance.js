@@ -1,6 +1,5 @@
 import { db } from "../sources/firebase.js";
 import { ref, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
-import { infoLogEvent, errorLogEvent, dbLogEvent } from "../utils/analytics.js";
 
 const terminal = document.getElementById("terminal");
 const nameField = document.getElementById("nameField");
