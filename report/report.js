@@ -9,7 +9,24 @@ const rulesDiv = document.getElementById("rules");
 const passcode = sessionStorage.getItem("passcode"); // current user
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
+// Protect page: redirect if sessionStorage missing required keys
+(function checkSession() {
+    const realName = sessionStorage.getItem("realName");
+    const passcode = sessionStorage.getItem("passcode");
+
+    if (!realName || !passcode) {
+        // Clear session storage just in case
+        sessionStorage.clear();
+
+        // Redirect to index.html and replace history so back button won't work
+        location.replace("../index.html");
+    }
+})();
+
 async function init() {
+    // Stop if user is not authenticated
+    checkSession()
+    
     const strings = await loadLocale("report");
 
     // --- These elements are always present ---
