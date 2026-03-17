@@ -41,6 +41,8 @@ async function init() {
     if (filteredUsers.length === 0) {
         // handle empty state
         handleEmptyState(strings)
+        // --- History link ---
+        await addHistoryLink(strings);
         // stop here, no dropdowns
         return;
     }
