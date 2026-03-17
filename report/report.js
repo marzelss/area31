@@ -41,7 +41,7 @@ async function init() {
         if (now >= cutoff) {
             label.textContent = strings.noMoreEntries;
         } else {
-            if (filteredUsers.length > 0) {
+            if (arrivedUsers.length > 0) {
                 label.textContent = strings.tryAgainLater;
             } else {
                 label.textContent = strings.emptyState;
