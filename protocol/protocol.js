@@ -274,6 +274,56 @@ async function loadFullProtocol(strings) {
     const roleTask = user.role?.[userLang]?.task ?? "NO TASK ASSIGNED";
     const alreadyDelivered = user.status === "DELIVERED" || user.status === "UNLOCKED";
 
+    if (user.status === "UNLOCKED") {
+
+        const unlockedLines = [
+            { text: strings.confidential, bold: true }, 
+            { text: "" },
+            
+            { text: strings.protocol, bold: true }, 
+            { text: strings.archive, bold: true }, 
+            { text: "" },
+            
+            { text: `${strings.dossier} ${passcode}` }, 
+            { text: `${strings.assigned}: ${roleName}` }, 
+            { text: "" },
+            
+            { text: strings.missionSubject, bold: true },
+            { text: "" },
+            
+            { text: strings.intro3 }, 
+            { text: "" },
+            
+            { text: strings.meeting }, 
+            { text: "" },
+            
+            { text: formatColonLine(strings.date) }, 
+            { text: formatColonLine(strings.time) }, 
+            { text: formatColonLine(strings.location) }, 
+            { text: "" },
+            
+            { text: strings.taskIntro1 }, 
+            { text: strings.taskIntro2 }, 
+            { text: "" },
+            
+            { text: formatColonLine(`${strings.task}: ${roleTask}`) }, 
+            { text: formatColonLine(strings.bonus) }, 
+            { text: "" },
+            
+            { text: strings.alert }, 
+            { text: strings.report }, 
+            { text: "" },
+            
+            { text: strings.absence }, 
+            { text: "" },
+            
+            { text: strings.goodLuck }, 
+            { text: "" },
+        ];
+        renderInstant(unlockedLines, isNonItalianSpeaker)
+        return;
+    }
+
     const lines = [
         { text: strings.confidential, bold: true }, 
         { text: "" },
