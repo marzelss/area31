@@ -130,6 +130,7 @@ async function init() {
         popup.style.zIndex = "10000";
         popup.style.color = "#fff";
         popup.style.fontFamily = "monospace";
+        popup.style.padding = "1.5rem"
     
         const messageDiv = document.createElement("div");
         messageDiv.textContent = strings.warningMessage;
