@@ -209,13 +209,17 @@ async function init() {
 
 function initMap() {
 
-    const lat = 45.6557;
-    const lng = 8.79763; 
+    const lat = 45.65605;
+    const lng = 8.79769; 
 
     const map = L.map('map').setView([lat, lng], 15);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
+    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //     attribution: '© OpenStreetMap'
+    // }).addTo(map);
+
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+     attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
     const marker = L.marker([lat, lng]).addTo(map);
