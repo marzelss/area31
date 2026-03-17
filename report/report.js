@@ -303,6 +303,7 @@ function handleSubmit(userDropdown, roleDropdown, strings) {
     
                 // --- check correctness ---
                 if (exposedRole.toLowerCase() === selectedRoleText.toLowerCase()) {
+                    infoLogEvent(`User selected button: FILE REPORT SUBMIT: correct`);
                     // add points to current user
                     const myPointsRef = ref(db, `${passcode}/points`);
                     const myPointsSnap = await get(myPointsRef);
@@ -315,7 +316,21 @@ function handleSubmit(userDropdown, roleDropdown, strings) {
                     const exposedPointsSnap = await get(exposedPointsRef);
                     const exposedPoints = exposedPointsSnap.exists() ? exposedPointsSnap.val() : 0;
                     await set(exposedPointsRef, exposedPoints - 1);
-                    infoLogEvent(`User selected button: FILE REPORT SUBMIT: correct`);
+                    dbLogEvent(`Exposed user lost 1 point`);
+
+                    // --- Update "hasExposed" for current user ---
+                    const hasExposedRef = ref(db, `${passcode}/hasExposed`);
+                    const hasExposedSnap = await get(hasExposedRef);
+                    const hasExposed = hasExposedSnap.exists() ? hasExposedSnap.val() : 0;
+                    await set(hasExposedRef, hasExposed + 1);
+                    dbLogEvent(`Update user hasExposed number: total ${hasExposed + 1}`);
+                    
+                    // --- Update "wasExposed" for exposed user ---
+                    const wasExposedRef = ref(db, `${exposedPasscode}/wasExposed`);
+                    const wasExposedSnap = await get(wasExposedRef);
+                    const wasExposed = wasExposedSnap.exists() ? wasExposedSnap.val() : 0;
+                    await set(wasExposedRef, wasExposed + 1);
+                    dbLogEvent(`Update user wasExposed number`);
                     
                 } else {
                     infoLogEvent(`User selected button: FILE REPORT SUBMIT: not correct`);
