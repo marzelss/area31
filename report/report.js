@@ -1,5 +1,5 @@
 import { db } from "../sources/firebase.js";
-import { ref, get, set } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { ref, get, set, remove } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 import { loadLocale } from "../utils/i18n.js";
 
 const terminal = document.getElementById("terminal");
@@ -106,12 +106,17 @@ async function init() {
     
         const exposedPasscode = userDropdown.value;
     
-        const selectedRole =
+        const exposedUserName =
+            userDropdown.options[userDropdown.selectedIndex].textContent;
+    
+        const selectedRoleText =
             roleDropdown.options[roleDropdown.selectedIndex].textContent;
+    
+        const roleIndex = roleDropdown.selectedIndex - 1; // because index 0 is placeholder
     
         try {
     
-            // --- get exposed user's role in current locale ---
+            // --- get exposed user's role ---
             const roleSnap = await get(ref(db, `${exposedPasscode}/role/${userLang}/name`));
     
             if (!roleSnap.exists()) {
@@ -121,31 +126,54 @@ async function init() {
     
             const exposedRole = roleSnap.val();
     
-            // --- compare roles (case insensitive) ---
-            if (exposedRole.toLowerCase() === selectedRole.toLowerCase()) {
+            // --- check correctness ---
+            if (exposedRole.toLowerCase() === selectedRoleText.toLowerCase()) {
     
-                // --- CURRENT USER POINTS ---
+                // add points to current user
                 const myPointsRef = ref(db, `${passcode}/points`);
                 const myPointsSnap = await get(myPointsRef);
                 const myPoints = myPointsSnap.exists() ? myPointsSnap.val() : 0;
     
                 await set(myPointsRef, myPoints + 3);
     
-    
-                // --- EXPOSED USER POINTS ---
+                // remove point from exposed user
                 const exposedPointsRef = ref(db, `${exposedPasscode}/points`);
                 const exposedPointsSnap = await get(exposedPointsRef);
                 const exposedPoints = exposedPointsSnap.exists() ? exposedPointsSnap.val() : 0;
     
                 await set(exposedPointsRef, exposedPoints - 1);
     
-                console.log("Report correct. Points updated.");
+                console.log("Correct report");
     
             } else {
-    
-                console.log("Report incorrect. Roles do not match.");
-    
+                console.log("Incorrect report");
             }
+    
+            // --- Save report ---
+            const reportData = {
+                name: exposedUserName,
+                role: {
+                    it: roleDropdown.value.split("|")[0],
+                    en: roleDropdown.value.split("|")[1]
+                }
+            };
+    
+            await set(
+                ref(db, `${passcode}/reports/${exposedPasscode}`),
+                reportData
+            );
+    
+            // --- Remove exposed user from userOptions ---
+            await remove(
+                ref(db, `${passcode}/entries/userOptions/${exposedPasscode}`)
+            );
+    
+            // --- Remove role from rolesOptions ---
+            await remove(
+                ref(db, `${passcode}/entries/rolesOptions/${roleIndex}`)
+            );
+    
+            console.log("Report stored and options cleaned");
     
         } catch (error) {
             console.error("Error during report:", error);
