@@ -2,6 +2,7 @@ import { db } from "../sources/firebase.js";
 import { ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 import { getStorage, ref as storageRef, uploadBytes } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js";
 import { loadLocale } from "../utils/i18n.js";
+import { ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
 const terminal = document.getElementById("terminal");
 const reportBtn = document.getElementById("reportBtn");
@@ -78,6 +79,7 @@ function typeLines(lines, isNonItalianSpeaker) {
                 promotionBtn.style.display = "inline-block";
             }
             presentationBtn.style.display = "inline-block";
+            infoLogEvent("User read protocol.");
             update(ref(db, passcode), { status: "DELIVERED" });
             return;
         }
@@ -124,6 +126,7 @@ async function init() {
     serviceBtn.onclick = () => window.location.href = "../service/service.html";
     
     presentationBtn.onclick = () => {
+        infoLogEvent("User selected button: SEND PRESENTATION");
         const email = presentationStrings.address;
         const subject = encodeURIComponent(presentationStrings.subject);
         const body = encodeURIComponent(presentationStrings.body);
