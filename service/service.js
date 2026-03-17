@@ -8,6 +8,20 @@ const usersList = document.getElementById("usersList");
 const passcode = sessionStorage.getItem("passcode");
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
+// Protect page: redirect if sessionStorage missing required keys
+(function checkSession() {
+    const realName = sessionStorage.getItem("realName");
+    const passcode = sessionStorage.getItem("passcode");
+
+    if (!realName || !passcode) {
+        // Clear session storage just in case
+        sessionStorage.clear();
+
+        // Redirect to index.html and replace history so back button won't work
+        location.replace("../index.html");
+    }
+})();
+
 // Instruction text under heading
 infoText.textContent = 
   "As a guest with linguistic limitations, you can pick up to 3 interpreters who will follow you around for the entire duration of the event. For each interpreter you earn 2 points.\nAfter the event, you can rate the interpreter a good service and let them earn an extra point.";
