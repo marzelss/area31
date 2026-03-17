@@ -57,6 +57,7 @@
     "warningMessage": "This report will be permanently logged in the international intelligence archive. These entries cannot be modified or submitted again. Confirm transmission?",
     "submitButton": "SUBMIT", 
     "cancelButton": "Cancel",
+    "backButton": "< Back",
     "thankYouMessage": "Report received. Your contribution to international security has been recorded. Continue monitoring the situation and report further anomalies.",
     "emptyState": "Surveillance operations have not yet begun. Report filing will be authorized once the event officially starts.",
     "tryAgainLater": "Keep monitoring the situation. There might be more guests to report later.",
