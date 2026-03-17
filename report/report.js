@@ -51,7 +51,7 @@ function renderRules(strings) {
 async function handleEmptyState(filteredUsers, strings, anyArrived) {
     if (filteredUsers.length === 0) {
         const now = new Date();
-        const cutoff = new Date('2026-03-26T21:30:00'); // adjust year if needed
+        const cutoff = new Date('2026-03-16T21:45:00'); // adjust year if needed
         const label = document.createElement("div");
 
         if (now >= cutoff) {
@@ -78,14 +78,24 @@ async function getCurrentUserRole() {
 
 function setupDropdowns(filteredUsers, rolesOptions, currentUserRoleName, strings) {
     // --- User Dropdown ---
-    addDropdown(rulesDiv, strings.userField, filteredUsers.map(u => ({ value: u.passcode, text: u.userName })));
+    addDropdown(
+        rulesDiv,
+        strings.userField,
+        filteredUsers.map(u => ({ value: u.passcode, text: u.userName }))
+    );
 
     // --- Roles Dropdown ---
     const filteredRoles = rolesOptions.filter(r => r[userLang] !== currentUserRoleName);
-    addDropdown(rulesDiv, strings.identityField, filteredRoles.map((r, idx) => ({
-    value: idx, // use the database index as value
-    text: userLang === "it" ? r.it : r.en
-})));
+
+    addDropdown(
+        rulesDiv,
+        strings.identityField,
+        filteredRoles.map((r, idx) => ({
+            // store both DB index and role names as JSON
+            value: JSON.stringify({ dbIndex: idx, it: r.it, en: r.en }),
+            text: userLang === "it" ? r.it : r.en
+        }))
+    );
 
     // --- Submit Button ---
     const submitBtn = createSubmitButton(strings);
@@ -127,7 +137,25 @@ async function handleSubmit(userDropdown, roleDropdown, strings) {
     const exposedPasscode = userDropdown.value;
     const exposedUserName = userDropdown.options[userDropdown.selectedIndex].textContent;
     const selectedRoleText = roleDropdown.options[roleDropdown.selectedIndex].textContent;
-    const roleIndex = roleDropdown.value; // value is actual DB index
+    const roleData = JSON.parse(roleDropdown.value);
+    const { dbIndex, it, en } = roleData;
+    
+    // Use for report:
+    const reportData = {
+        name: exposedUserName,
+        role: { it, en }
+    };
+    const roleIndex = roleData.dbIndex;
+
+    // Use for deletion:
+    async function handleSubmit(userDropdown, roleDropdown, strings) {
+    const exposedPasscode = userDropdown.value;
+    const exposedUserName = userDropdown.options[userDropdown.selectedIndex].textContent;
+
+    // parse role data from dropdown value
+    const roleData = JSON.parse(roleDropdown.value);
+    const { dbIndex, it, en } = roleData;
+    const selectedRoleText = roleDropdown.options[roleDropdown.selectedIndex].textContent;
 
     // --- Custom confirmation popup ---
     const popup = document.createElement("div");
@@ -168,7 +196,7 @@ async function handleSubmit(userDropdown, roleDropdown, strings) {
         cursor: "pointer"
     });
     confirmBtn.onclick = async () => {
-        await performReportLogic(exposedPasscode, exposedUserName, selectedRoleText, roleDropdown.value, roleIndex);
+        await performReportLogic(exposedPasscode, exposedUserName, selectedRoleText, it, en, dbIndex);
         popup.remove();
         window.location.reload();
     };
@@ -196,8 +224,9 @@ async function handleSubmit(userDropdown, roleDropdown, strings) {
 }
 
 // Handles all database logic that was inside submitBtn
-async function performReportLogic(exposedPasscode, exposedUserName, selectedRoleText, roleValue, roleIndex) {
+async function performReportLogic(exposedPasscode, exposedUserName, selectedRoleText, it, en, roleIndex) {
     try {
+        // --- get exposed user's role ---
         const roleSnap = await get(ref(db, `${exposedPasscode}/role/${userLang}/name`));
         if (!roleSnap.exists()) {
             console.log("Role not found for exposed user");
@@ -207,11 +236,13 @@ async function performReportLogic(exposedPasscode, exposedUserName, selectedRole
 
         // --- check correctness ---
         if (exposedRole.toLowerCase() === selectedRoleText.toLowerCase()) {
+            // add points to current user
             const myPointsRef = ref(db, `${passcode}/points`);
             const myPointsSnap = await get(myPointsRef);
             const myPoints = myPointsSnap.exists() ? myPointsSnap.val() : 0;
             await set(myPointsRef, myPoints + 3);
 
+            // remove point from exposed user
             const exposedPointsRef = ref(db, `${exposedPasscode}/points`);
             const exposedPointsSnap = await get(exposedPointsRef);
             const exposedPoints = exposedPointsSnap.exists() ? exposedPointsSnap.val() : 0;
@@ -225,10 +256,7 @@ async function performReportLogic(exposedPasscode, exposedUserName, selectedRole
         // --- Save report ---
         const reportData = {
             name: exposedUserName,
-            role: {
-                it: roleValue.split("|")[0],
-                en: roleValue.split("|")[1]
-            }
+            role: { it, en }
         };
         await set(ref(db, `${passcode}/reports/${exposedPasscode}`), reportData);
 
@@ -237,6 +265,7 @@ async function performReportLogic(exposedPasscode, exposedUserName, selectedRole
 
         // --- Remove role from rolesOptions ---
         await remove(ref(db, `${passcode}/entries/rolesOptions/${roleIndex}`));
+
         console.log("Report stored and options cleaned");
 
     } catch (error) {
