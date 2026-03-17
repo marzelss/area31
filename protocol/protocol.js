@@ -434,7 +434,7 @@ function initMap() {
 
     mapLabel.textContent = strings.locationReveal8;
 
-    const map = L.map('map').setView([lat, lng], 15);
+    const map = L.map('map').setView([lat, lng], 20);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
          attribution: '© OpenStreetMap'
