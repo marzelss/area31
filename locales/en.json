@@ -60,7 +60,8 @@
     "thankYouMessage": "Report received. Your contribution to international security has been recorded. Continue monitoring the situation and report further anomalies.",
     "emptyState": "Surveillance operations have not yet begun. Report filing will be authorized once the event officially starts.",
     "tryAgainLater": "Keep monitoring the situation. There might be more guests to report later.",
-    "noMoreEntries": "Report limit reached. Your contributions to planetary security have been deemed sufficient. Further surveillance is not required at this time."
+    "noMoreEntries": "Report limit reached. Your contributions to planetary security have been deemed sufficient. Further surveillance is not required at this time.",
+    "viewHistory": "Your reports >"
   },
   "presentation": {
     "address": "area31@yopmail.com",
