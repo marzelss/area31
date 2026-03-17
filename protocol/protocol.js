@@ -261,6 +261,9 @@ function initMap() {
     const lat = 45.65605;
     const lng = 8.79769; 
 
+    const mapDiv = document.getElementById("map");
+    mapDiv.style.display = "block";
+
     const map = L.map('map').setView([lat, lng], 15);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
