@@ -1,6 +1,7 @@
 import { db } from "../sources/firebase.js";
 import { ref, get, set, remove } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 import { loadLocale } from "../utils/i18n.js";
+import { infoLogEvent, errorLogEvent, dbLogEvent } from "../utils/analytics.js";
 
 const terminal = document.getElementById("terminal");
 const explanationDiv = document.getElementById("explanation");
@@ -24,7 +25,7 @@ const userLang = navigator.language.startsWith("it") ? "it" : "en";
 })();
 
 async function init() {
-    
+    infoLogEvent("User selected button: FILE REPORT");
     const strings = await loadLocale("report");
 
     // --- These elements are always present ---
@@ -141,14 +142,17 @@ async function handleEmptyState(strings) {
     
     // show game ended label if party over
     if (now >= cutoff) {
+        infoLogEvent("User selected button: FILE REPORT: Empty state: Party is over");
         label.textContent = strings.noMoreEntries;
     // else handle empty state
     } else {
         // party has started
         if (anyArrived) {
+            infoLogEvent("User selected button: FILE REPORT: Empty state: No entries available");
             label.textContent = strings.tryAgainLater;
         // party yet to start
         } else {
+            infoLogEvent("User selected button: FILE REPORT: Empty state: Party is yet to start");
             label.textContent = strings.emptyState;
         }
     }
@@ -178,6 +182,7 @@ async function addHistoryLink(strings) {
     historyLink.style.textDecoration = "underline";
 
     historyLink.onclick = () => {
+        infoLogEvent("User selected button: FILE REPORT HISTORY");
         window.location.href = "../history/history.html";
     };
 
@@ -275,6 +280,7 @@ function handleSubmit(userDropdown, roleDropdown, strings) {
         const exposedUserName = userDropdown.options[userDropdown.selectedIndex].textContent;
         const selectedRoleText = roleDropdown.options[roleDropdown.selectedIndex].textContent;
         const roleIndex = roleDropdown.selectedIndex - 1; // index 0 is placeholder
+        infoLogEvent(`User selected button: FILE REPORT SUBMIT: user ${exposedUserName}: role ${selectedRoleText}`);
     
         // --- Custom confirmation popup ---
         const popup = setupPopup();
@@ -283,6 +289,8 @@ function handleSubmit(userDropdown, roleDropdown, strings) {
         const confirmBtn = setupConfirmButton(strings);
     
         confirmBtn.onclick = async () => {
+            infoLogEvent(`User selected button: FILE REPORT SUBMIT: CONFIRM`);
+
             try {
                 // --- get exposed user's role ---
                 const roleSnap = await get(ref(db, `${exposedPasscode}/role/${userLang}/name`));
@@ -306,10 +314,10 @@ function handleSubmit(userDropdown, roleDropdown, strings) {
                     const exposedPointsSnap = await get(exposedPointsRef);
                     const exposedPoints = exposedPointsSnap.exists() ? exposedPointsSnap.val() : 0;
                     await set(exposedPointsRef, exposedPoints - 1);
-    
-                    console.log("Correct report");
+
+                    infoLogEvent(`User selected button: FILE REPORT SUBMIT: correct`);
                 } else {
-                    console.log("Incorrect report");
+                    infoLogEvent(`User selected button: FILE REPORT SUBMIT: not correct`);
                 }
     
                 // --- Save report ---
@@ -333,6 +341,8 @@ function handleSubmit(userDropdown, roleDropdown, strings) {
                 window.location.reload();
                 
             } catch (error) {
+                errorLogEvent(`User selected button: FILE REPORT SUBMIT: CONFIRM: error`);
+                
                 console.error("Error during report:", error);
             }
     
