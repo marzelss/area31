@@ -152,11 +152,12 @@ function typeLocationReveal() {
 
 async function init() {
 
-    // Show map only when it's reveal time
+    // Show map only when it's reveal time and user has already seen the message
+    const user = await getUser();
+    const status = user.status;
     const revealDate = new Date("2026-03-25T18:00:00+01:00");
-    const now = new Date();
-    const isRevealTime = now >= revealDate;
-    if (isRevealTime) {
+    const isRevealTime = new Date() >= revealDate;
+    if (isRevealTime && status === "UNLOCKED") {
         initMap();
     }
 
