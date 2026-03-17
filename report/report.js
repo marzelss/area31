@@ -1,7 +1,7 @@
 import { db } from "../sources/firebase.js";
 import { ref, get, set, remove } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 import { loadLocale } from "../utils/i18n.js";
-import { infoLogEvent, errorLogEvent, dbLogEvent } from "../utils/analytics.js";
+import { infoLogEvent, errorLogEvent, dbLogEvent, reportLogEvent } from "../utils/analytics.js";
 
 const terminal = document.getElementById("terminal");
 const explanationDiv = document.getElementById("explanation");
@@ -289,7 +289,7 @@ function handleSubmit(userDropdown, roleDropdown, strings) {
         const confirmBtn = setupConfirmButton(strings);
     
         confirmBtn.onclick = async () => {
-            infoLogEvent(`User selected button: FILE REPORT SUBMIT: CONFIRM`);
+            reportLogEvent(`User selected button: FILE REPORT SUBMIT: user ${exposedUserName}: role ${selectedRoleText}: CONFIRM`);
 
             try {
                 // --- get exposed user's role ---
