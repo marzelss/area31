@@ -272,7 +272,7 @@ async function loadFullProtocol(strings) {
     const isNonItalianSpeaker = user["non-italian-speaker"] === true;
     const roleName = user.role?.[userLang]?.name ?? "UNKNOWN ROLE";
     const roleTask = user.role?.[userLang]?.task ?? "NO TASK ASSIGNED";
-    const alreadyDelivered = user.status === "DELIVERED";
+    const alreadyDelivered = user.status === "DELIVERED" || user.status === "UNLOCKED";
 
     const lines = [
         { text: strings.confidential, bold: true }, 
