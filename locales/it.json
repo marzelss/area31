@@ -56,6 +56,7 @@
     "identityField": "Identità classificata sospetta",
     "warningMessage": "Questo rapporto verrà registrato permanentemente nell'Archivio Internazionale di Intelligence. Non potrai più modificare o inserire nuovamente le stesse voci. Confermi di voler procedere?",
     "submitButton": "INVIA",
+    "cancelButton": "Annulla",
     "thankYouMessage": "Rapporto ricevuto. Il tuo contributo alla sicurezza internazionale è stato considerato. Continua a monitorare la situazione e segnala eventuali ulteriori anomalie.",
     "emptyState": "Le operazioni di sorveglianza non hanno ancora avuto inizio. La compilazione del report sarà autorizzata all'inizio ufficiale dell'evento.",
     "tryAgainLater": "Continua a monitorare la situazione. Potrebbero succedere altre cose sospette da inserire nel report.",
