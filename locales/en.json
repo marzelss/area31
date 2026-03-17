@@ -63,6 +63,11 @@
     "noMoreEntries": "Report limit reached. Your contributions to planetary security have been deemed sufficient. Further surveillance is not required at this time.",
     "viewHistory": "Your reports >"
   },
+  "reportHistory": {
+    "title": "REPORT HISTORY",
+    "message": "A debriefing is scheduled at 21:45 to analyse all data and find out which identities were correctly exposed. You have until then to file more reports.",
+    "backButton": "< Back"
+  },
   "presentation": {
     "address": "area31@yopmail.com",
     "subject": "Presentation",
