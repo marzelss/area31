@@ -135,6 +135,7 @@ async function nextQuestion() {
                 eligible: false
             });
 
+            infoLogEvent("User selected button: ASK FOR PROMOTION: APPLY: Interview terminated: Ineligible");
             return; // STOP HERE
         }
         infoLogEvent("User selected button: ASK FOR PROMOTION: APPLY: Correct answer");
@@ -155,6 +156,7 @@ async function nextQuestion() {
             eligible: true
         });
 
+        infoLogEvent("User selected button: ASK FOR PROMOTION: APPLY: Interview completed");
         return;
     }
 
