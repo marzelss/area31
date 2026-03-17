@@ -308,14 +308,15 @@ function handleSubmit(userDropdown, roleDropdown, strings) {
                     const myPointsSnap = await get(myPointsRef);
                     const myPoints = myPointsSnap.exists() ? myPointsSnap.val() : 0;
                     await set(myPointsRef, myPoints + 3);
+                    dbLogEvent(`User won 3 points: total ${myPoints + 3}`);
     
                     // remove point from exposed user
                     const exposedPointsRef = ref(db, `${exposedPasscode}/points`);
                     const exposedPointsSnap = await get(exposedPointsRef);
                     const exposedPoints = exposedPointsSnap.exists() ? exposedPointsSnap.val() : 0;
                     await set(exposedPointsRef, exposedPoints - 1);
-
                     infoLogEvent(`User selected button: FILE REPORT SUBMIT: correct`);
+                    
                 } else {
                     infoLogEvent(`User selected button: FILE REPORT SUBMIT: not correct`);
                 }
@@ -329,15 +330,16 @@ function handleSubmit(userDropdown, roleDropdown, strings) {
                     }
                 };
                 await set(ref(db, `${passcode}/reports/${exposedPasscode}`), reportData);
-    
+                dbLogEvent("Added report to user");
+                
                 // --- Remove exposed user from userOptions ---
                 await remove(ref(db, `${passcode}/entries/userOptions/${exposedPasscode}`));
+                dbLogEvent("Removed exposed user from userOptions");
     
                 // --- Remove role from rolesOptions ---
                 await remove(ref(db, `${passcode}/entries/rolesOptions/${roleIndex}`));
+                dbLogEvent("Removed exposed role from rolesOptions");
     
-                console.log("Report stored and options cleaned");
-
                 window.location.reload();
                 
             } catch (error) {
