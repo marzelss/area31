@@ -150,19 +150,8 @@ function typeLocationReveal() {
     type();
 }
 
-async function init() {
-
-    // Show map only when it's reveal time and user has already seen the message
+function loadFullProtocol(strings) {
     const user = await getUser();
-    const status = user.status;
-    const revealDate = new Date("2026-03-25T18:00:00+01:00");
-    const isRevealTime = new Date() >= revealDate;
-    if (isRevealTime && status === "UNLOCKED") {
-        initMap();
-    }
-
-    // Load strings
-    strings = await loadLocale("protocol");
     presentationStrings = await loadLocale("presentation");
 
     // Load buttons with texts
@@ -253,6 +242,26 @@ async function init() {
     alreadyDelivered
     ? renderInstant(lines, isNonItalianSpeaker)
     : typeLines(lines, isNonItalianSpeaker);
+}
+
+async function init() {
+    
+    // Load strings
+    strings = await loadLocale("protocol");
+
+    // Determine status and reveal time
+    const user = await getUser();
+    const status = user.status;
+    const revealDate = new Date("2026-03-25T18:00:00+01:00");
+    const isRevealTime = new Date() >= revealDate;
+
+    // If location was already revealed
+    if (isRevealTime && status === "UNLOCKED") {
+        initMap();
+    }
+
+    // Load full protocol
+    loadFullProtocol(strings)
 }
 
 function initMap() {
