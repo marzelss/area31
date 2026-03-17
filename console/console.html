@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guest List</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 2rem;
+        }
+        #guestList {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .guest-btn {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-family: monospace;
+            border: 1px solid #333;
+            background-color: #fff;
+            border-radius: 4px;
+            text-align: left;
+        }
+        /* Popup Styles */
+        .popup {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            z-index: 10000;
+        }
+        .popup-content {
+            background-color: #111;
+            color: #fff;
+            padding: 1rem;
+            max-height: 80%;
+            overflow-y: auto;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .popup-footer {
+            background-color: #222;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        .popup-footer button {
+            padding: 0.5rem 1rem;
+            font-family: monospace;
+            border: none;
+            border-radius: 4px;
+            background-color: rgba(0,0,0,0.9);
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Guest List</h1>
+    <div id="guestList"></div>
 
+    <script type="module" src="guests.js"></script>
+</body>
+</html>
