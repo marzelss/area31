@@ -1,4 +1,5 @@
 import { loadLocale } from "../utils/i18n.js";
+import { infoLogEvent, errorLogEvent, dbLogEvent } from "../utils/analytics.js";
 
 const terminal = document.getElementById("terminal");
 const applyBtn = document.getElementById("applyBtn");
@@ -47,7 +48,7 @@ function renderInstant(lines) {
 }
 
 async function init() {
-
+    infoLogEvent("User selected button: APPLY FOR PROMOTION");
     strings = await loadLocale("promotion");
 
     applyBtn.textContent = strings.applyButton;
@@ -58,6 +59,7 @@ async function init() {
     };
 
     applyBtn.onclick = () => {
+        infoLogEvent("User selected button: APPLY FOR PROMOTION: APPLY");
         window.location.href = "../interview/interview.html";
     };
 
