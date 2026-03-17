@@ -11,8 +11,7 @@
 <div id="terminal"></div>
 <button id="startNext"></button>
 
-<script type="module">
-    import { logEvent } from "./utils/analytics.js";
+<script>
     const terminal = document.getElementById("terminal");
     const startNextBtn = document.getElementById("startNext");
     const typingSpeed = 30;
@@ -59,8 +58,6 @@ function startTyping() {
 
 // Initialize
 async function init() {
-
-    await logEvent("User opened page.");
     
     const response = await fetch(`locales/${userLang}.json`);
     const data = await response.json();
@@ -78,10 +75,8 @@ async function init() {
 }
 
 if (userName) {
-    await logEvent("User is already logged.");
     window.location.href = "protocol/protocol.html";
 } else {
-    await logEvent("User is not yet logged in.");
     init(); // start your typewriter sequence
 }
 </script>
