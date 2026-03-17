@@ -35,7 +35,7 @@ async function init() {
     if (filteredUsers.length === 0) {
         // check if past 26 Mar 21:30
         const now = new Date();
-        const cutoff = new Date('2026-03-16T21:30:00'); // adjust year as needed
+        const cutoff = new Date('2026-03-26T21:30:00'); // adjust year as needed
         const label = document.createElement("div");
 
         if (now >= cutoff) {
