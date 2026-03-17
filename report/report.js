@@ -13,7 +13,7 @@ async function init() {
     const strings = await loadLocale("report");
 
     // --- These elements are always present ---
-    addBackButton(strings)
+    addBackButton(strings);
     setupTitle();
     setupExplanation(strings);
     setupRules(strings);
