@@ -82,7 +82,10 @@ function setupDropdowns(filteredUsers, rolesOptions, currentUserRoleName, string
 
     // --- Roles Dropdown ---
     const filteredRoles = rolesOptions.filter(r => r[userLang] !== currentUserRoleName);
-    addDropdown(rulesDiv, strings.identityField, filteredRoles.map(r => ({ value: r.it + "|" + r.en, text: userLang === "it" ? r.it : r.en })));
+    addDropdown(rulesDiv, strings.identityField, filteredRoles.map((r, idx) => ({
+    value: idx, // use the database index as value
+    text: userLang === "it" ? r.it : r.en
+})));
 
     // --- Submit Button ---
     const submitBtn = createSubmitButton(strings);
@@ -124,7 +127,7 @@ async function handleSubmit(userDropdown, roleDropdown, strings) {
     const exposedPasscode = userDropdown.value;
     const exposedUserName = userDropdown.options[userDropdown.selectedIndex].textContent;
     const selectedRoleText = roleDropdown.options[roleDropdown.selectedIndex].textContent;
-    const roleIndex = roleDropdown.selectedIndex - 1;
+    const roleIndex = roleDropdown.value; // value is actual DB index
 
     // --- Custom confirmation popup ---
     const popup = document.createElement("div");
