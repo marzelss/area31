@@ -24,8 +24,6 @@ const userLang = navigator.language.startsWith("it") ? "it" : "en";
 })();
 
 async function init() {
-    // Stop if user is not authenticated
-    checkSession()
     
     const strings = await loadLocale("report");
 
