@@ -1,6 +1,5 @@
 import { db } from "../sources/firebase.js";
 import { ref, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
-import { infoLogEvent } from "../utils/analytics.js";
 
 const terminal = document.getElementById("terminal");
 const nameField = document.getElementById("nameField");
@@ -140,7 +139,6 @@ function startTyping() {
                     sessionStorage.setItem("realName", result["real-name"]);
                     sessionStorage.setItem("passcode", passcode);
 
-                    await infoLogEvent("User inserted correct passcode.");
                     window.location.href = "../protocol/protocol.html";
 
                 } else {
