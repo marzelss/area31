@@ -120,6 +120,7 @@ function typeLocationReveal() {
         strings.locationReveal2,
         strings.loadingLocation1,
         strings.loadingLocation2,
+        " ",
         strings.locationReveal3
     ];
 
