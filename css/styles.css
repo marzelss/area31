@@ -244,3 +244,11 @@ select:focus {
 select::-ms-expand {
     display: none; /* hide arrow in IE */
 }
+
+#map {
+  height: 300px;
+  width: 100%;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  overflow: hidden;
+}
