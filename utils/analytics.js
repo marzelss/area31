@@ -1,5 +1,6 @@
+// utils/analytics.js
+import { db } from "../sources/firebase.js"; // go up one level from utils/
 import { ref, push } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
-import { db } from "./firebase.js";
 
 function formatTimestamp(ts) {
     const date = new Date(ts);
