@@ -46,6 +46,8 @@ async function getUser() {
     return snapshot.val();
 }
 
+
+
 function formatLine(lineObj) {
     if (!lineObj.text) return "";
     if (lineObj.bold) return `<strong>${lineObj.text}</strong>`;
@@ -112,11 +114,57 @@ function formatColonLine(text) {
     return `<strong>${prefix}:</strong>${rest}`;
 }
 
+function typeLocationReveal() {
+    const revealLines = [
+        strings.locationReveal1,
+        strings.locationReveal2,
+        strings.locationReveal3
+    ];
+
+    let currentLine = 0;
+    let currentChar = 0;
+
+    function type() {
+        if (currentLine >= revealLines.length) {
+            terminal.innerHTML += "\n";
+            return;
+        }
+
+        const line = revealLines[currentLine];
+        const previousLines = revealLines.slice(0, currentLine).join("\n");
+        const visibleText = line.substring(0, currentChar);
+
+        terminal.innerHTML = previousLines + "\n" + visibleText;
+        terminal.scrollTop = terminal.scrollHeight;
+
+        if (currentChar < line.length) {
+            currentChar++;
+            setTimeout(type, typingSpeed);
+        } else {
+            currentLine++;
+            currentChar = 0;
+            setTimeout(type, linePause);
+        }
+    }
+
+    type();
+}
+
 async function init() {
-    initMap()
+
+    // Show map only when it's reveal time
+    const revealDate = new Date("2026-03-25T18:00:00+01:00");
+    const now = new Date();
+    const isRevealTime = now >= revealDate;
+    if (isRevealTime) {
+        initMap();
+    }
+
+    // Load strings
     strings = await loadLocale("protocol");
     presentationStrings = await loadLocale("presentation");
 
+    // Load buttons with texts
     reportBtn.textContent = strings.reportButton;
     promotionBtn.textContent = strings.promotionButton;
     serviceBtn.textContent = strings.serviceButton;
@@ -126,7 +174,6 @@ async function init() {
     reportBtn.onclick = () => window.location.href = "../report/report.html";
     promotionBtn.onclick = () => window.location.href = "../promotion/promotion.html";
     serviceBtn.onclick = () => window.location.href = "../service/service.html";
-    
     presentationBtn.onclick = () => {
         infoLogEvent("User selected button: SEND PRESENTATION");
         const email = presentationStrings.address;
@@ -143,7 +190,8 @@ async function init() {
         // remove it
         document.body.removeChild(a);
     };
-    
+
+    // Define text
     const user = await getUser();
     const isNonItalianSpeaker = user["non-italian-speaker"] === true;
     const roleName = user.role?.[userLang]?.name ?? "UNKNOWN ROLE";
