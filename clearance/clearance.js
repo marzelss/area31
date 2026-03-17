@@ -140,6 +140,7 @@ function startTyping() {
                     sessionStorage.setItem("realName", result["real-name"]);
                     sessionStorage.setItem("passcode", passcode);
 
+                    infoLogEvent("User inserted correct password.");
                     window.location.href = "../protocol/protocol.html";
 
                 } else {
