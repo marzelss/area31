@@ -1,6 +1,7 @@
 import { db } from "../sources/firebase.js";
 import { ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 import { loadLocale } from "../utils/i18n.js";
+import { infoLogEvent, errorLogEvent, dbLogEvent } from "../utils/analytics.js";
 
 const terminal = document.getElementById("terminal");
 const answersContainer = document.getElementById("answers");
@@ -66,8 +67,10 @@ function showResult(eligible) {
     nextBtn.style.display = "none";
 
     if (eligible === true) {
+        infoLogEvent("User selected button: ASK FOR PROMOTION: APPLY: Pending result");
         terminal.textContent = strings.pendingResult;
     } else {
+        infoLogEvent("User selected button: ASK FOR PROMOTION: APPLY: Ineligible result");
         terminal.textContent = strings.ineligibleResult;
     }
 
@@ -122,9 +125,8 @@ async function nextQuestion() {
 
     // check if question has a correct answer
     if (q.rightAnswer) {
-
         if (selectedAnswer !== q.rightAnswer) {
-
+            infoLogEvent("User selected button: ASK FOR PROMOTION: APPLY: Wrong answer");
             terminal.innerHTML = strings.ineligibleResult;
             answersContainer.innerHTML = "";
             nextBtn.style.display = "none";
@@ -135,6 +137,8 @@ async function nextQuestion() {
 
             return; // STOP HERE
         }
+        infoLogEvent("User selected button: ASK FOR PROMOTION: APPLY: Correct answer");
+
     }
 
     // move to next question
@@ -166,6 +170,7 @@ async function init() {
     backBtn.textContent = strings.backButton;
 
     backBtn.onclick = () => {
+        infoLogEvent("User selected button: ASK FOR PROMOTION: APPLY: BACK");
         window.location.href = "../promotion/promotion.html";
     };
 
@@ -173,6 +178,7 @@ async function init() {
     const clientName = await checkClient();
 
     if (clientName !== null) {
+        infoLogEvent("User selected button: ASK FOR PROMOTION: APPLY: Application approved: Viewing client");
 
         terminal.innerHTML = `
             ${strings.positiveResult1}<br><br>
