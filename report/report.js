@@ -134,7 +134,7 @@ async function handleEmptyState(strings) {
     
     // create conditions
     const now = new Date();
-    const cutoff = new Date('2026-03-26T21:45:00');
+    const cutoff = new Date('2026-03-16T21:45:00');
     const anyArrived = await anyGuestsArrived();
 
     // create empty state label
