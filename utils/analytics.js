@@ -21,7 +21,7 @@ export async function infoLogEvent(message, data = {}) {
         // Determine prefix based on type
         let prefix = "✅ Info - ";
         const timestamp = Date.now();
-        const fullMessage = `${prefix}${formatTimestamp(timestamp)}\n${message}`;
+        const fullMessage = `${prefix}${formatTimestamp(timestamp)} - ${message}`;
 
         const event = {
             timestamp: timestamp,
@@ -51,7 +51,7 @@ export async function errorLogEvent(message, data = {}) {
         // Determine prefix based on type
         let prefix = "❌ Error - ";
         const timestamp = Date.now();
-        const fullMessage = `${prefix}${formatTimestamp(timestamp)}\n${message}`;
+        const fullMessage = `${prefix}${formatTimestamp(timestamp)} - ${message}`;
 
         const event = {
             timestamp: timestamp,
@@ -81,7 +81,7 @@ export async function dbLogEvent(message, data = {}) {
         // Determine prefix based on type
         let prefix = "➡️ Database - ";
         const timestamp = Date.now();
-        const fullMessage = `${prefix}${formatTimestamp(timestamp)}\n${message}`;
+        const fullMessage = `${prefix}${formatTimestamp(timestamp)} - ${message}`;
 
         const event = {
             timestamp: timestamp,
@@ -110,7 +110,7 @@ export async function reportLogEvent(message, data = {}) {
         // Determine prefix based on type
         let prefix = "📑 Report - ";
         const timestamp = Date.now();
-        const fullMessage = `${prefix}${formatTimestamp(timestamp)}\n${message}`;
+        const fullMessage = `${prefix}${formatTimestamp(timestamp)} - ${message}`;
 
         const event = {
             timestamp: timestamp,
@@ -139,7 +139,7 @@ export async function promotionLogEvent(message, data = {}) {
         // Determine prefix based on type
         let prefix = "🎖️ Promotion - ";
         const timestamp = Date.now();
-        const fullMessage = `${prefix}${formatTimestamp(timestamp)}\n${message}`;
+        const fullMessage = `${prefix}${formatTimestamp(timestamp)} - ${message}`;
 
         const event = {
             timestamp: timestamp,
