@@ -71,7 +71,7 @@ async function renderReportsAnimated(reports) {
 
         const line = document.createElement("div");
 
-        const roleText = report.role[lang] || report.role.en;
+        const roleText = report.role[userLang] || report.role.en;
 
         line.textContent = `[✓] ${report.name} → ${roleText}`;
         line.style.marginBottom = "0.5rem";
