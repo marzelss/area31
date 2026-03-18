@@ -8,7 +8,7 @@ const emptyState = document.getElementById("emptyState");
 const backButton = document.getElementById("backButton");
 
 let passcode = sessionStorage.getItem("passcode");
-let lang = sessionStorage.getItem("lang") || "en";
+const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
 // Protect page: redirect if sessionStorage missing required keys
 (function checkSession() {
