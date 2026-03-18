@@ -37,9 +37,11 @@ async function init() {
     // --- Get all users from entries/userOptions ---
     const arrivedUsers = await getArrivedUsers();
     const filteredUsers = arrivedUsers.filter(u => u.passcode !== passcode);
+    const now = new Date();
+    const cutoff = new Date('2026-03-16T21:45:00');
 
     // --- Handle empty state if too early, no more entries, or party over ---
-    if (filteredUsers.length === 0) {
+    if (filteredUsers.length === 0 || now >= cutoff) {
         // handle empty state
         handleEmptyState(strings)
         // --- History link ---
