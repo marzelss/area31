@@ -10,8 +10,8 @@ const promotionBtn = document.getElementById("promotionBtn");
 const serviceBtn = document.getElementById("serviceBtn");
 const presentationBtn = document.getElementById("presentationBtn");
 
-const typingSpeed = 10;
-const linePause = 300;
+const typingSpeed = 5;
+const linePause = 200;
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
 let strings;
