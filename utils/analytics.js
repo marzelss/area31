@@ -21,7 +21,7 @@ export async function infoLogEvent(message, data = {}) {
         // Determine prefix based on type
         let prefix = "✅ Info - ";
         const timestamp = Date.now();
-        const fullMessage = `${prefix}${formatTimestamp(timestamp)} - ${message}`;
+        const fullMessage = `${prefix}${formatTimestamp(timestamp)} - ${message} > ${Object.keys(data).length ? JSON.stringify(data) : ""}`;
 
         const event = {
             timestamp: timestamp,
