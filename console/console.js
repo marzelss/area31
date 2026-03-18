@@ -12,12 +12,22 @@ async function loadGuests() {
     }
     const guests = snapshot.val();
 
-    Object.keys(guests).forEach(key => {
-        const guest = guests[key];
+    // Convert object to array with key
+    const guestsArray = Object.keys(guests).map(key => ({
+        key,
+        ...guests[key],
+        points: guests[key].points ?? 0 // default 0 if no points
+    }));
+
+    // Sort by points descending
+    guestsArray.sort((a, b) => b.points - a.points);
+
+    // Render buttons
+    guestsArray.forEach(guest => {
         const btn = document.createElement("button");
         btn.className = "guest-btn";
-        btn.textContent = guest["real-name"] || `Guest ${key}`;
-        btn.addEventListener("click", () => showGuestPopup(guest, key));
+        btn.textContent = guest["real-name"] || `Guest ${guest.key}`;
+        btn.addEventListener("click", () => showGuestPopup(guest, guest.key));
         guestListDiv.appendChild(btn);
     });
 }
