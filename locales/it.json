@@ -101,7 +101,7 @@
     "backButton": "< INDIETRO"
   },
   "interview": {
-    "ineligibleResult": "Ti ringraziamo per aver inviato la tua candidatura. Dopo un'attenta esaminazione, il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ha stabilito che il tuo profilo non soddisfa gli standard minimi richiesti per questa missione in quanto soggetto monolingua. La tua candidatura è stata archiviata e i tuoi servizi potranno essere richiesti in future operazioni.",
+    "ineligibleResult": "Ti ringraziamo per aver inviato la tua candidatura. Dopo un'attenta esaminazione, il Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ha stabilito che, in qualità di soggetto monolingua, il tuo profilo non soddisfa gli standard minimi richiesti per questa missione. La tua candidatura è stata comunque archiviata e i tuoi servizi potranno essere richiesti in future operazioni.",
     "pendingResult": "Candidatura ricevuta. La tua richiesta è stata inviata nella massima segretezza al Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute ed è in fase di valutazione. Torna su questa pagina per controllarne lo stato di avanzamento. Se un ospite affetto da impedimento linguistico richiederà i tuoi servizi, comparirà qui.",
     "negativeResult": "ATTENZIONE: La tua candidatura è stata ritenuta altamente sospetta dal Dipartimento Ufficiale delle Lingue Galattiche Interriconosciute. Per ragioni di sicurezza linguistica, i tuoi servizi interpretatori non sono stati selezionati per questo evento.",
     "positiveResult1": "Candidatura approvata. Sei stato ufficialmente selezionato come interprete dal seguente cliente linguisticamente svantaggiato:",
@@ -122,9 +122,9 @@
       {
         "question": "Come hai imparato l'inglese?",
         "answers": [
-          "Avevo lezioni di inglese quando ero a scuola",
-          "Ho vissuto all'estero quindi ho dovuto padroneggiare l'inglese per sopravvivere",
-          "Ho avuto incontri ravvicinati del terzo tipo e ho richiesto l'installazione di un'intelligenza artificiale come microchip all'interno delle mie cervella per imparare istantaneamente 308 lingue, inclusi dialetti, e acquisire conoscenze interstellari per conquistare il mondo e distruggere il pianeta"
+          "L'ho studiato a scuola",
+          "Ho vissuto all'estero quindi ho dovuto impararlo per sopravvivere",
+          "Ho avuto incontri ravvicinati del terzo tipo e ho richiesto l'installazione di un'intelligenza artificiale come microchip all'interno delle mie cervella per imparare istantaneamente 308 lingue, inclusi dialetti, acquisendo conoscenze interstellari per conquistare il mondo e distruggere il pianeta"
         ]
       },
       {
@@ -132,7 +132,7 @@
         "answers": [
           "Prima del 2015",
           "Dopo il 2015",
-          "Quel momento non può essere rappresentato su una liena spaziotemporale che sia traducibile in una data del calendario umano poiché è avvenuto durante un collasso della griglia temporale monitorata dal Consiglio Linguistico Intergalattico"
+          "Quel momento non può essere rappresentato su una linea spaziotemporale che sia traducibile in una data del calendario gregoriano o di un altro qualsiasi calendario umano poiché è avvenuto durante un collasso della griglia spaziotemporale monitorata dal Consiglio Linguistico Intergalattico"
         ]
       },
       {
