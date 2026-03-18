@@ -1,5 +1,5 @@
 import { db } from "../sources/firebase.js";
-import { ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { ref, get, update, set } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
 const terminal = document.getElementById("terminal");
 const explanationDiv = document.getElementById("explanation");
