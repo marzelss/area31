@@ -38,7 +38,7 @@ async function init() {
     const arrivedUsers = await getArrivedUsers();
     const filteredUsers = arrivedUsers.filter(u => u.passcode !== passcode);
     const now = new Date();
-    const cutoff = new Date('2026-03-16T21:45:00');
+    const cutoff = new Date('2026-03-26T21:45:00');
 
     // --- Handle empty state if too early, no more entries, or party over ---
     if (filteredUsers.length === 0 || now >= cutoff) {
@@ -136,7 +136,7 @@ async function handleEmptyState(strings) {
     
     // create conditions
     const now = new Date();
-    const cutoff = new Date('2026-03-16T21:45:00');
+    const cutoff = new Date('2026-03-26T21:45:00');
     const anyArrived = await anyGuestsArrived();
 
     // create empty state label
