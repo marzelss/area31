@@ -84,12 +84,12 @@ function showGuestPopup(guest, guestKey) {
         li.textContent = "🛎️ SERVICE REQUESTED";
         statusList.appendChild(li);
     }
-    if (guest.arrived === "TRUE") {
+    if (guest.arrived === true) {
         const li = document.createElement("li");
         li.textContent = "📍 HAS ARRIVED";
         statusList.appendChild(li);
     }
-    if (guest.presentation === "TRUE") {
+    if (guest.presentation === true) {
         const li = document.createElement("li");
         li.textContent = "🎞️ HAS PRESENTATION";
         statusList.appendChild(li);
