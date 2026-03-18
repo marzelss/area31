@@ -6,8 +6,8 @@ const terminal = document.getElementById("terminal");
 const nameField = document.getElementById("nameField");
 const nameNextBtn = document.getElementById("nameNext");
 
-const typingSpeed = 30;
-const linePause = 800;
+const typingSpeed = 15;
+const linePause = 500;
 
 const userLang = navigator.language.startsWith("it") ? "it" : "en";
 
